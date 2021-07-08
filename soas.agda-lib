@@ -1,0 +1,4 @@
+name: soas
+include: .
+  ./agda-categories/src
+  ./agda-stdlib-master/src
