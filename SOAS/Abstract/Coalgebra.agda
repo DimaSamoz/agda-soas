@@ -32,14 +32,14 @@ module Unsorted where
              → r t (ϱ ∘ ρ) ≡ r (r t ρ) ϱ
 
     -- Weakening of terms
-    wknₗ : (Θ : Ctx) → X Γ → X (Θ ∔ Γ)
-    wknₗ Θ t = r t (inr Θ)
+    wkr : (Θ : Ctx) → X Γ → X (Θ ∔ Γ)
+    wkr Θ t = r t (inr Θ)
 
-    wknᵣ : (Γ : Ctx) → X Γ → X (Γ ∔ Θ)
-    wknᵣ Γ t = r t (inl Γ)
+    wkl : (Γ : Ctx) → X Γ → X (Γ ∔ Θ)
+    wkl Γ t = r t (inl Γ)
 
-    wkn : X Γ → X (α ∙ Γ)
-    wkn t = r t old
+    wk : X Γ → X (α ∙ Γ)
+    wk t = r t old
 
   -- Unsorted coalgebra homomorphism
   record Coalg⇒ {X Y}(Xᵇ : Coalg X)(Yᵇ : Coalg Y) (f : X ⇾ Y) : Set where
@@ -102,14 +102,14 @@ module Sorted where
         → r t ρ₁ ≡ r t ρ₂
     r≈₂ {t = t} p = cong (r t) (dext′ p)
 
-    wknₗ : (Θ : Ctx) → 𝒳 α Γ → 𝒳 α (Θ ∔ Γ)
-    wknₗ Θ t = r t (inr Θ)
+    wkr : (Θ : Ctx) → 𝒳 α Γ → 𝒳 α (Θ ∔ Γ)
+    wkr Θ t = r t (inr Θ)
 
-    wknᵣ : (Γ : Ctx) → 𝒳 α Γ → 𝒳 α (Γ ∔ Θ)
-    wknᵣ Γ t = r t (inl Γ)
+    wkl : (Γ : Ctx) → 𝒳 α Γ → 𝒳 α (Γ ∔ Θ)
+    wkl Γ t = r t (inl Γ)
 
-    wkn : {τ : T} → 𝒳 α Γ → 𝒳 α (τ ∙ Γ)
-    wkn t = r t old
+    wk : {τ : T} → 𝒳 α Γ → 𝒳 α (τ ∙ Γ)
+    wk t = r t old
 
   -- Coalgebra homomorphism
   record Coalg⇒ {𝒳 𝒴}(Xᵇ : Coalg 𝒳)(𝒴ᵇ : Coalg 𝒴) (f : 𝒳 ⇾̣ 𝒴) : Set where
