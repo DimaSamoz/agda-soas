@@ -1,6 +1,6 @@
-[submodule "agda-categories"]
-	path = agda-categories
-	url = https://github.com/agda/agda-categories.git
 [submodule "agda-stdlib"]
 	path = agda-stdlib
 	url = https://github.com/agda/agda-stdlib.git
+[submodule "agda-categories"]
+	path = agda-categories
+	url = https://github.com/agda/agda-categories.git
