@@ -5,7 +5,7 @@ module SOAS.Families.Build {T : Set} where
 open import SOAS.Common
 open import SOAS.Context
 open import SOAS.Sorting {T}
-open import SOAS.Families {T}
+open import SOAS.Families.Core {T}
 
 -- Generalised sums and pattern matching
 data +₂ (A B : Set) : Set where
@@ -120,6 +120,7 @@ infixr 60 ∥_∥
 
 _▷_ : MCtx → (Familyₛ → Familyₛ) → Familyₛ
 𝔐 ▷ 𝒳 = 𝒳 ∥ 𝔐 ∥
+infix 12 _▷_
 
 -- Metavariable de Bruijn indices
 pattern 𝔞 = ↓
