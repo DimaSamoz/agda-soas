@@ -31,24 +31,24 @@ Sub₁ f (x ◂ σ) = f x ◂ Sub₁ f σ
 
 -- Conversion between inductive substitutions and context maps
 module _ {𝒳 : Familyₛ} where
-  lookup : Sub 𝒳 Γ Δ → Γ ~[ 𝒳 ]↝ Δ
-  lookup • ()
-  lookup (t ◂ σ) new = t
-  lookup (t ◂ σ) (old v) = lookup σ v
+  index : Sub 𝒳 Γ Δ → Γ ~[ 𝒳 ]↝ Δ
+  index • ()
+  index (t ◂ σ) new = t
+  index (t ◂ σ) (old v) = index σ v
 
   tabulate : Γ ~[ 𝒳 ]↝ Δ → Sub 𝒳 Γ Δ
   tabulate {Γ = ∅} σ = •
   tabulate {Γ = α ∙ Γ} σ = σ new ◂ tabulate (σ ∘ old)
 
 
-  lu∘tab≈id : (σ : Γ ~[ 𝒳 ]↝ Δ) (v : ℐ α Γ)
-         → lookup (tabulate σ) v ≡ σ v
-  lu∘tab≈id {Γ = α ∙ Γ} σ new = refl
-  lu∘tab≈id {Γ = α ∙ Γ} σ (old v) = lu∘tab≈id (σ ∘ old) v
+  ix∘tab≈id : (σ : Γ ~[ 𝒳 ]↝ Δ) (v : ℐ α Γ)
+         → index (tabulate σ) v ≡ σ v
+  ix∘tab≈id {Γ = α ∙ Γ} σ new = refl
+  ix∘tab≈id {Γ = α ∙ Γ} σ (old v) = ix∘tab≈id (σ ∘ old) v
 
-  tab∘lu≈id : (σ : Sub 𝒳 Γ Δ) → tabulate (lookup σ) ≡ σ
-  tab∘lu≈id • = refl
-  tab∘lu≈id (x ◂ σ) rewrite tab∘lu≈id σ = refl
+  tabix∘≈id : (σ : Sub 𝒳 Γ Δ) → tabulate (index σ) ≡ σ
+  tabix∘≈id • = refl
+  tabix∘≈id (x ◂ σ) rewrite tabix∘≈id σ = refl
 
 -- Naturality conditions
 tabulate-nat : (f : 𝒳 ⇾̣ 𝒴)(σ : Γ ~[ 𝒳 ]↝ Δ)
@@ -56,7 +56,7 @@ tabulate-nat : (f : 𝒳 ⇾̣ 𝒴)(σ : Γ ~[ 𝒳 ]↝ Δ)
 tabulate-nat {Γ = ∅} f σ = refl
 tabulate-nat {Γ = α ∙ Γ} f σ = cong (f (σ new) ◂_) (tabulate-nat f (σ ∘ old))
 
-lookup-nat : (f : 𝒳 ⇾̣ 𝒴)(σ : Sub 𝒳 Γ Δ)(v : ℐ α Γ)
-          → lookup (Sub₁ f σ) v ≡ f (lookup σ v)
-lookup-nat f (x ◂ σ) new     = refl
-lookup-nat f (x ◂ σ) (old v) = lookup-nat f σ v
+index-nat : (f : 𝒳 ⇾̣ 𝒴)(σ : Sub 𝒳 Γ Δ)(v : ℐ α Γ)
+          → index (Sub₁ f σ) v ≡ f (index σ v)
+index-nat f (x ◂ σ) new     = refl
+index-nat f (x ◂ σ) (old v) = index-nat f σ v

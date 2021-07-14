@@ -87,9 +87,9 @@ module _ (𝔛 : Familyₛ) where
         open MetaAlg⇒ gᵃ⇒
 
         𝕤𝕖𝕞! : (t : 𝕋 α Γ) → 𝕤𝕖𝕞 t ≡ g t
-        𝕊-lu : (ε : Sub 𝕋 Π Γ)(v : ℐ α Π) → 𝕊 ε v ≡ g (lookup ε v)
-        𝕊-lu (x ◂ ε) new = 𝕤𝕖𝕞! x
-        𝕊-lu (x ◂ ε) (old v) = 𝕊-lu ε v
+        𝕊-ix : (ε : Sub 𝕋 Π Γ)(v : ℐ α Π) → 𝕊 ε v ≡ g (index ε v)
+        𝕊-ix (x ◂ ε) new = 𝕤𝕖𝕞! x
+        𝕊-ix (x ◂ ε) (old v) = 𝕊-ix ε v
         𝔸-Arg₁ : (as : List (Ctx × T))(ar : Arg as 𝕋 Γ)
               → 𝔸 as ar ≡ Arg₁ as g ar
         𝔸-Arg₁ [] tt = refl
@@ -98,8 +98,8 @@ module _ (𝔛 : Familyₛ) where
 
         𝕤𝕖𝕞! (con (o ⅋ a)) rewrite 𝔸-Arg₁ (Arity o) a = sym ⟨𝑎𝑙𝑔⟩
         𝕤𝕖𝕞! (var v) = sym ⟨𝑣𝑎𝑟⟩
-        𝕤𝕖𝕞! (mvar 𝔪 ε) rewrite cong (𝑚𝑣𝑎𝑟 𝔪) (dext (𝕊-lu ε)) =
-          trans (sym ⟨𝑚𝑣𝑎𝑟⟩) (cong (g ∘ mvar 𝔪) (tab∘lu≈id ε))
+        𝕤𝕖𝕞! (mvar 𝔪 ε) rewrite cong (𝑚𝑣𝑎𝑟 𝔪) (dext (𝕊-ix ε)) =
+          trans (sym ⟨𝑚𝑣𝑎𝑟⟩) (cong (g ∘ mvar 𝔪) (tabix∘≈id ε))
 
 -- Syntax instance for a term grammar
 𝕋:Syn : Syntax
@@ -112,7 +112,7 @@ module _ (𝔛 : Familyₛ) where
       -- !-AP! (Arity o) ar = sym ⟨𝑎𝑙𝑔⟩
       --       !-unique (var v) = sym ⟨𝑣𝑎𝑟⟩
       --       !-unique (mvar 𝔪 ε) rewrite cong (𝑚𝑣𝑎𝑟 𝔪) (dext (!-Sub! ε) )
-      --         = trans (sym ⟨𝑚𝑣𝑎𝑟⟩) (cong (g ∘ mvar 𝔪) (tab∘lu≈id ε))
+      --         = trans (sym ⟨𝑚𝑣𝑎𝑟⟩) (cong (g ∘ mvar 𝔪) (tabix∘≈id ε))
 -- 𝕋:Init = record
 --   { ⊥ = 𝕋 ⋉ Tmᵃ
 --   ; ⊥-is-initial = record
@@ -291,7 +291,7 @@ module _ (𝔛 : Familyₛ) where
 --       open M⇓.MetaAlg⇒ gᵃ⇒
 --       open ≡-Reasoning
 --       !-unique : (t : TTm α Γ) → ! t ≡ g t
---       !-Sub! : (ε : Sub TTm Π Γ)(v : ℐ α Π) → !-Sub ε v ≡ g (lookup ε v)
+--       !-Sub! : (ε : Sub TTm Π Γ)(v : ℐ α Π) → !-Sub ε v ≡ g (index ε v)
 --       !-Sub! (x ◂ ε) new = !-unique x
 --       !-Sub! (x ◂ ε) (old v) = !-Sub! ε v
 --       !-AP! : (as : List (Ctx × T))(ar : ArgProd as TTm Γ)
@@ -302,7 +302,7 @@ module _ (𝔛 : Familyₛ) where
 --       !-unique (con (o , refl , ar)) rewrite !-AP! (Arity o) ar = sym ⟨𝑎𝑙𝑔⟩
 --       !-unique (var v) = sym ⟨𝑣𝑎𝑟⟩
 --       !-unique (mvar 𝔪 ε) rewrite cong (𝑚𝑣𝑎𝑟 𝔪) (dext (!-Sub! ε) )
---         = trans (sym ⟨𝑚𝑣𝑎𝑟⟩) (cong (g ∘ mvar 𝔪) (tab∘lu≈id ε))
+--         = trans (sym ⟨𝑚𝑣𝑎𝑟⟩) (cong (g ∘ mvar 𝔪) (tabix∘≈id ε))
 --
 -- -- 𝕋:Init = record
 -- --   { ⊥ = 𝕋 ⋉ Tmᵃ
@@ -332,7 +332,7 @@ module _ (𝔛 : Familyₛ) where
 -- --   𝕤𝕖𝕞 (mvar 𝔪 ε) = 𝑚𝑣𝑎𝑟 𝔪 (𝕤𝕖𝕞-Sub ε)
 --   -- 𝕤𝕖𝕞 (con⇓ (o , e , ar)) = 𝑎𝑙𝑔 (o , e , λ a → 𝕤𝕖𝕞 (AP→AM (Arity o) ar a))
 --   -- 𝕤𝕖𝕞 (var v) = 𝑣𝑎𝑟 v
---   -- 𝕤𝕖𝕞 (mvar 𝔪 ε) = 𝑚𝑣𝑎𝑟 𝔪 (λ p → 𝕤𝕖𝕞 (lookup ε p))
+--   -- 𝕤𝕖𝕞 (mvar 𝔪 ε) = 𝑚𝑣𝑎𝑟 𝔪 (λ p → 𝕤𝕖𝕞 (index ε p))
 --
 -- CTm : Familyₛ
 -- CTm = CTm′ ∞
@@ -349,7 +349,7 @@ module _ (𝔛 : Familyₛ) where
 --   𝕤𝕖𝕞 : CTm′ s ⇾̣ 𝒜
 --   𝕤𝕖𝕞 (con⇓ (o , e , ar)) = 𝑎𝑙𝑔 (o , e , λ a → 𝕤𝕖𝕞 (AP→AM (Arity o) ar a))
 --   𝕤𝕖𝕞 (var v) = 𝑣𝑎𝑟 v
---   𝕤𝕖𝕞 (mvar 𝔪 ε) = 𝑚𝑣𝑎𝑟 𝔪 (λ p → 𝕤𝕖𝕞 (lookup ε p))
+--   𝕤𝕖𝕞 (mvar 𝔪 ε) = 𝑚𝑣𝑎𝑟 𝔪 (λ p → 𝕤𝕖𝕞 (index ε p))
 --
 --   𝕤𝕖𝕞ᵃ⇒ : M.MetaAlg⇒ CTmᵃ 𝒜ᵃ 𝕤𝕖𝕞
 --   𝕤𝕖𝕞ᵃ⇒ = record
@@ -358,7 +358,7 @@ module _ (𝔛 : Familyₛ) where
 --                                       cong 𝕤𝕖𝕞 (M→P→M (Arity o) ar a)))) }
 --     ; ⟨𝑣𝑎𝑟⟩ = refl
 --     ; ⟨𝑚𝑣𝑎𝑟⟩ = λ{ {𝔪 = 𝔪}{ε} → cong (𝑚𝑣𝑎𝑟 𝔪) (dext (λ v →
---                                   cong 𝕤𝕖𝕞 (lu∘tab≈id ε v))) } }
+--                                   cong 𝕤𝕖𝕞 (ix∘tab≈id ε v))) } }
 --
 -- module CTm:⇓Theory {𝒜 : Familyₛ}(𝒜ᵃ : M⇓.MetaAlg 𝒜) where
 --   open M⇓.MetaAlg 𝒜ᵃ
@@ -366,13 +366,13 @@ module _ (𝔛 : Familyₛ) where
 --   𝕤𝕖𝕞 : CTm′ s ⇾̣ 𝒜
 --   𝕤𝕖𝕞 (con⇓ (o , e , ar)) = 𝑎𝑙𝑔 (o , e , ArgProd₁ (Arity o) 𝕤𝕖𝕞 ar)
 --   𝕤𝕖𝕞 (var x) = 𝑣𝑎𝑟 x
---   𝕤𝕖𝕞 (mvar 𝔪 ε) = 𝑚𝑣𝑎𝑟 𝔪 λ p → 𝕤𝕖𝕞 (lookup ε p)
+--   𝕤𝕖𝕞 (mvar 𝔪 ε) = 𝑚𝑣𝑎𝑟 𝔪 λ p → 𝕤𝕖𝕞 (index ε p)
 --
 --   𝕤𝕖𝕞⇓ᵃ⇒ : M⇓.MetaAlg⇒ CTm⇓ᵃ 𝒜ᵃ 𝕤𝕖𝕞
 --   𝕤𝕖𝕞⇓ᵃ⇒ = record
 --     { ⟨𝑎𝑙𝑔⟩ = refl
 --     ; ⟨𝑣𝑎𝑟⟩ = refl
---     ; ⟨𝑚𝑣𝑎𝑟⟩ = (λ { {𝔪 = 𝔪} {ε} → cong (𝑚𝑣𝑎𝑟 𝔪) (dext (λ p → cong 𝕤𝕖𝕞 (lu∘tab≈id ε p))) })
+--     ; ⟨𝑚𝑣𝑎𝑟⟩ = (λ { {𝔪 = 𝔪} {ε} → cong (𝑚𝑣𝑎𝑟 𝔪) (dext (λ p → cong 𝕤𝕖𝕞 (ix∘tab≈id ε p))) })
 --     }
 --
 -- -- comp : 𝕋 ⇾̣ CTm
@@ -422,13 +422,13 @@ module _ (𝔛 : Familyₛ) where
 --   sem⇓′ : CTm′ s ⇾̣ 𝒜
 --   sem⇓′ (con⇓ (o , e , ar)) = 𝑎𝑙𝑔 (o , e , ArgProd₁ (Arity o) sem⇓′ ar)
 --   sem⇓′ (var x) = 𝑣𝑎𝑟 x
---   sem⇓′ (mvar 𝔪 ε) = 𝑚𝑣𝑎𝑟 𝔪 λ p → sem⇓′ (lookup ε p)
+--   sem⇓′ (mvar 𝔪 ε) = 𝑚𝑣𝑎𝑟 𝔪 λ p → sem⇓′ (index ε p)
 --
 --   sem⇓′ᵃ⇒ : M⇓.MetaAlg⇒ CTm⇓ᵃ 𝒜ᵃ sem⇓′
 --   sem⇓′ᵃ⇒ = record
 --     { ⟨𝑎𝑙𝑔⟩ = refl
 --     ; ⟨𝑣𝑎𝑟⟩ = refl
---     ; ⟨𝑚𝑣𝑎𝑟⟩ = (λ { {𝔪 = 𝔪} {ε} → cong (𝑚𝑣𝑎𝑟 𝔪) (dext (λ p → cong sem⇓′ (lu∘tab≈id ε p))) })
+--     ; ⟨𝑚𝑣𝑎𝑟⟩ = (λ { {𝔪 = 𝔪} {ε} → cong (𝑚𝑣𝑎𝑟 𝔪) (dext (λ p → cong sem⇓′ (ix∘tab≈id ε p))) })
 --     }
 --
 -- comp : 𝕋 ⇾̣ CTm
@@ -493,14 +493,14 @@ module _ (𝔛 : Familyₛ) where
 -- --   serm⇓ : CTm′ s ⇾̣ 𝒜
 -- --   serm⇓ (con⇓ (o , e , ar)) = 𝑎𝑙𝑔 (o , (e , (ArgProd₁ (Arity o) serm⇓ ar)))
 -- --   serm⇓ (var x) = 𝑣𝑎𝑟 x
--- --   serm⇓ (mvar x x₁) = 𝑚𝑣𝑎𝑟 x λ x₂ → serm⇓ (lookup x₁ x₂)
+-- --   serm⇓ (mvar x x₁) = 𝑚𝑣𝑎𝑟 x λ x₂ → serm⇓ (index x₁ x₂)
 -- --
 -- -- module _ {𝒜 : Familyₛ} (𝒜ᵃ : MetaAlg 𝒜) where
 -- --   open MetaAlg 𝒜ᵃ
 -- --   sem⇓ : CTm′ s ⇾̣ 𝒜
 -- --   sem⇓ (con⇓ (o , e , ar)) = 𝑎𝑙𝑔 (o , (e , (λ a → sem⇓ (AP→AM (Arity o) ar a))))
 -- --   sem⇓ (var v) = 𝑣𝑎𝑟 v
--- --   sem⇓ (mvar 𝔪 ε) = 𝑚𝑣𝑎𝑟 𝔪 (λ p → sem⇓ (lookup ε p))
+-- --   sem⇓ (mvar 𝔪 ε) = 𝑚𝑣𝑎𝑟 𝔪 (λ p → sem⇓ (index ε p))
 -- --
 -- --   sem⇓ᵃ⇒ : M.MetaAlg⇒ CTmᵃ 𝒜ᵃ sem⇓
 -- --   sem⇓ᵃ⇒ = record
@@ -509,7 +509,7 @@ module _ (𝔛 : Familyₛ) where
 -- --                                       cong sem⇓ (M→P→M (Arity o) ar a)))) }
 -- --     ; ⟨𝑣𝑎𝑟⟩ = refl
 -- --     ; ⟨𝑚𝑣𝑎𝑟⟩ = λ{ {𝔪 = 𝔪}{ε} → cong (𝑚𝑣𝑎𝑟 𝔪) (dext (λ v →
--- --                                   cong sem⇓ (lu∘tab≈id ε v))) } }
+-- --                                   cong sem⇓ (ix∘tab≈id ε v))) } }
 -- --
 -- -- parse : CTm ⇾̣ 𝕋
 -- -- parse = sem⇓ Tmᵃ
@@ -560,7 +560,7 @@ module _ (𝔛 : Familyₛ) where
 -- -- -- ≡ con⇓ (o , e , ar)
 -- -- comp∘parse≈id (var x) = refl
 -- -- comp∘parse≈id (mvar 𝔪 ε) = cong (mvar 𝔪) {!   !}
--- -- tabulate (λ p → comp (parse (lookup ε p))) ≡ ε
+-- -- tabulate (λ p → comp (parse (index ε p))) ≡ ε
 --
 --
 -- -- nedhne : {𝒜 : Familyₛ}(𝒜ᵃ : M⇓.MetaAlg 𝒜) → (t : 𝕋 α Γ) → foo 𝒜ᵃ t ≡ bar 𝒜ᵃ t
@@ -602,7 +602,7 @@ module _ (𝔛 : Familyₛ) where
 --   sem⇓ : CTm′ s ⇾̣ 𝒜
 --   sem⇓ (con⇓ (o , e , ar)) = 𝑎𝑙𝑔 (o , (e , (λ a → sem⇓ (AP→AM (Arity o) ar a))))
 --   sem⇓ (var v) = 𝑣𝑎𝑟 v
---   sem⇓ (mvar 𝔪 ε) = 𝑚𝑣𝑎𝑟 𝔪 (λ p → sem⇓ (lookup ε p))
+--   sem⇓ (mvar 𝔪 ε) = 𝑚𝑣𝑎𝑟 𝔪 (λ p → sem⇓ (index ε p))
 --
 --   sem⇓ᵃ⇒ : MetaAlg⇒ CTmᵃ 𝒜ᵃ sem⇓
 --   sem⇓ᵃ⇒ = record
@@ -611,7 +611,7 @@ module _ (𝔛 : Familyₛ) where
 --                                       cong sem⇓ (M→P→M (Arity o) ar a)))) }
 --     ; ⟨𝑣𝑎𝑟⟩ = refl
 --     ; ⟨𝑚𝑣𝑎𝑟⟩ = λ{ {𝔪 = 𝔪}{ε} → cong (𝑚𝑣𝑎𝑟 𝔪) (dext (λ v →
---                                   cong sem⇓ (lu∘tab≈id ε v))) } }
+--                                   cong sem⇓ (ix∘tab≈id ε v))) } }
 --
 --
 -- parse : CTm ⇾̣ 𝕋
@@ -633,6 +633,6 @@ module _ (𝔛 : Familyₛ) where
 -- -- -- ≡ con⇓ (o , e , ar)
 -- -- comp∘parse≈id (var x) = refl
 -- -- comp∘parse≈id (mvar 𝔪 ε) = cong (mvar 𝔪) {!   !}
--- -- -- tabulate (λ p → comp (parse (lookup ε p))) ≡ ε
+-- -- -- tabulate (λ p → comp (parse (index ε p))) ≡ ε
 --
 -- -}
