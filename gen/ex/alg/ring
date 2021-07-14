@@ -1,0 +1,8 @@
+syntax Ring
+
+term R
+  add   : *    *  ->  * | _+_ r20
+  mult  : *    *  ->  * | _×_ r40
+  zero  :         ->  * | 𝟘
+  one   :         ->  * | 𝟙
+  neg   : *       ->  * | –_ r50

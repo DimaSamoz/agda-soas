@@ -1,0 +1,9 @@
+syntax FOL extends prop
+
+type T
+  N : 0-ary
+
+term FOL
+  eq  : N   N    ->  * | _≟_ l20
+  all : N.*      ->  * | ∀′ 
+  ex  : N.*      ->  * | ∃′ 

@@ -1,0 +1,14 @@
+syntax PCF extends stlc
+
+type PT
+  B : 0-ary
+
+term PCF
+  tr  :          -> B
+  fl  :          -> B
+  ze  :          -> N
+  su  : N        -> N
+  pr  : N        -> N
+  iz  : N        -> B | 0?
+  ite : B  α  α  ->  α | if_th_el_
+  fix : (α ↣ α)  ->  α

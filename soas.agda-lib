@@ -2,3 +2,4 @@ name: soas
 include: .
   ./agda-categories/src
   ./agda-stdlib/src
+  ./out

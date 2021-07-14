@@ -46,9 +46,9 @@ module _ {𝒳 : Familyₛ} where
   ix∘tab≈id {Γ = α ∙ Γ} σ new = refl
   ix∘tab≈id {Γ = α ∙ Γ} σ (old v) = ix∘tab≈id (σ ∘ old) v
 
-  tabix∘≈id : (σ : Sub 𝒳 Γ Δ) → tabulate (index σ) ≡ σ
-  tabix∘≈id • = refl
-  tabix∘≈id (x ◂ σ) rewrite tabix∘≈id σ = refl
+  tab∘ix≈id : (σ : Sub 𝒳 Γ Δ) → tabulate (index σ) ≡ σ
+  tab∘ix≈id • = refl
+  tab∘ix≈id (x ◂ σ) rewrite tab∘ix≈id σ = refl
 
 -- Naturality conditions
 tabulate-nat : (f : 𝒳 ⇾̣ 𝒴)(σ : Γ ~[ 𝒳 ]↝ Δ)

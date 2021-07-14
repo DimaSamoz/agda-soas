@@ -1,0 +1,9 @@
+syntax STLC⊠ extends stlc
+
+type ΛT
+  _⊠_ : 2-ary | l40
+
+term Λ
+  pair : α   β  ->  α ⊠ β   | ⟨_,_⟩
+  fst  : α ⊠ β  ->  α
+  snd  : α ⊠ β  ->  β

@@ -99,7 +99,7 @@ module _ (𝔛 : Familyₛ) where
         𝕤𝕖𝕞! (con (o ⅋ a)) rewrite 𝔸-Arg₁ (Arity o) a = sym ⟨𝑎𝑙𝑔⟩
         𝕤𝕖𝕞! (var v) = sym ⟨𝑣𝑎𝑟⟩
         𝕤𝕖𝕞! (mvar 𝔪 ε) rewrite cong (𝑚𝑣𝑎𝑟 𝔪) (dext (𝕊-ix ε)) =
-          trans (sym ⟨𝑚𝑣𝑎𝑟⟩) (cong (g ∘ mvar 𝔪) (tabix∘≈id ε))
+          trans (sym ⟨𝑚𝑣𝑎𝑟⟩) (cong (g ∘ mvar 𝔪) (tab∘ix≈id ε))
 
 -- Syntax instance for a term grammar
 𝕋:Syn : Syntax
@@ -112,7 +112,7 @@ module _ (𝔛 : Familyₛ) where
       -- !-AP! (Arity o) ar = sym ⟨𝑎𝑙𝑔⟩
       --       !-unique (var v) = sym ⟨𝑣𝑎𝑟⟩
       --       !-unique (mvar 𝔪 ε) rewrite cong (𝑚𝑣𝑎𝑟 𝔪) (dext (!-Sub! ε) )
-      --         = trans (sym ⟨𝑚𝑣𝑎𝑟⟩) (cong (g ∘ mvar 𝔪) (tabix∘≈id ε))
+      --         = trans (sym ⟨𝑚𝑣𝑎𝑟⟩) (cong (g ∘ mvar 𝔪) (tab∘ix≈id ε))
 -- 𝕋:Init = record
 --   { ⊥ = 𝕋 ⋉ Tmᵃ
 --   ; ⊥-is-initial = record
@@ -302,7 +302,7 @@ module _ (𝔛 : Familyₛ) where
 --       !-unique (con (o , refl , ar)) rewrite !-AP! (Arity o) ar = sym ⟨𝑎𝑙𝑔⟩
 --       !-unique (var v) = sym ⟨𝑣𝑎𝑟⟩
 --       !-unique (mvar 𝔪 ε) rewrite cong (𝑚𝑣𝑎𝑟 𝔪) (dext (!-Sub! ε) )
---         = trans (sym ⟨𝑚𝑣𝑎𝑟⟩) (cong (g ∘ mvar 𝔪) (tabix∘≈id ε))
+--         = trans (sym ⟨𝑚𝑣𝑎𝑟⟩) (cong (g ∘ mvar 𝔪) (tab∘ix≈id ε))
 --
 -- -- 𝕋:Init = record
 -- --   { ⊥ = 𝕋 ⋉ Tmᵃ

@@ -1,0 +1,7 @@
+syntax Combinatory
+
+term CL
+  app : *  *  ->  * | _$_ l20
+  i   :       ->  * | I
+  k   :       ->  * | K
+  s   :       ->  * | S

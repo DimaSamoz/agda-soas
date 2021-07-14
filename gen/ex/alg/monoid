@@ -1,0 +1,5 @@
+syntax Monoid
+
+term A
+  unit :         * | ε
+  mult : *  * -> * | _+_ l20

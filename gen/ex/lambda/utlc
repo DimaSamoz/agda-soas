@@ -1,0 +1,5 @@
+syntax UTLC
+
+term Λ
+  app : *  *  ->  * | _$_ l20
+  lam : *.*   ->  * | ƛ_  r10

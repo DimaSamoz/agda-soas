@@ -1,0 +1,9 @@
+syntax STLC
+
+type ΛT
+  N   : 0-ary
+  _↣_ : 2-ary | r30
+
+term Λ
+  app  : α ↣ β  α  ->  β       | _$_ l20
+  abs  : α.β       ->  α ↣ β   | ƛ_  r10

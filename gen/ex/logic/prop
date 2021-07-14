@@ -1,0 +1,9 @@
+syntax PropLog
+
+term Prop
+  tr  : *
+  fl  : *
+  or  : *  *  ->  * | _∨_ l30
+  and : *  *  ->  * | _∧_ l40
+  imp : *  *  ->  * | _⟹_ r20
+  not : *     ->  * | ¬_ r60

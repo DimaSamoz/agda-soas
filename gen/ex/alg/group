@@ -1,0 +1,6 @@
+syntax Group
+
+term G
+  unit :         * | ε
+  mult : *  * -> * | _+_ l20
+  inv  :    * -> * | -_  r40

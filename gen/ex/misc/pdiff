@@ -1,0 +1,4 @@
+syntax PDiff extends ../alg/ring
+
+term PD
+    pdiff : *.*  *  ->  * | ∂_∣_
