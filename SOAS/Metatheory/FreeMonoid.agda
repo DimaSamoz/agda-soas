@@ -1,10 +1,10 @@
 
-open import SOAS.Metatheory.Initial
+open import SOAS.Metatheory.Syntax
 
 -- Initial (⅀, 𝔛)-meta-algebra 𝕋 𝔛 is the free ⅀-monoid on 𝔛
-module SOAS.Metatheory.FreeMonoid {T : Set} (Init : InitialMetaAlg) where
+module SOAS.Metatheory.FreeMonoid {T : Set} (Syn : Syntax) where
 
-open InitialMetaAlg Init
+open Syntax Syn
 
 open import SOAS.Common
 open import SOAS.Families.Core {T}
@@ -22,7 +22,7 @@ open import SOAS.Abstract.Monoid
 open import SOAS.Coalgebraic.Map
 open import SOAS.Coalgebraic.Monoid
 open import SOAS.Coalgebraic.Strength
-open import SOAS.Metatheory Init
+open import SOAS.Metatheory Syn
 
 
 private
@@ -103,7 +103,7 @@ module _ (𝔛 : Familyₛ) where
         ≡˘⟨ congr ⅀.homomorphism (λ - → 𝑎𝑙𝑔 (str 𝕋ᴮ ℳ - σ))  ⟩
             𝑎𝑙𝑔 (str 𝕋ᴮ ℳ (⅀₁ (λ{ t σ → 𝕖𝕩𝕥 (𝕤𝕦𝕓 t σ)}) t) σ)
         ∎ }
-      ; g⟨𝑣⟩ = trans (μ≈₁ ⟨𝕧⟩) (Mon.lunit ℳ.ᵐ) --lunit
+      ; g⟨𝑣⟩ = trans (μ≈₁ ⟨𝕧⟩) (Mon.lunit ℳ.ᵐ) --ixnit
       ; g⟨𝑚⟩ = trans (μ≈₁ ⟨𝕞⟩) (Mon.assoc ℳ.ᵐ) --assoc
       ; g⟨𝑎⟩ = λ{ {σ = σ}{t} → begin
             μ (𝕖𝕩𝕥 (𝕒𝕝𝕘 t)) (𝕖𝕩𝕥 ∘ σ)
