@@ -1,6 +1,0 @@
-syntax STLCN extends stlc
-
-term
-  ze   :        N
-  su   : N  ->  N
-  nrec : N  α  (α,N).α  ->  α

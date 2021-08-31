@@ -85,7 +85,7 @@ ms-unit {𝔛}{Δ = Δ} 𝔪 = 𝕞𝕧𝕒𝕣 𝔛 𝔪 (𝕧𝕒𝕣 𝔛 ∘
 
 -- List of terms in an extended (object variable) context mapped to every element of a metavariable context
 data MSub (Γ : Ctx) : MCtx → MCtx → Set₁ where
-  ◦   : MSub Γ ◾ 𝔑
+  ◦   : MSub Γ ⁅⁆ 𝔑
   _◃_ : (𝔑 ▷ 𝕋) α (Π ∔ Γ) → MSub Γ 𝔐 𝔑 → MSub Γ (⁅ Π ⊩ₙ α ⁆ 𝔐) 𝔑
 
 infixr 15 _◃_ _▹_
@@ -122,7 +122,7 @@ lift≀ Π τ κ = (Π ⊩◌) ◃ (ext≀ Π τ κ)
 
 -- Identity metasubstitution
 id≀ : (Γ : Ctx) →  MSub Γ 𝔐 𝔐
-id≀ {◾} Γ = ◦
+id≀ {⁅⁆} Γ = ◦
 id≀ {⁅ Π ⊩ₙ τ ⁆ 𝔐} Γ = lift≀ Π τ (id≀ Γ)
 
 -- Left and right weakening of object context of a metasubstitution

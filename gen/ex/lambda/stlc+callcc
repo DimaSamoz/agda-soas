@@ -1,8 +1,0 @@
-syntax STLC-CC extends stlc+nat
-
-type
-  ¬_ : 1-ary | r30
-
-term
-  throw  :  α   ¬ α   ->  β
-  callcc :  (¬ α).α   ->  α

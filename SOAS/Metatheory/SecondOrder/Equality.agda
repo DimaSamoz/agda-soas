@@ -222,7 +222,7 @@ module EqLogic (_▹_⊢_≋ₐ_ : ∀ 𝔐 Γ {α} → (𝔐 ▷ 𝕋) α Γ �
   infix 15 thm_with《_
 
   -- Application of theorem with no metavariables
-  thm : {t s : (◾ ▷ 𝕋) α Π}
-      → ◾ ▹ Π ⊢ t ≋ s
+  thm : {t s : (⁅⁆ ▷ 𝕋) α Π}
+      → ⁅⁆ ▹ Π ⊢ t ≋ s
       → 𝔐 ▹ Π ∔ Γ ⊢ ○msub≀ t ◦ ≋ ○msub≀ s ◦
   thm e = thm e with《 ◦

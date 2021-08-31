@@ -18,6 +18,7 @@ open import SOAS.Metatheory.SecondOrder.Metasubstitution Λ:Syn
 open import SOAS.Metatheory.SecondOrder.Equality Λ:Syn
 open import SOAS.Metatheory.FreeMonoid Λ:Syn
 open import SOAS.Metatheory Λ:Syn
+open import SOAS.Syntax.Arguments
 
 open Λ:Syntax
 open import SOAS.Syntax.Shorthands Λᵃ
@@ -55,9 +56,9 @@ Env α Γ = ⟦ Γ ⟧ᶜ → ⟦ α ⟧
     { η = λ v γ → γ v ; μ = λ t σ δ → t (λ v → σ v δ)
     ; lunit = refl ; runit = refl ; assoc = refl }
   ; 𝑎𝑙𝑔 = λ{ (appₒ ⅋ f , a) γ → f γ (a γ)
-          ; (absₒ ⅋ b) γ → λ a → b (a ⁺ γ) }
+          ; (lamₒ ⅋ b) γ → λ a → b (a ⁺ γ) }
   ; μ⟨𝑎𝑙𝑔⟩ = λ{ (appₒ ⅋ _) → refl
-             ; (absₒ ⅋ b) → ext² λ δ a → cong b (dext
+             ; (lamₒ ⅋ b) → ext² λ δ a → cong b (dext
                 (λ { new → refl ; (old y) → refl })) } }
 
 module Env = FΣM Ø ΣEnvᴹ (λ ())
