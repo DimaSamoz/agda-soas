@@ -1,12 +1,14 @@
 """Term operators and signatures."""
 
 from collections import defaultdict
+from gen.type import Unsorted
 from .util import *
+
 
 class Op:
   """Operator of the term syntax.
   """
-  def __init__(self, name, *args, sort, sym=None, infix=None):
+  def __init__(self, name, *args, sort, sym=None, infix=None, derived=False):
     """Construct an operator for the term syntax.
 
     Args:
@@ -20,12 +22,14 @@ class Op:
     self.arity = len(args)
     self.arity_diff = 0 # Used to figure out the operator with the most number of arguments
     self.sort = sort
-    self.args = Op.parse_args(args)
+    self.args = [Op.parse_so_type(t) for t in args]
+    # Op.parse_args(args)
     # Tokens that make up the sort and arguments, from which the type variables will be extracted
-    sort_tokens = no_parens(sort).split(" ")
-    arg_tokens = [flatten([no_parens(bty).split(" ") for bty in bound]) + no_parens(ty).split(" ") for (bound, ty) in self.args]
-    self.all_tokens = set(flatten(arg_tokens)).union(sort_tokens)
+    # sort_tokens = strip_parens(sort).split(" ")
+    # arg_tokens = [flatten([strip_parens(bty).split(" ") for bty in bound]) + strip_parens(ty).split(" ") for (bound, ty) in self.args]
+    # self.all_tokens = set(flatten(arg_tokens)).union(sort_tokens)
     self.ty_vars = []
+    self.derived = derived
 
     # Name and symbol padding used for alignment
     self.padding = 0
@@ -33,11 +37,52 @@ class Op:
     self.sym = sym or name
 
     self.infix_spec = infix
-    self.infix = None
-    if infix:
-        if infix[0] in ['l', 'r']:
-          self.infix = (infix[0], infix[1:])
-        else: self.infix = ('', infix)
+    # self.infix = None
+    # if infix:
+    #     if infix[0] in ['l', 'r']:
+    #       self.infix = (infix[0], infix[1:])
+    #     else: self.infix = ('', infix)
+
+  def __eq__(self, o: object) -> bool:
+      return self.name == o.name
+
+  def __hash__(self) -> int:
+      return hash(self.name)
+
+  @property
+  def infix(self):
+    if not self.infix_spec: return None
+    if self.infix_spec[0] in ['l', 'r']:
+      return (self.infix_spec[0], self.infix_spec[1:])
+    else: return  ('', self.infix_spec)
+
+
+  @property
+  def all_tokens(self):
+    sort_tokens = strip_parens(self.sort).split(" ")
+    arg_tokens = [flatten([strip_parens(bty).split(" ") for bty in bound]) + strip_parens(ty).split(" ") for (bound, ty) in self.args]
+    return set(flatten(arg_tokens)).union(sort_tokens)
+
+
+  @staticmethod
+  def parse_so_type(s):
+    """Parse a type with bound arguments.
+
+    Args:
+        s (string): A type with optional bound arguments.
+
+    Returns:
+        string: A pair of a list of bound arguments and return sort
+    """
+    if '.' in s:
+      ty_bound = splitstrip(s, '.')
+      ty = strip_parens(ty_bound[1])
+      bound = [t for t in splitstrip(strip_parens(ty_bound[0]), ',')]
+    else:
+      ty = s.strip()
+      bound = []
+
+    return (bound, ty)
 
   @staticmethod
   def parse_args(args):
@@ -53,8 +98,8 @@ class Op:
     for arg in args:
         if '.' in arg:
           ty_bound = arg.split('.')
-          ty = no_parens(ty_bound[1]).strip()
-          bound = [t.strip() for t in no_parens(ty_bound[0].strip()).split(',')]
+          ty = strip_parens(ty_bound[1]).strip()
+          bound = [t.strip() for t in strip_parens(ty_bound[0].strip()).split(',')]
         else:
           ty = arg.strip()
           bound = []
@@ -108,10 +153,13 @@ class Op:
         string: Type signature of operator.
     """
     arg_tys = []
-    for bound, ty in self.args:
+    for bound, ty in self.args + ([Op.parse_so_type(self.sort)] if self.derived else []):
       ctx = " ∙ ".join([wrap(t) for t in bound] + ["Γ"])
       arg_tys.append(f"{aty} {wrap(ty)} {wrap(ctx)}")
-    return " → ".join(arg_tys + [f"{rty} {wrap(self.sort)} Γ"])
+    if self.derived: # If derived, the output sort can include context extension as well
+        return " → ".join(arg_tys)
+    else:
+      return " → ".join(arg_tys + [f"{rty} {wrap(self.sort)} Γ"])
 
 
   def render_op_ctor(self, fam):
@@ -152,18 +200,18 @@ class Op:
       pattern = appn(" " + self.sym + " " * self.sym_padding + " ", " ".join(new_vars(self.arity)))
       args = 'tt'
 
-    return f"{pattern + ' ' * (self.arity_diff * 2)} = 𝑎𝑙𝑔 ({self.name}ₒ {' ' * self.padding}⅋ {args})"
+    return f"𝕤𝕖𝕞 {pattern + ' ' * (self.arity_diff * 2)} = 𝑎𝑙𝑔 ({self.name}ₒ {' ' * self.padding}⅋ {args})"
 
   def render_alg_hom_pat(self):
     """Render pattern for algebra homomorphism instance.
     """
-    return f"({self.name}ₒ {' ' * self.padding}⅋ _) = refl"
+    return f"⟨𝑎𝑙𝑔⟩ ({self.name}ₒ {' ' * self.padding}⅋ _) = refl"
 
   def render_alg_unique_pat(self):
     """Render pattern for unique homomorphism proof.
     """
     var_names = new_vars(self.arity)
-    l1 = f"{wrap(appn(self.sym, ' '.join(var_names)))}"
+    l1 = f"𝕤𝕖𝕞! {wrap(appn(self.sym, ' '.join(var_names)))}"
     if self.arity:
         l1 += ' rewrite 𝕤𝕖𝕞! ' + ' | 𝕤𝕖𝕞! '.join(var_names)
     l2 = f" = sym ⟨𝑎𝑙𝑔⟩"
@@ -188,7 +236,7 @@ class Op:
         arg_list.append(f"{wrap(','.join(bound), ',')}.{wrap(ty)}")
       else:
         arg_list.append(ty)
-    sym_suffix = f" | {self.sym} {self.infix_spec or ''}" if self.sym != self.name.title() else ""
+    sym_suffix = f" | {self.sym} {self.infix_spec or ''}" if self.sym.title() != self.name.title() else ""
     if self.args:
         return f"{self.name + ' '*self.padding} : {'  '.join(arg_list)}  ->  {self.sort}" + sym_suffix
     else:
@@ -200,23 +248,36 @@ class TermSignature:
   """
   def __init__(self, name, *ops):
     self.name = name
-    self.ops = ops
+    self.all_ops = list(ops)
+
     self.ty_vars = set()
 
-    # Determine maximum operator arity, name and symbol length to calculcate padding.
-    max_op_length = max([len(op.name) for op in ops])
-    max_sym_length = max([len(op.sym) for op in ops])
-    max_arity = max([op.arity for op in ops])
+    # Determine maximum operator arity, name and symbol length to calculate padding.
+    max_op_length = max([len(op.name) for op in ops]) if ops else 0
+    max_sym_length = max([len(op.sym) for op in ops]) if ops else 0
+    max_arity = max([op.arity for op in ops]) if ops else 0
     for op in self.ops:
       op.padding = max_op_length - len(op.name)
       op.sym_padding = max_sym_length - len(op.sym)
       op.arity_diff = max_arity - op.arity
     self.ty_name = ""
 
+  @property
+  def ops(self):
+    return [op for op in self.all_ops if not op.derived]
+
+  @property
+  def derived_tm_ops(self):
+    return [op for op in self.all_ops if op.derived]
+
+  @property
+  def op_sym_dict(self):
+    return {op.name : op.sym for op in self.ops}
+
   def extract_type_vars(self, ty_symbols):
     """Modify operators to only keep track of the free type variables in their signature.
     """
-    for op in self.ops:
+    for op in self.all_ops:
         op.remove_type_symbols(ty_symbols)
 
   def all_ty_vars(self):
@@ -248,7 +309,9 @@ class TermSignature:
   def render_tm_sig(self):
     """Render term signature instance.
     """
-    max_pattern_len = max([op.sym_tyvar_len() for op in self.ops])
+    if isinstance(self, EmptySig):
+      return ["()"]
+    max_pattern_len = max([op.sym_tyvar_len() for op in self.ops]) if self.ops else 0
     ops = [op.render_operator(max_pattern_len - op.sym_tyvar_len()) for op in self.ops]
 
     return ops
@@ -267,18 +330,6 @@ class TermSignature:
   def render_syn_constructors(self):
     return [op.render_op_ctor(self.name) for op in self.ops]
 
-  def render_alg_patterns(self):
-    return [op.render_alg_pat() for op in self.ops]
-
-  def render_sem_patterns(self):
-    return [op.render_sem_pat() for op in self.ops]
-
-  def render_alg_hom_patterns(self):
-    return [op.render_alg_hom_pat() for op in self.ops]
-
-  def render_alg_unique_patterns(self):
-    return [op.render_alg_unique_pat() for op in self.ops]
-
 
   def spec(self):
     return {'SigName': self.name, 'Ops': [op.spec() for op in self.ops]}
@@ -287,7 +338,11 @@ class TermSignature:
     return str(self.spec())
 
   def __str__(self):
-    ls = [f"term {self.name}"]
+    ls = [f"term"]
     for op in self.ops:
         ls.append("  " + str(op))
     return '\n'.join(ls)
+
+class EmptySig(TermSignature):
+  def __init__(self):
+    super().__init__("E")

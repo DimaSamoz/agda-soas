@@ -4,7 +4,7 @@ class TyOp:
   """Type operator of a sype signature.
   """
 
-  def __init__(self, name, arity, infix=None):
+  def __init__(self, name, arity, infix=None, derived=False):
     """Initialise type operator
 
     Args:
@@ -15,11 +15,18 @@ class TyOp:
     self.name = name
     self.arity = arity
     self.padding = 0    # Padding required based on the longest type operator name
+    self.derived = derived
     self.infix = None
     if infix:
         if infix[0] in ['l', 'r']:
             self.infix = (infix[0], infix[1:])
         else: self.infix = ('', infix)
+
+  def __eq__(self, o: object) -> bool:
+      return self.name == o.name
+
+  def __hash__(self) -> int:
+      return hash(self.name)
 
   def spec(self):
     """Specification of a type operator
@@ -52,15 +59,27 @@ class TypeSignature:
         *ops (list[TyOp]): List of type operators
     """
     self.name = name
-    self.ops = ops
-    # Symbols that make up the type operator, used to figure out type variables
-    self.symbols = set()  
-    max_op_len = max([len(tc.name) for tc in ops])
-    for op in ops:
-        self.symbols = self.symbols.union(set(op.name.split('_')))
-        op.padding = max_op_len - len(op.name)
-    self.symbols.discard("")
+    self.all_ops = list(ops)
 
+  @property
+  def symbols(self):
+    symbols = set()  
+    max_op_len = max([len(tc.name) for tc in self.all_ops])
+
+    for op in self.ops:
+        symbols = symbols.union(set(op.name.split('_')))
+        op.padding = max_op_len - len(op.name)
+    symbols.discard("")
+    return symbols
+
+
+  @property
+  def ops(self):
+    return [op for op in self.all_ops if not op.derived]
+
+  @property
+  def derived_ty_ops(self):
+    return [op for op in self.all_ops if op.derived]
 
   def render_ty_decl(self):
     """Render constructors of type declaration.
@@ -86,6 +105,14 @@ class TypeSignature:
             ls.append(f"infix{assoc} {infix} {op.name}")
     return ls
 
+  def render_all(self):
+    if isinstance(self, Unsorted):
+      return "open import SOAS.Common"
+    ls = f"-- Type declaration\ndata {self.name} : Set where\n  "
+
+    return ls + "\n  ".join(self.render_ty_decl()) + "\n" + "\n".join(self.render_fixity()) 
+
+
 
   def spec(self):
     """Specification of a type signature.
@@ -100,9 +127,11 @@ class TypeSignature:
     return str(self.spec())
 
   def __str__(self):
-    ls = [f"type {self.name}"]
+    ls = [f"type"]
     ls += ['  ' + str(tc) for tc in self.ops]
     return '\n'.join(ls)
 
 # Special case of an unsorted type signature: type name '*T' and a single nullary type constructor
-unsorted = TypeSignature("*T", TyOp('*', 0))
+class Unsorted(TypeSignature):
+  def __init__(self):
+    return super().__init__("*T", TyOp('*', 0))
