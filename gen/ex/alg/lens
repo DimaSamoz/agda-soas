@@ -1,0 +1,14 @@
+syntax Lens | L
+
+type
+  S : 0-ary
+  A : 0-ary
+
+term
+  get : S    -> A
+  put : S  A -> S
+
+theory
+  (PG) s : S  a : A   |> get (put (s, a))   = a
+  (GP) s : S          |> put (s, get(s))    = s
+  (PP) s : S  a b : A |> put (put(s, a), b) = put (s, a)

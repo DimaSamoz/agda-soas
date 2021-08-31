@@ -1,0 +1,14 @@
+syntax Hilbert | H
+
+type
+  _⟹_ : 2-ary | r20
+  ⊥    : 0-ary
+ {¬_   : 1-ary | r40}
+ {_∨_  : 2-ary | l30}
+ {_∧_  : 2-ary | l35}
+
+term
+  mp : a ⟹ b  a -> b
+
+-- theory
+--  (MP) p q : * |> |- 

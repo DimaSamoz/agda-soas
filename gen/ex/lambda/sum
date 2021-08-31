@@ -1,0 +1,15 @@
+syntax Sum | S
+
+type
+  _⊕_ : 2-ary | l30
+
+
+term
+  inl  : α                ->  α ⊕ β
+  inr  : β                ->  α ⊕ β
+  case : α ⊕ β  α.γ  β.γ  ->  γ
+
+theory
+  (lβ) a : α   f : α.γ  g : β.γ |> case (inl(a), x.f[x], y.g[y])      = f[a]
+  (rβ) b : β   f : α.γ  g : β.γ |> case (inr(b), x.f[x], y.g[y])      = g[b]
+  (cη) s : α ⊕ β  c : (α ⊕ β).γ |> case (s, x.c[inl(x)], y.c[inr(y)]) = c[s]

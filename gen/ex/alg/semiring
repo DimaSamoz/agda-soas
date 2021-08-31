@@ -1,0 +1,7 @@
+syntax Semiring | SR extends 
+  - cmonoid (renaming unit:ε to zero:𝟘)
+  - monoid  (renaming unit:ε to one:𝟙, add:⊕ to mult:⊗:l30)
+
+theory
+  'mult' distributes over 'add'
+  'zero' annihilates 'mult'

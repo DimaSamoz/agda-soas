@@ -1,34 +1,8 @@
-syntax CTLC
+syntax CTLC | ΛC extends stlc
 
-type ΛT
-  N   : 0-ary
-  _↣_ : 2-ary | r30
-  _⊠_ : 2-ary | l40
-  _⊞_ : 2-ary | l30
-  ¬_  : 1-ary | r30
-  T   : 1-ary
+type
+  ¬_ : 1-ary | r30
 
-term Λ
-  app  : α ↣ β  α  ->  β       | _$_ l20
-  lam  : α.β       ->  α ↣ β   | ƛ_  r10
-
-  pair : α   β  ->  α ⊠ β   | ⟨_,_⟩
-  fst  : α ⊠ β  ->  α
-  snd  : α ⊠ β  ->  β
-
-  inl  : α                ->  α ⊞ β
-  inr  : β                ->  α ⊞ β
-  case : α ⊞ β  α.γ  β.γ  ->  γ
-
-  ze   :                ->  N
-  su   : N              ->  N
-  nrec : N  α  (α,N).α  ->  α
-
-  let' : α  α.β    ->  β
-  fix  : α ↣ α   ->  α
-
-  throw  : α   ¬ α  ->  β
-  callcc : (¬ α).α  ->  α
-
-  ret  : α           ->  T α
-  bind : T α  α.T β  ->  T β | _>>=_ r10
+term
+  throw  :  α   ¬ α   ->  β
+  callcc :  (¬ α).α   ->  α

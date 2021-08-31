@@ -1,0 +1,10 @@
+syntax Unit | U
+
+type
+  𝟙   : 0-ary
+
+term
+  unit : 𝟙
+
+theory
+  (𝟙η) u : 𝟙 |> u = unit

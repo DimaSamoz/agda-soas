@@ -1,9 +1,13 @@
-syntax STLC
+syntax STLC | Λ
 
-type ΛT
+type
   N   : 0-ary
   _↣_ : 2-ary | r30
 
-term Λ
+term
   app  : α ↣ β  α  ->  β       | _$_ l20
-  abs  : α.β       ->  α ↣ β   | ƛ_  r10
+  lam  : α.β       ->  α ↣ β   | ƛ_  r10
+
+theory
+  (ƛβ) b : α.β  a : α |> app (lam(x.b[x]), a) = b[a]
+  (ƛη) f : α ↣ β      |> lam (x. app(f, x))   = f

@@ -1,0 +1,13 @@
+syntax TLC | Λ extends stlc, unit, prod, empty, sum, nat
+
+type
+  {B : 0-ary}
+
+term
+  {true : B}
+  {false : B}
+  {if : B  α  α  ->  α}
+
+theory
+  {(ift) t f : α |> if (true,  t, f) = t}
+  {(iff) t f : α |> if (false, t, f) = f}

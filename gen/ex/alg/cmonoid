@@ -1,0 +1,4 @@
+syntax CommMonoid | CM extends monoid
+
+theory
+  'add' commutative

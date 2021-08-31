@@ -1,0 +1,4 @@
+syntax CommRing | CR extends ring
+
+theory
+  'mult' commutative

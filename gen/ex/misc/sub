@@ -1,0 +1,17 @@
+syntax Sub | S
+
+type
+  L : 0-ary
+  T : 0-ary
+
+term
+  vr : L -> T
+  sb : L.T  T -> T
+
+theory
+  (C) x y : T |> sb (a. x[], y[]) = x[]
+  (L) x : T |> sb (a. vr(a), x[]) = x[]
+  (R) a : L  x : L.T |> sb (b. x[b], vr(a[])) = x[a[]]
+  (A) x : (L,L).T  y : L.T  z : T |> 
+        sb (a. sb (b. x[a,b], y[a]), z[]) 
+      = sb (b. sb (a. x[a, b], z[]), sb (a. y[a], z[]))

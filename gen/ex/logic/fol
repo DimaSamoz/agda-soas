@@ -1,9 +1,34 @@
 syntax FOL extends prop
 
-type T
+type
   N : 0-ary
 
-term FOL
+term
   eq  : N   N    ->  * | _≟_ l20
   all : N.*      ->  * | ∀′ 
   ex  : N.*      ->  * | ∃′ 
+
+theory
+  -- Generalised de Morgan laws
+  (DM∀) p : N.* |> not (all (x. p[x])) = ex  (x. not(p[x]))
+  (DM∃) p : N.* |> not (ex  (x. p[x])) = all (x. not(p[x]))
+  -- Distributivity
+  (∀D∧) p q : N.* |> all (x. and(p[x], q[x])) = and (all(x.p[x]), all(x.q[x]))
+  (∃D∨) p q : N.* |> ex (x. or(p[x], q[x])) = or (ex(x.p[x]), ex(x.q[x]))
+  -- Pushing propositions under quantifiers
+  (∧P∀ᴸ) p : *  q : N.* |> and (p, all(x.q[x])) = all (x. and(p, q[x]))
+  (∧P∃ᴸ) p : *  q : N.* |> and (p, ex (x.q[x])) = ex  (x. and(p, q[x]))
+  (∨P∀ᴸ) p : *  q : N.* |> or  (p, all(x.q[x])) = all (x. or (p, q[x]))
+  (∨P∃ᴸ) p : *  q : N.* |> or  (p, ex (x.q[x])) = ex  (x. or (p, q[x]))
+ {(∧P∀ᴿ) p : N.*  q : * |> and (all(x.p[x]), q) = all (x. and(p[x], q))}
+ {(∧P∃ᴿ) p : N.*  q : * |> and (ex (x.p[x]), q) = ex  (x. and(p[x], q))}
+ {(∨P∀ᴿ) p : N.*  q : * |> or  (all(x.p[x]), q) = all (x. or (p[x], q))}
+ {(∨P∃ᴿ) p : N.*  q : * |> or  (ex (x.p[x]), q) = ex  (x. or (p[x], q))}
+  -- Expansion laws
+  (∀Eᴸ) p : N.*  n : N |> all (x.p[x]) = and (p[n], all(x.p[x]))
+  (∃Eᴸ) p : N.*  n : N |> ex  (x.p[x]) = or  (p[n], ex (x.p[x]))
+ {(∀Eᴿ) p : N.*  n : N |> all (x.p[x]) = and (all(x.p[x]), p[n])}
+ {(∃Eᴿ) p : N.*  n : N |> ex  (x.p[x]) = or  (ex (x.p[x]), p[n])}
+  -- Implication laws
+ {(∃⟹) p : N.*  q : * |> imp (ex (x.p[x]), q) = all (x. imp(p[x], q))}
+ {(∀⟹) p : N.*  q : * |> imp (all(x.p[x]), q) = ex  (x. imp(p[x], q))}

@@ -1,5 +1,11 @@
-syntax UTLC
+syntax UTLC | Λ
 
-term Λ
-  app : *  *  ->  * | _$_ l20
-  lam : *.*   ->  * | ƛ_  r10
+term
+  app  : *    * ->  * | _$_ l20
+  lam  :    *.* ->  * | ƛ_  r10
+ {letd : *  *.* -> *}
+
+theory
+  (ƛβ) b : *.*  a : * |> app (lam (x.b[x]), a) = b[a]
+  (ƛη) f : *          |> lam (x.app (f, x))    = f
+ {(lβ) b : *.*  a : * |> letd (a, x.b[x]) = b[a]}

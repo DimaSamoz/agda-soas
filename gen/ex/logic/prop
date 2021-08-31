@@ -1,9 +1,18 @@
-syntax PropLog
+syntax PropLog | PR extends
+  - ../alg/cring (renaming one:𝟙 to true:⊤, zero:𝟘 to false:⊥, 
+                  mult:⊗ to and:∧, add:⊕ to or:∨, neg:⊖ to not:¬)
 
-term Prop
-  tr  : *
-  fl  : *
-  or  : *  *  ->  * | _∨_ l30
-  and : *  *  ->  * | _∧_ l40
-  imp : *  *  ->  * | _⟹_ r20
-  not : *     ->  * | ¬_ r60
+term
+  {imp : *  *  ->  * | _⟹_ r20}
+
+theory
+  'or'   idempotent
+  'and'  idempotent
+  'not'  involutive
+  'or'   distributes over 'and'
+  'true' annihilates 'or'
+  'not'  inverse of 'and' with 'false'
+  'not'  inverse of 'or'  with 'true'
+  -- de Morgan dualities
+  (DM∧) a b |> not (and (a, b)) = or  (not(a), not(b))
+  (DM∨) a b |> not (or  (a, b)) = and (not(a), not(b))

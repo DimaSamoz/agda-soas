@@ -1,36 +1,40 @@
 {-
-This file was created from the following second-order syntax description:
+This second-order signature was created from the following second-order syntax description:
 
-type *T
+syntax Monoid | M
+
+type
   * : 0-ary
 
-term A
-  unit : * | ε
-  mult : *  *  ->  * | _+_ l20
+term
+  unit : * | ε 
+  add  : *  *  ->  * | _⊕_ l20
+
+theory
+  (εU⊕ᴸ) a |> add (unit, a) = a
+  (εU⊕ᴿ) a |> add (a, unit) = a
+  (⊕A) a b c |> add (add(a, b), c) = add (a, add(b, c))
 -}
 
 module Monoid.Signature where
 
 open import SOAS.Context
 
--- Type declaration
-data *T : Set where
-  * : *T
-
+open import SOAS.Common
 
 
 open import SOAS.Syntax.Signature *T public
 open import SOAS.Syntax.Build *T public
 
 -- Operator symbols
-data Aₒ : Set where
-  unitₒ multₒ : Aₒ
+data Mₒ : Set where
+  unitₒ addₒ : Mₒ
 
 -- Term signature
-A:Sig : Signature Aₒ
-A:Sig = sig λ
+M:Sig : Signature Mₒ
+M:Sig = sig λ
   {  unitₒ  → ⟼₀ *
-  ;  multₒ  → (⊢₀ *) , (⊢₀ *) ⟼₂ *
+  ;  addₒ   → (⊢₀ *) , (⊢₀ *) ⟼₂ *
   }
 
-open Signature A:Sig public
+open Signature M:Sig public

@@ -1,0 +1,10 @@
+syntax Empty | E
+
+type
+  𝟘 : 0-ary
+
+term
+  abort : 𝟘 -> α
+
+theory
+  (𝟘η) e : 𝟘  c : α |> abort(e) = c

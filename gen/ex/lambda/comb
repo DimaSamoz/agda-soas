@@ -1,7 +1,13 @@
-syntax Combinatory
+syntax Combinatory | CL
 
-term CL
+term
   app : *  *  ->  * | _$_ l20
-  i   :       ->  * | I
-  k   :       ->  * | K
-  s   :       ->  * | S
+  i   :           * | I
+  k   :           * | K
+  s   :           * | S
+
+theory
+  (IA) x     |> app (i, x) = x
+  (KA) x y   |> app (app(k, x), y) = x
+  (SA) x y z |> app (app (app (s, x), y), z) 
+              = app (app(x, z), app(y, z))

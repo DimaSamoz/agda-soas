@@ -1,0 +1,14 @@
+syntax Prod | P
+
+type
+  _⊗_ : 2-ary | l40
+
+term
+  pair : α   β  ->  α ⊗ β   | ⟨_,_⟩
+  fst  : α ⊗ β  ->  α
+  snd  : α ⊗ β  ->  β
+
+theory
+  (fβ) a : α  b : β |> fst (pair(a, b))      = a
+  (sβ) a : α  b : β |> snd (pair(a, b))      = b
+  (pη) p : α ⊗ β    |> pair (fst(p), snd(p)) = p

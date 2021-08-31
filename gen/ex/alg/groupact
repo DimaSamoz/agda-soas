@@ -1,0 +1,11 @@
+syntax GroupAction | GA extends group
+
+type
+  X : 0-ary
+
+term
+  act : *  X  ->  X | _⊙_ r30
+
+theory
+  (εU⊙)      x : X |> act (unit,      x) = x
+  (⊕A⊙) g h  x : X |> act (add(g, h), x) = act (g, act(h, x))

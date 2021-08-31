@@ -1,5 +1,9 @@
-syntax Monoid
+syntax Monoid | M
 
-term A
+term
   unit :         * | ε
-  mult : *  * -> * | _+_ l20
+  add  : *  * -> * | _⊕_ l20
+
+theory
+  'unit' unit of 'add'
+  'add'  associative

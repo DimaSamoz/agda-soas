@@ -1,14 +1,24 @@
 syntax PCF extends stlc
 
-type PT
+type 
   B : 0-ary
 
-term PCF
+term 
   tr  :          -> B
   fl  :          -> B
   ze  :          -> N
   su  : N        -> N
   pr  : N        -> N
   iz  : N        -> B | 0?
-  ite : B  α  α  ->  α | if_th_el_
-  fix : (α ↣ α)  ->  α
+  if  : B  α  α  ->  α
+  fix : α.α      ->  α
+
+theory
+  (zz)       |> iz (ze)       = tr
+  (zs) n : N |> iz (su (n)) = fl
+  (ps) n : N |> pr (su (n)) = n
+
+  (ift) t f : α |> if (tr, t, f) = t
+  (iff) t f : α |> if (fl, t, f) = f
+
+  (fix) t : α.α |> fix (x.t[x]) = t[fix (x.t[x])]

@@ -1,0 +1,4 @@
+syntax CommGroup | CG extends group
+
+theory
+  'add' commutative

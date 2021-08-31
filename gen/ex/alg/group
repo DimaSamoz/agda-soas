@@ -1,6 +1,7 @@
-syntax Group
+syntax Group | G extends monoid
 
-term G
-  unit :         * | ε
-  mult : *  * -> * | _+_ l20
-  inv  :    * -> * | -_  r40
+term
+  neg : * -> * | ⊖_  r40
+
+theory
+  'neg' inverse of 'add' with 'unit'

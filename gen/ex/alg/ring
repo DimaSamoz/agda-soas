@@ -1,8 +1,7 @@
-syntax Ring
+syntax Ring | R extends semiring
 
-term R
-  add   : *    *  ->  * | _+_ r20
-  mult  : *    *  ->  * | _×_ r40
-  zero  :         ->  * | 𝟘
-  one   :         ->  * | 𝟙
-  neg   : *       ->  * | –_ r50
+term
+  neg : * ->  * | ⊖_ r50
+
+theory
+  'neg' inverse of 'add' with 'zero'

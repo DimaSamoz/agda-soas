@@ -1,14 +1,21 @@
 {-
-This file was created from the following second-order syntax description:
+This second-order term syntax was created from the following second-order syntax description:
 
-type ΛT
+syntax STLC | Λ
+
+type
   N   : 0-ary
   _↣_ : 2-ary | r30
 
-term Λ
+term
   app : α ↣ β  α  ->  β | _$_ l20
-  abs : α.β  ->  α ↣ β | ƛ_ r10
+  lam : α.β  ->  α ↣ β | ƛ_ r10
+
+theory
+  (ƛβ) b : α.β  a : α |> app (lam(x.b[x]), a) = b[a]
+  (ƛη) f : α ↣ β      |> lam (x. app(f, x))   = f
 -}
+
 
 module STLC.Syntax where
 
@@ -27,6 +34,7 @@ private
   variable
     Γ Δ Π : Ctx
     α β : ΛT
+    𝔛 : Familyₛ
 
 -- Inductive term declaration
 module Λ:Syntax (𝔛 : Familyₛ) where
@@ -47,7 +55,7 @@ module Λ:Syntax (𝔛 : Familyₛ) where
   Λᵃ = record
     { 𝑎𝑙𝑔 = λ where
       (appₒ ⅋ a , b) → _$_ a b
-      (absₒ ⅋ a)     → ƛ_  a
+      (lamₒ ⅋ a)     → ƛ_  a
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
   module Λᵃ = MetaAlg Λᵃ
@@ -64,7 +72,7 @@ module Λ:Syntax (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (var v) = 𝑣𝑎𝑟 v
 
     𝕤𝕖𝕞 (_$_ a b) = 𝑎𝑙𝑔 (appₒ ⅋ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b)
-    𝕤𝕖𝕞 (ƛ_  a)   = 𝑎𝑙𝑔 (absₒ ⅋ 𝕤𝕖𝕞 a)
+    𝕤𝕖𝕞 (ƛ_  a)   = 𝑎𝑙𝑔 (lamₒ ⅋ 𝕤𝕖𝕞 a)
 
     𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ Λᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
@@ -75,7 +83,7 @@ module Λ:Syntax (𝔛 : Familyₛ) where
       open ≡-Reasoning
       ⟨𝑎𝑙𝑔⟩ : (t : ⅀ Λ α Γ) → 𝕤𝕖𝕞 (Λᵃ.𝑎𝑙𝑔 t) ≡ 𝑎𝑙𝑔 (⅀₁ 𝕤𝕖𝕞 t)
       ⟨𝑎𝑙𝑔⟩ (appₒ ⅋ _) = refl
-      ⟨𝑎𝑙𝑔⟩ (absₒ ⅋ _) = refl
+      ⟨𝑎𝑙𝑔⟩ (lamₒ ⅋ _) = refl
 
       𝕊-tab : (mε : Π ~[ Λ ]↝ Γ)(v : ℐ α Π) → 𝕊 (tabulate mε) v ≡ 𝕤𝕖𝕞 (mε v)
       𝕊-tab mε new = refl
@@ -114,3 +122,4 @@ open Syntax Λ:Syn public
 open Λ:Syntax
 open import SOAS.Families.Build
 open import SOAS.Syntax.Shorthands Λᵃ
+
