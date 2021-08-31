@@ -1,5 +1,5 @@
 {-
-This file was created from the following second-order syntax description:
+This second-order signature was created from the following second-order syntax description:
 
 $sig_string
 -}
@@ -8,10 +8,9 @@ module ${syn_name}.Signature where
 
 open import SOAS.Context
 
--- Type declaration
-data $type : Set where
-  $type_decl
-$type_fixity
+$type_decl
+$derived_ty_ops
+
 open import SOAS.Syntax.Signature $type public
 open import SOAS.Syntax.Build $type public
 

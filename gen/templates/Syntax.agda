@@ -1,8 +1,9 @@
 {-
-This file was created from the following second-order syntax description:
+This second-order term syntax was created from the following second-order syntax description:
 
 $sig_string
 -}
+
 
 module ${syn_name}.Syntax where
 
@@ -21,6 +22,7 @@ private
   variable
     Γ Δ Π : Ctx
     $ty_vars : $type
+    𝔛 : Familyₛ
 
 -- Inductive term declaration
 module ${sig}:Syntax (𝔛 : Familyₛ) where
@@ -54,7 +56,7 @@ module ${sig}:Syntax (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (mvar 𝔪 mε) = 𝑚𝑣𝑎𝑟 𝔪 (𝕊 mε)
     𝕤𝕖𝕞 (var v) = 𝑣𝑎𝑟 v
 
-    𝕤𝕖𝕞 $sem_patterns
+    $sem_patterns
 
     𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ ${sig}ᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
@@ -64,7 +66,7 @@ module ${sig}:Syntax (𝔛 : Familyₛ) where
       where
       open ≡-Reasoning
       ⟨𝑎𝑙𝑔⟩ : (t : ⅀ ${sig} $fst_ty_var Γ) → 𝕤𝕖𝕞 (${sig}ᵃ.𝑎𝑙𝑔 t) ≡ 𝑎𝑙𝑔 (⅀₁ 𝕤𝕖𝕞 t)
-      ⟨𝑎𝑙𝑔⟩ $alg_hom_patterns
+      $alg_hom_patterns
 
       𝕊-tab : (mε : Π ~[ ${sig} ]↝ Γ)(v : ℐ α Π) → 𝕊 (tabulate mε) v ≡ 𝕤𝕖𝕞 (mε v)
       𝕊-tab mε new = refl
@@ -82,7 +84,7 @@ module ${sig}:Syntax (𝔛 : Familyₛ) where
         = trans (sym ⟨𝑚𝑣𝑎𝑟⟩) (cong (g ∘ mvar 𝔪) (tab∘ix≈id mε))
       𝕤𝕖𝕞! (var v) = sym ⟨𝑣𝑎𝑟⟩
 
-      𝕤𝕖𝕞! $alg_unique_patterns
+      $alg_unique_patterns
 
 
 -- Syntax instance for the signature
@@ -102,3 +104,5 @@ open Syntax $sig:Syn public
 open ${sig}:Syntax
 open import SOAS.Families.Build
 open import SOAS.Syntax.Shorthands ${sig}ᵃ
+
+$derived_tm_ops
