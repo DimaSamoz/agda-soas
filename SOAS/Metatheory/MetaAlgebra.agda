@@ -1,9 +1,10 @@
 
 open import SOAS.Common
-open import SOAS.Families.Core
+import SOAS.Families.Core
 
 -- Families with syntactic structure
 module SOAS.Metatheory.MetaAlgebra {T : Set}
+  (open SOAS.Families.Core {T})
   (⅀F : Functor 𝔽amiliesₛ 𝔽amiliesₛ)
   (𝔛 : Familyₛ) where
 
@@ -83,13 +84,6 @@ MetaAlgebra⇒ : MetaAlgebra → MetaAlgebra → Set
 MetaAlgebra⇒ = 𝕄etaAlg._⇒_
 
 
--- module AsMetaAlg (𝒜ᵃ : MetaAlgebra) where
---   open Object 𝒜ᵃ renaming (𝐶 to 𝒜 ; ˢ to ᵃ) public
---   open MetaAlg ᵃ public
---
--- module AsMetaAlg⇒ {𝒜ᵃ ℬᵃ : MetaAlgebra} (fᵃ⇒ : MetaAlgebra⇒ 𝒜ᵃ ℬᵃ) where
---   open Morphism fᵃ⇒ renaming (𝑓 to f ; ˢ⇒ to ᵃ⇒) public
---   open MetaAlg⇒ ᵃ⇒ public
 
 -- Identity is a meta-algebra homomorphism
 idᵃ : {𝒜 : Familyₛ} → (𝒜ᵃ : MetaAlg 𝒜) → MetaAlg⇒ 𝒜ᵃ 𝒜ᵃ id

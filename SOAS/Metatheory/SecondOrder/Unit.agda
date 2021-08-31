@@ -2,7 +2,7 @@
 open import SOAS.Metatheory.Syntax
 
 -- Unit law of metasubstitution
-module SOAS.Metatheory.SecondOrder.Unit {T : Set}(Syn : Syntax) where
+module SOAS.Metatheory.SecondOrder.Unit {T : Set}(Syn : Syntax {T}) where
 
 open Syntax Syn
 

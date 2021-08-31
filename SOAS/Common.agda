@@ -26,6 +26,10 @@ open import Data.Product public using (_×_; proj₁; proj₂; _,_; Σ; module �
 open import Data.Sum public using (_⊎_ ; inj₁; inj₂)
 open import Data.Unit public using (tt)
 
+-- Unit type
+data *T : Set where
+  * : *T
+
 -- Shorthand for first universe level
 1ℓ : Level
 1ℓ = lsuc 0ℓ

@@ -1,4 +1,4 @@
-{-# OPTIONS --rewriting #-}
+-- {-# OPTIONS --rewriting #-}
 
 -- Concrete definition of contexts over a sort T
 module SOAS.Context {T : Set} where
@@ -6,7 +6,7 @@ module SOAS.Context {T : Set} where
 open import SOAS.Common
 
 open import Data.List using (List; []; _∷_; _++_)
-open import Agda.Builtin.Equality.Rewrite
+-- open import Agda.Builtin.Equality.Rewrite
 
 
 -- Context: a list of types
@@ -17,19 +17,11 @@ infixr 50 _∙_
 
 -- Singleton context
 pattern _⌋ τ = τ ∙ ∅
-infixr 60 _⌋
-
--- _⌊_ : (Ctx → Set) → Ctx → Set
--- X ⌊ Γ = X Γ
--- infix 20 _⌊_
 pattern ⌈_⌋ α = α ∙ ∅
-infix 70 ⌈_⌋
-
 pattern ⌊_ α = α
+infixr 60 _⌋
+infix 70 ⌈_⌋
 infix 70 ⌊_
---
--- pattern ⌊_⌋ τ = τ ∙ ∅
--- infix 70 ⌊_⌋
 
 -- Context concatenation
 _∔_ : Ctx → Ctx → Ctx
@@ -49,5 +41,5 @@ infixl 20 _∔_
 
 -- Fairly innocuous extension of Agda's rewrite rules to equate Γ ∔ ∅ with Γ
 -- and associativity -- avoids lots of awkward rewrites or transports
-{-# REWRITE ∔-unitʳ #-}
-{-# REWRITE ∔-assoc #-}
+-- {-# REWRITE ∔-unitʳ #-}
+-- {-# REWRITE ∔-assoc #-}

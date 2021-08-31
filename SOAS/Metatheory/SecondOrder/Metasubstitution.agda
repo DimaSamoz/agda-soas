@@ -2,7 +2,7 @@
 open import SOAS.Metatheory.Syntax
 
 -- Metasubstitution operation
-module SOAS.Metatheory.SecondOrder.Metasubstitution {T : Set}(Syn : Syntax) where
+module SOAS.Metatheory.SecondOrder.Metasubstitution {T : Set}(Syn : Syntax {T}) where
 
 open Syntax Syn
 
@@ -86,9 +86,14 @@ ms-unit {𝔛}{Δ = Δ} 𝔪 = 𝕞𝕧𝕒𝕣 𝔛 𝔪 (𝕧𝕒𝕣 𝔛 ∘
 -- List of terms in an extended (object variable) context mapped to every element of a metavariable context
 data MSub (Γ : Ctx) : MCtx → MCtx → Set₁ where
   ◦   : MSub Γ ◾ 𝔑
-  _◃_ : (𝔑 ▷ 𝕋) α (Π ∔ Γ) → MSub Γ 𝔐 𝔑 → MSub Γ (Π ⊩ α ≀ 𝔐) 𝔑
+  _◃_ : (𝔑 ▷ 𝕋) α (Π ∔ Γ) → MSub Γ 𝔐 𝔑 → MSub Γ (⁅ Π ⊩ₙ α ⁆ 𝔐) 𝔑
 
-infixr 15 _◃_
+infixr 15 _◃_ _▹_
+
+-- Add term to the end of a metasubstitution map
+_▹_ : MSub Γ 𝔐 𝔑 → (𝔑 ▷ 𝕋) τ (Π ∔ Γ) → MSub Γ (𝔐 ⁅ Π ⊩ₙ τ ⁆) 𝔑
+◦ ▹ t = t ◃ ◦
+(s ◃ ζ) ▹ t = s ◃ (ζ ▹ t)
 
 -- Application of a metasubstitution to a metavariable
 ix≀ : MSub Γ 𝔐 𝔑 → [ ∥ 𝔐 ∥ ⊸ 𝔑 ▷ 𝕋 ] Γ
@@ -96,29 +101,29 @@ ix≀ (t ◃ ζ) ↓ = t
 ix≀ (t ◃ ζ) (↑ 𝔪) = ix≀ ζ 𝔪
 
 -- Term corresponding to the topmost distinguished metavariable of an extended mvar context
-_⊩◌ : (Π : Ctx) → (Π ⊩ β ≀ 𝔐 ▷ 𝕋) β (Π ∔ Γ)
+_⊩◌ : (Π : Ctx) → (⁅ Π ⊩ₙ β ⁆ 𝔐 ▷ 𝕋) β (Π ∔ Γ)
 _⊩◌ {β}{𝔐} Π = ms-unit ↓
 
-◌ : (∅ ⊩ β ≀ 𝔐 ▷ 𝕋) β Γ
+◌ : (⁅ β ⁆ 𝔐 ▷ 𝕋) β Γ
 ◌ = ∅ ⊩◌
 
 -- Weakening of metavariable context
-wk≀ : (𝔐 ▷ 𝕋) α Γ →  (Π ⊩ τ ≀ 𝔐 ▷ 𝕋) α Γ
+wk≀ : (𝔐 ▷ 𝕋) α Γ →  (⁅ Π ⊩ₙ τ ⁆ 𝔐 ▷ 𝕋) α Γ
 wk≀ t = 𝕋₁ ↑_ t
 
 -- Extension of the codomain of a metasubstitution
-ext≀ : (Π : Ctx)(τ : T) → MSub Γ 𝔐 𝔑 → MSub Γ 𝔐 (Π ⊩ τ ≀ 𝔑)
+ext≀ : (Π : Ctx)(τ : T) → MSub Γ 𝔐 𝔑 → MSub Γ 𝔐 (⁅ Π ⊩ₙ τ ⁆ 𝔑)
 ext≀ Π τ ◦ = ◦
 ext≀ Π τ (t ◃ κ) = wk≀ t ◃ (ext≀ Π τ κ)
 
 -- Lifting of a metasubstitution
-lift≀ : (Π : Ctx)(τ : T) → MSub Γ 𝔐 𝔑 → MSub Γ (Π ⊩ τ ≀ 𝔐) (Π ⊩ τ ≀ 𝔑)
+lift≀ : (Π : Ctx)(τ : T) → MSub Γ 𝔐 𝔑 → MSub Γ (⁅ Π ⊩ₙ τ ⁆ 𝔐) (⁅ Π ⊩ₙ τ ⁆ 𝔑)
 lift≀ Π τ κ = (Π ⊩◌) ◃ (ext≀ Π τ κ)
 
 -- Identity metasubstitution
 id≀ : (Γ : Ctx) →  MSub Γ 𝔐 𝔐
 id≀ {◾} Γ = ◦
-id≀ {Π ⊩ τ ≀ 𝔐} Γ = lift≀ Π τ (id≀ Γ)
+id≀ {⁅ Π ⊩ₙ τ ⁆ 𝔐} Γ = lift≀ Π τ (id≀ Γ)
 
 -- Left and right weakening of object context of a metasubstitution
 inl≀ : MSub Γ 𝔐 𝔑 → MSub (Γ ∔ Δ) 𝔐 𝔑
@@ -145,8 +150,8 @@ lift≀≈𝕋₁pop (x ◃ κ) ↓ = refl
 lift≀≈𝕋₁pop (x ◃ κ) (↑ 𝔪) = lift≀≈𝕋₁pop κ 𝔪
 
 id≀≈ms-unit : (Γ : Ctx)(𝔪 : Π ⊩ τ ∈ 𝔐) → ix≀ (id≀ Γ) 𝔪 ≡ ms-unit 𝔪
-id≀≈ms-unit {𝔐 = Π ⊩ τ ≀ 𝔐} Γ ↓ = refl
-id≀≈ms-unit {𝔐 = Π ⊩ τ ≀ 𝔐} Γ (↑_ {Δ}{β}{Γ = .Π}{.τ} 𝔪) = begin
+id≀≈ms-unit {𝔐 = ⁅ Π ⊩ₙ τ ⁆ 𝔐} Γ ↓ = refl
+id≀≈ms-unit {𝔐 = ⁅ Π ⊩ₙ τ ⁆ 𝔐} Γ (↑_ {Δ}{β}{Γ = .Π}{.τ} 𝔪) = begin
       ix≀ (ext≀ Π τ (id≀ Γ)) 𝔪
   ≡⟨ ext≀≈𝕋₁pop (id≀ Γ) 𝔪 ⟩
       wk≀ (ix≀ (id≀ Γ) 𝔪)
@@ -155,7 +160,7 @@ id≀≈ms-unit {𝔐 = Π ⊩ τ ≀ 𝔐} Γ (↑_ {Δ}{β}{Γ = .Π}{.τ} �
   ≡⟨⟩
       wk≀ (𝕞𝕧𝕒𝕣 ∥ 𝔐 ∥ 𝔪 (𝕧𝕒𝕣 ∥ 𝔐 ∥ ∘ ∔.i₁))
   ≡⟨ 𝕋₁∘𝕞𝕧𝕒𝕣[𝕧𝕒𝕣] ↑_ 𝔪 (∔.i₁) ⟩
-      𝕞𝕧𝕒𝕣 ∥ Π ⊩ τ ≀ 𝔐 ∥ (↑ 𝔪) (𝕧𝕒𝕣 ∥ Π ⊩ τ ≀ 𝔐 ∥ ∘ ∔.i₁)
+      𝕞𝕧𝕒𝕣 ∥ ⁅ Π ⊩ₙ τ ⁆ 𝔐 ∥ (↑ 𝔪) (𝕧𝕒𝕣 ∥ ⁅ Π ⊩ₙ τ ⁆ 𝔐 ∥ ∘ ∔.i₁)
   ∎ where open ≡-Reasoning
 
 -- Inductive metasubstitution operations
@@ -170,7 +175,7 @@ msub≀ t ζ = msub t (ix≀ ζ)
 ○msub≀ {Γ = Γ} t ζ = □msub≀ t (inl Γ) (inr≀ Γ ζ)
 
 -- Syntactic sugar for metasubstitution application
-_》 : (𝔑 ▷ 𝕋) α (Π ∔ Γ) → MSub Γ (Π ⊪ α) 𝔑
+_》 : (𝔑 ▷ 𝕋) α (Π ∔ Γ) → MSub Γ (⁅ Π ⊩ₙ α ⁆̣) 𝔑
 t 》  = t ◃ ◦
 _《_ : (𝔐 ▷ 𝕋) α Γ → MSub Γ 𝔐 𝔑 → (𝔑 ▷ 𝕋) α Γ
 _《_ = msub≀
@@ -178,6 +183,16 @@ _《_ = msub≀
 infixr 25 _》
 infix 15 _《_
 
--- Instantiation of a term in an extended context
-inst : (Π ⊩ α ≀ 𝔐 ▷ 𝕋) β Γ → (𝔐 ▷ 𝕋) α (Π ∔ Γ) → (𝔐 ▷ 𝕋) β Γ
-inst {Γ = Γ} h s = msub≀ h (s ◃ id≀ Γ)
+-- Instantiation of a term extended at the start of the context
+instₛ : (⁅ Π ⊩ₙ α ⁆ 𝔐 ▷ 𝕋) β Γ → (𝔐 ▷ 𝕋) α (Π ∔ Γ) → (𝔐 ▷ 𝕋) β Γ
+instₛ {Γ = Γ} h s = msub≀ h (s ◃ id≀ Γ)
+
+-- Instantiation of a term extended at the end of the context
+instₑ : (𝔐 ⁅ Π ⊩ₙ α ⁆ ▷ 𝕋) β Γ → (𝔐 ▷ 𝕋) α (Π ∔ Γ) → (𝔐 ▷ 𝕋) β Γ
+instₑ {Γ = Γ} h s = msub≀ h ((id≀ Γ) ▹ s)
+
+-- Instantiation of a term extended twice at the end of the context
+instₑ₂ : {Π₁ Π₂ : Ctx}{α₁ α₂ : T}
+       → ((𝔐 ⁅ Π₁ ⊩ₙ α₁ ⁆) ⁅ Π₂ ⊩ₙ α₂ ⁆ ▷ 𝕋) β Γ
+       → (𝔐 ▷ 𝕋) α₁ (Π₁ ∔ Γ) → (𝔐 ▷ 𝕋) α₂ (Π₂ ∔ Γ) → (𝔐 ▷ 𝕋) β Γ
+instₑ₂ {Γ = Γ} h s t = msub≀ h ((id≀ Γ ▹ s) ▹ t)

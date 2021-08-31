@@ -2,7 +2,7 @@
 open import SOAS.Metatheory.Syntax
 
 -- Initial (⅀, 𝔛)-meta-algebra 𝕋 𝔛 is the free ⅀-monoid on 𝔛
-module SOAS.Metatheory.FreeMonoid {T : Set} (Syn : Syntax) where
+module SOAS.Metatheory.FreeMonoid {T : Set} (Syn : Syntax {T}) where
 
 open Syntax Syn
 

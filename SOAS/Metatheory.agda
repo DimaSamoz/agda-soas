@@ -2,7 +2,7 @@
 open import SOAS.Metatheory.Syntax
 
 -- Metatheory of a second-order syntax
-module SOAS.Metatheory {T : Set} (Syn : Syntax) where
+module SOAS.Metatheory {T : Set} (Syn : Syntax {T}) where
 
 open import SOAS.Families.Core {T}
 

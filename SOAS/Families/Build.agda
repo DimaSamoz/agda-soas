@@ -53,14 +53,14 @@ infixr 60 _ₘ
 
 data Ø : Familyₛ where
 
-data _⊩_ (Γ : Ctx)(α : T) : Familyₛ where
-  ● : (Γ ⊩ α) α Γ
+data _⊪_ (Γ : Ctx)(α : T) : Familyₛ where
+  ● : (Γ ⊪ α) α Γ
 
-⊩_ : T → Familyₛ
-⊩ α = ∅ ⊩ α
+⊪_ : T → Familyₛ
+⊪ α = ∅ ⊪ α
 
-infix 20 _⊩_
-infix 20 ⊩_
+infix 20 _⊪_
+infix 20 ⊪_
 
 
 -- Sum of families
@@ -89,16 +89,24 @@ _⊹_⊹_⊹_ : Familyₛ → Familyₛ → Familyₛ → Familyₛ → Family�
 -- Inductive construction of context- and type-indexed sets
 data MCtx : Set where
   ◾     : MCtx
-  _⊩_≀_ : (Π : Ctx {T}) → (τ : T) → MCtx → MCtx
+  ⁅_⊩ₙ_⁆_ : (Π : Ctx {T}) → (τ : T) → MCtx → MCtx
+infixr 7 ⁅_⊩ₙ_⁆_
 
 -- Pattern synonym for parameterless elements and final elements
-infixr 20 _⊩_≀_
-infixr 20 ⊩_≀_
-infixr 25 _⊪_
-infixr 25 ⊪_
-pattern ⊩_≀_ τ 𝔐 = ∅ ⊩ τ ≀ 𝔐
-pattern _⊪_ Π τ = Π ⊩ τ ≀ ◾
-pattern ⊪_ τ = ∅ ⊩ τ ≀ ◾
+infixr 10 ⁅_⁆̣ ⁅_⊩ₙ_⁆̣
+infixr 7 ⁅_⁆_ ⁅_⊩_⁆_ ⁅_·_⊩_⁆_ ⁅_⊩_⁆̣ ⁅_·_⊩_⁆̣ _⁅_⊩ₙ_⁆
+pattern ⁅_⁆̣ α = ⁅ ∅ ⊩ₙ α ⁆ ◾
+pattern ⁅_⊩ₙ_⁆̣ Π α = ⁅ Π ⊩ₙ α ⁆ ◾
+pattern ⁅_⁆_ τ 𝔐 = ⁅ ∅ ⊩ₙ τ ⁆ 𝔐
+pattern ⁅_⊩_⁆_ τ α 𝔐 = ⁅ ⌊ τ ⌋ ⊩ₙ α ⁆ 𝔐
+pattern ⁅_·_⊩_⁆_ τ₁ τ₂ α 𝔐 = ⁅ ⌊ τ₁ ∙ τ₂ ⌋ ⊩ₙ α ⁆ 𝔐
+pattern ⁅_⊩_⁆̣ τ α = ⁅ ⌊ τ ⌋ ⊩ₙ α ⁆ ◾
+pattern ⁅_·_⊩_⁆̣ τ₁ τ₂ α = ⁅ ⌊ τ₁ ∙ τ₂ ⌋ ⊩ₙ α ⁆ ◾
+
+-- Add type-context pair to the end of the metavariable context
+_⁅_⊩ₙ_⁆ : MCtx → Ctx {T} → T → MCtx
+◾              ⁅ Γ ⊩ₙ α ⁆ = ⁅ Γ ⊩ₙ α ⁆̣
+(⁅ Π ⊩ₙ τ ⁆ 𝔐) ⁅ Γ ⊩ₙ α ⁆ = ⁅ Π ⊩ₙ τ ⁆ (𝔐 ⁅ Γ ⊩ₙ α ⁆)
 
 private
   variable
@@ -108,10 +116,10 @@ private
 
 -- Membership of metavariable contexts
 data _⊩_∈_ : Ctx → T → MCtx → Set where
-  ↓ : Π ⊩ τ ∈ (Π ⊩ τ ≀ 𝔐)
-  ↑_ : Π ⊩ τ ∈ 𝔐 → Π ⊩ τ ∈ (Γ ⊩ α ≀ 𝔐)
+  ↓ : Π ⊩ τ ∈ (⁅ Π ⊩ₙ τ ⁆ 𝔐)
+  ↑_ : Π ⊩ τ ∈ 𝔐 → Π ⊩ τ ∈ (⁅ Γ ⊩ₙ α ⁆ 𝔐)
 
-infixr 80 ↑_
+infixr 220 ↑_
 
 -- Metavariable context can be interpreted as a family via the membership
 ∥_∥ : MCtx → Familyₛ
@@ -120,15 +128,7 @@ infixr 60 ∥_∥
 
 _▷_ : MCtx → (Familyₛ → Familyₛ) → Familyₛ
 𝔐 ▷ 𝒳 = 𝒳 ∥ 𝔐 ∥
-infix 12 _▷_
-
--- Metavariable de Bruijn indices
-pattern 𝔞 = ↓
-pattern 𝔟 = ↑ ↓
-pattern 𝔠 = ↑ ↑ ↓
-pattern 𝔡 = ↑ ↑ ↑ ↓
-pattern 𝔢 = ↑ ↑ ↑ ↑ ↓
-pattern 𝔣 = ↑ ↑ ↑ ↑ ↑ ↓
+infix 4 _▷_
 
 pattern 𝔞ₘ = ↓ ₘ
 pattern 𝔟ₘ = ↑ ↓ ₘ

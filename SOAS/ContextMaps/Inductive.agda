@@ -19,9 +19,9 @@ data Sub (𝒳 : Familyₛ) : Ctx → Ctx → Set where
   •   : Sub 𝒳 ∅ Δ
   _◂_ : 𝒳 α Δ → Sub 𝒳 Γ Δ → Sub 𝒳 (α ∙ Γ) Δ
 
-infixl 40 _◂_
+infixl 120 _◂_
 
-infix 50 _⟩
+infix 150 _⟩
 pattern _⟩ t  = t ◂ •
 
 -- Functorial mapping

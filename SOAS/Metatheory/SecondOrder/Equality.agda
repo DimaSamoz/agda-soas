@@ -2,7 +2,7 @@
 open import SOAS.Metatheory.Syntax
 
 -- Second-order equational logic library
-module SOAS.Metatheory.SecondOrder.Equality {T : Set} (Syn : Syntax) where
+module SOAS.Metatheory.SecondOrder.Equality {T : Set} (Syn : Syntax {T}) where
 
 open import SOAS.Common
 open import SOAS.Families.Core {T}
@@ -11,7 +11,7 @@ open import SOAS.Variable
 
 open import SOAS.Metatheory.FreeMonoid Syn
 
-open import SOAS.Metatheory.SecondOrder.Metasubstitution {T} Syn
+open import SOAS.Metatheory.SecondOrder.Metasubstitution Syn
 open import SOAS.Metatheory.SecondOrder.Unit Syn
 
 open import SOAS.ContextMaps.CategoryOfRenamings {T}
@@ -130,21 +130,52 @@ module EqLogic (_▹_⊢_≋ₐ_ : ∀ 𝔐 Γ {α} → (𝔐 ▷ 𝕋) α Γ �
         (𝕣𝕖𝕟 ∥ 𝔐 ∥ s ρ)
     ∎ where open ≋-Reasoning
 
+  -- Lemma to apply equality to terms attached to the end of a metasubstitution
+  ▹-eq : {Π′ : Ctx}{s u : (𝔑 ▷ 𝕋) β (Π′ ∔ Γ)}
+       → 𝔑 ▹ (Π′ ∔ Γ) ⊢ s ≋ u → (ζ ξ : MSub Γ 𝔐 𝔑)
+       → (∀{τ Π}(𝔪 : Π ⊩ τ ∈ 𝔐) → 𝔑 ▹ (Π ∔ Γ) ⊢ (ix≀ ζ 𝔪) ≋ (ix≀ ξ 𝔪))
+       → (𝔪 : Π ⊩ α ∈ (𝔐 ⁅ Π′ ⊩ₙ β ⁆))
+       → 𝔑 ▹ Π ∔ Γ ⊢ ix≀ (ζ ▹ s) 𝔪 ≋ ix≀ (ξ ▹ u) 𝔪
+  ▹-eq e ◦ ◦ ζ≋ξ ↓ = e
+  ▹-eq e (x ◃ ζ) (y ◃ ξ) ζ≋ξ ↓ = ζ≋ξ ↓
+  ▹-eq e (x ◃ ζ) (y ◃ ξ) ζ≋ξ (↑ 𝔪) = ▹-eq e ζ ξ (λ 𝔫 → ζ≋ξ (↑ 𝔫)) 𝔪
+
   -- Congruence: metasubstitution of equivalent terms into a term extended with
   -- a new metavariable
-  cong≋ : (t : (Π ⊩ β ≀ 𝔐 ▷ 𝕋) α Γ)
+  cong≋ : (t : (𝔐 ⁅ Π ⊩ₙ β ⁆ ▷ 𝕋) α Γ)
       → {s u : (𝔐 ▷ 𝕋) β (Π ∔ Γ)}
       → 𝔐 ▹ (Π ∔ Γ) ⊢ s ≋ u
-      → 𝔐 ▹ Γ ⊢ inst t s ≋ inst t u
-  cong≋ t {s} {u} s≋u = ms rf (s ◃ id≀ _) (u ◃ id≀ _) λ{ ↓ → s≋u ; (↑ 𝔪) → rf}
+      → 𝔐 ▹ Γ ⊢ instₑ t s ≋ instₑ t u
+  cong≋ t {s} {u} s≋u = ms rf (id≀ _ ▹ s) (id≀ _ ▹ u) (▹-eq s≋u (id≀ _) (id≀ _) λ _ → rf)
+
+  -- Double congruence
+  cong₂≋ : {Π₁ Π₂ : Ctx}{β₁ β₂ : T}
+        (t : ((𝔐 ⁅ Π₁ ⊩ₙ β₁ ⁆) ⁅ Π₂ ⊩ₙ β₂ ⁆ ▷ 𝕋) α Γ)
+      → {s₁ u₁ : (𝔐 ▷ 𝕋) β₁ (Π₁ ∔ Γ)}
+      → {s₂ u₂ : (𝔐 ▷ 𝕋) β₂ (Π₂ ∔ Γ)}
+      → 𝔐 ▹ (Π₁ ∔ Γ) ⊢ s₁ ≋ u₁
+      → 𝔐 ▹ (Π₂ ∔ Γ) ⊢ s₂ ≋ u₂
+      → 𝔐 ▹ Γ ⊢ instₑ₂ t s₁ s₂ ≋ instₑ₂ t u₁ u₂
+  cong₂≋ t {s₁}{u₁}{s₂}{u₂} s≋u₁ s≋u₂ =
+    ms rf ((id≀ _ ▹ s₁) ▹ s₂) ((id≀ _ ▹ u₁) ▹ u₂)
+    (▹-eq s≋u₂ (id≀ _ ▹ s₁) (id≀ _ ▹ u₁) (▹-eq s≋u₁ (id≀ _) (id≀ _) (λ - → rf)))
 
   -- Syntactic sugar
   cong[_]inside_ : {s u : (𝔐 ▷ 𝕋) β (Π ∔ Γ)}
       → 𝔐 ▹ (Π ∔ Γ) ⊢ s ≋ u
-      → (t : (Π ⊩ β ≀ 𝔐 ▷ 𝕋) α Γ)
-      → 𝔐 ▹ Γ ⊢ inst t s ≋ inst t u
+      → (t : (𝔐 ⁅ Π ⊩ₙ β ⁆ ▷ 𝕋) α Γ)
+      → 𝔐 ▹ Γ ⊢ instₑ t s ≋ instₑ t u
   cong[ s≋u ]inside t = cong≋ t s≋u
   infix 05 cong[_]inside_
+  cong₂[_][_]inside_ : {Π₁ Π₂ : Ctx}{β₁ β₂ : T}
+      → {s₁ u₁ : (𝔐 ▷ 𝕋) β₁ (Π₁ ∔ Γ)}
+      → {s₂ u₂ : (𝔐 ▷ 𝕋) β₂ (Π₂ ∔ Γ)}
+      → 𝔐 ▹ (Π₁ ∔ Γ) ⊢ s₁ ≋ u₁
+      → 𝔐 ▹ (Π₂ ∔ Γ) ⊢ s₂ ≋ u₂
+      → (t : ((𝔐 ⁅ Π₁ ⊩ₙ β₁ ⁆) ⁅ Π₂ ⊩ₙ β₂ ⁆ ▷ 𝕋) α Γ)
+      → 𝔐 ▹ Γ ⊢ instₑ₂ t s₁ s₂ ≋ instₑ₂ t u₁ u₂
+  cong₂[ s≋u₁ ][ s≋u₂ ]inside t = cong₂≋ t s≋u₁ s≋u₂
+  infix 05 cong₂[_][_]inside_
 
   -- Linear metasubstitution
   ○ms : {t s : (𝔐 ▷ 𝕋) α Γ}
