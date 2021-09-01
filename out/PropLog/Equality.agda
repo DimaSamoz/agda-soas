@@ -7,9 +7,9 @@ type
   * : 0-ary
 
 term
-  false : * | ⊥ 
+  false : * | ⊥
   or    : *  *  ->  * | _∨_ l20
-  true  : * | ⊤ 
+  true  : * | ⊤
   and   : *  *  ->  * | _∧_ l30
   not   : *  ->  * | ¬_ r50
 
@@ -55,10 +55,6 @@ open import PropLog.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution PR:Syn
 open import SOAS.Metatheory.SecondOrder.Equality PR:Syn
-open import SOAS.Metatheory
-
-open PR:Syntax
-open import SOAS.Syntax.Shorthands PRᵃ
 
 private
   variable

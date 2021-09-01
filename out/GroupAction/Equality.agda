@@ -37,10 +37,6 @@ open import GroupAction.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution GA:Syn
 open import SOAS.Metatheory.SecondOrder.Equality GA:Syn
-open import SOAS.Metatheory
-
-open GA:Syntax
-open import SOAS.Syntax.Shorthands GAᵃ
 
 private
   variable

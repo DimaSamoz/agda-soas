@@ -7,7 +7,7 @@ type
   * : 0-ary
 
 term
-  unit : * | ε 
+  unit : * | ε
   add  : *  *  ->  * | _⊕_ l20
   neg  : *  ->  * | ⊖_ r40
 
@@ -34,10 +34,6 @@ open import CommGroup.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution CG:Syn
 open import SOAS.Metatheory.SecondOrder.Equality CG:Syn
-open import SOAS.Metatheory
-
-open CG:Syntax
-open import SOAS.Syntax.Shorthands CGᵃ
 
 private
   variable

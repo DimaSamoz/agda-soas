@@ -57,7 +57,7 @@ private
     𝔛 : Familyₛ
 
 -- Inductive term declaration
-module PD:Syntax (𝔛 : Familyₛ) where
+module PD:Terms (𝔛 : Familyₛ) where
 
   data PD : Familyₛ where
     var  : ℐ ⇾̣ PD
@@ -151,19 +151,18 @@ PD:Syn : Syntax
 PD:Syn = record
   { ⅀F = ⅀F
   ; ⅀:CS = ⅀:CompatStr
-  ; mvarᵢ = PD:Syntax.mvar
-  ; 𝕋:Init = λ 𝔛 → let open PD:Syntax 𝔛 in record
+  ; mvarᵢ = PD:Terms.mvar
+  ; 𝕋:Init = λ 𝔛 → let open PD:Terms 𝔛 in record
     { ⊥ = PD ⋉ PDᵃ
     ; ⊥-is-initial = record { ! = λ{ {𝒜 ⋉ 𝒜ᵃ} → 𝕤𝕖𝕞 𝒜ᵃ ⋉ 𝕤𝕖𝕞ᵃ⇒ 𝒜ᵃ }
     ; !-unique = λ{ {𝒜 ⋉ 𝒜ᵃ} (f ⋉ fᵃ⇒) {x = t} → 𝕤𝕖𝕞! 𝒜ᵃ f fᵃ⇒ t } } } }
 
+-- Instantiation of the syntax and metatheory
 open Syntax PD:Syn public
-
--- Working area
-open PD:Syntax
-open import SOAS.Families.Build
-open import SOAS.Syntax.Shorthands PDᵃ
-open import SOAS.Metatheory PD:Syn
+open PD:Terms public
+open import SOAS.Families.Build public
+open import SOAS.Syntax.Shorthands PDᵃ public
+open import SOAS.Metatheory PD:Syn public
 
 -- Derived operations
 ∂₀_ : {𝔛 : Familyₛ} → PD 𝔛 * (* ∙ Γ) → PD 𝔛 * (* ∙ Γ)

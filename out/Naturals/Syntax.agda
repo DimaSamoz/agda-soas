@@ -37,7 +37,7 @@ private
     𝔛 : Familyₛ
 
 -- Inductive term declaration
-module Nat:Syntax (𝔛 : Familyₛ) where
+module Nat:Terms (𝔛 : Familyₛ) where
 
   data Nat : Familyₛ where
     var  : ℐ ⇾̣ Nat
@@ -47,7 +47,7 @@ module Nat:Syntax (𝔛 : Familyₛ) where
     su   : Nat N Γ → Nat N Γ
     nrec : Nat N Γ → Nat α Γ → Nat α (α ∙ N ∙ Γ) → Nat α Γ
 
-  
+
 
   open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
 
@@ -114,16 +114,15 @@ Nat:Syn : Syntax
 Nat:Syn = record
   { ⅀F = ⅀F
   ; ⅀:CS = ⅀:CompatStr
-  ; mvarᵢ = Nat:Syntax.mvar
-  ; 𝕋:Init = λ 𝔛 → let open Nat:Syntax 𝔛 in record
+  ; mvarᵢ = Nat:Terms.mvar
+  ; 𝕋:Init = λ 𝔛 → let open Nat:Terms 𝔛 in record
     { ⊥ = Nat ⋉ Natᵃ
     ; ⊥-is-initial = record { ! = λ{ {𝒜 ⋉ 𝒜ᵃ} → 𝕤𝕖𝕞 𝒜ᵃ ⋉ 𝕤𝕖𝕞ᵃ⇒ 𝒜ᵃ }
     ; !-unique = λ{ {𝒜 ⋉ 𝒜ᵃ} (f ⋉ fᵃ⇒) {x = t} → 𝕤𝕖𝕞! 𝒜ᵃ f fᵃ⇒ t } } } }
 
+-- Instantiation of the syntax and metatheory
 open Syntax Nat:Syn public
-
--- Working area
-open Nat:Syntax
-open import SOAS.Families.Build
-open import SOAS.Syntax.Shorthands Natᵃ
-
+open Nat:Terms public
+open import SOAS.Families.Build public
+open import SOAS.Syntax.Shorthands Natᵃ public
+open import SOAS.Metatheory Nat:Syn public

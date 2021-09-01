@@ -18,7 +18,7 @@ open import SOAS.Metatheory.Monoid ⅀F ⅀:Str public
 module Theory (𝔛 : Familyₛ) where
   open import SOAS.Metatheory.MetaAlgebra   ⅀F 𝔛 public
   open import SOAS.Metatheory.Semantics     ⅀F ⅀:Str 𝔛 (𝕋:Init 𝔛) public
-  open import SOAS.Metatheory.Traversal     ⅀F ⅀:Str 𝔛 (𝕋:Init 𝔛)  public
+  open import SOAS.Metatheory.Traversal     ⅀F ⅀:Str 𝔛 (𝕋:Init 𝔛) public
   open import SOAS.Metatheory.Renaming      ⅀F ⅀:Str 𝔛 (𝕋:Init 𝔛) public
   open import SOAS.Metatheory.Coalgebraic   ⅀F ⅀:Str 𝔛 (𝕋:Init 𝔛) public
   open import SOAS.Metatheory.Substitution  ⅀F ⅀:Str 𝔛 (𝕋:Init 𝔛) public

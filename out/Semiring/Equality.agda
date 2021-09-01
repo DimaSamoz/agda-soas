@@ -7,9 +7,9 @@ type
   * : 0-ary
 
 term
-  zero : * | 𝟘 
+  zero : * | 𝟘
   add  : *  *  ->  * | _⊕_ l20
-  one  : * | 𝟙 
+  one  : * | 𝟙
   mult : *  *  ->  * | _⊗_ l30
 
 theory
@@ -40,10 +40,6 @@ open import Semiring.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution SR:Syn
 open import SOAS.Metatheory.SecondOrder.Equality SR:Syn
-open import SOAS.Metatheory
-
-open SR:Syntax
-open import SOAS.Syntax.Shorthands SRᵃ
 
 private
   variable

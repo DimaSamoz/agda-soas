@@ -30,10 +30,6 @@ open import STLC.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution Λ:Syn
 open import SOAS.Metatheory.SecondOrder.Equality Λ:Syn
-open import SOAS.Metatheory
-
-open Λ:Syntax
-open import SOAS.Syntax.Shorthands Λᵃ
 
 private
   variable

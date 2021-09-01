@@ -33,10 +33,6 @@ open import Inception.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution IA:Syn
 open import SOAS.Metatheory.SecondOrder.Equality IA:Syn
-open import SOAS.Metatheory
-
-open IA:Syntax
-open import SOAS.Syntax.Shorthands IAᵃ
 
 private
   variable
@@ -47,10 +43,12 @@ infix 1 _▹_⊢_≋ₐ_
 
 -- Axioms of equality
 data _▹_⊢_≋ₐ_ : ∀ 𝔐 Γ {α} → (𝔐 ▷ IA) α Γ → (𝔐 ▷ IA) α Γ → Set where
-  S : ⁅ P ⁆ ⁅ P ⊩ A ⁆̣                       ▹   ∅   ⊢                          inc (rec x₀ 𝔞) (𝔟⟨ x₀ ⟩) ≋ₐ 𝔟⟨ 𝔞 ⟩
-  E : ⁅ L ⊩ A ⁆̣                             ▹ ⌊ L ⌋ ⊢                         inc (𝔞⟨ x₀ ⟩) (rec x₁ x₀) ≋ₐ 𝔞⟨ x₀ ⟩
-  W : ⁅ A ⁆ ⁅ P ⊩ A ⁆̣                       ▹   ∅   ⊢                                   inc 𝔞 (𝔟⟨ x₀ ⟩) ≋ₐ 𝔞
-  A : ⁅ L · L ⊩ A ⁆ ⁅ L · P ⊩ A ⁆ ⁅ P ⊩ A ⁆̣ ▹   ∅   ⊢ inc (inc (𝔞⟨ x₁ ◂ x₀ ⟩) (𝔟⟨ x₁ ◂ x₀ ⟩)) (𝔠⟨ x₀ ⟩) ≋ₐ inc (inc (𝔞⟨ x₀ ◂ x₁ ⟩) (𝔠⟨ x₀ ⟩)) (inc (𝔟⟨ x₀ ◂ x₁ ⟩) (𝔠⟨ x₀ ⟩))
+  S : ⁅ P ⁆ ⁅ P ⊩ A ⁆̣ ▹   ∅   ⊢  inc (rec x₀ 𝔞) (𝔟⟨ x₀ ⟩) ≋ₐ 𝔟⟨ 𝔞 ⟩
+  E : ⁅ L ⊩ A ⁆̣       ▹ ⌊ L ⌋ ⊢ inc (𝔞⟨ x₀ ⟩) (rec x₁ x₀) ≋ₐ 𝔞⟨ x₀ ⟩
+  W : ⁅ A ⁆ ⁅ P ⊩ A ⁆̣ ▹   ∅   ⊢           inc 𝔞 (𝔟⟨ x₀ ⟩) ≋ₐ 𝔞
+  A : ⁅ L · L ⊩ A ⁆ ⁅ L · P ⊩ A ⁆ ⁅ P ⊩ A ⁆̣ ▹ ∅
+    ⊢ inc (inc (𝔞⟨ x₁ ◂ x₀ ⟩) (𝔟⟨ x₁ ◂ x₀ ⟩)) (𝔠⟨ x₀ ⟩)
+   ≋ₐ inc (inc (𝔞⟨ x₀ ◂ x₁ ⟩) (𝔠⟨ x₀ ⟩)) (inc (𝔟⟨ x₀ ◂ x₁ ⟩) (𝔠⟨ x₀ ⟩))
 
 open EqLogic _▹_⊢_≋ₐ_
 open ≋-Reasoning

@@ -30,10 +30,6 @@ open import Monad.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution M:Syn
 open import SOAS.Metatheory.SecondOrder.Equality M:Syn
-open import SOAS.Metatheory
-
-open M:Syntax
-open import SOAS.Syntax.Shorthands Mᵃ
 
 private
   variable

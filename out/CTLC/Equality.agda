@@ -33,10 +33,6 @@ open import CTLC.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution ΛC:Syn
 open import SOAS.Metatheory.SecondOrder.Equality ΛC:Syn
-open import SOAS.Metatheory
-
-open ΛC:Syntax
-open import SOAS.Syntax.Shorthands ΛCᵃ
 
 private
   variable

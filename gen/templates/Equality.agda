@@ -18,10 +18,6 @@ open import $syn_name.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution ${sig}:Syn
 open import SOAS.Metatheory.SecondOrder.Equality ${sig}:Syn
-open import SOAS.Metatheory
-
-open ${sig}:Syntax
-open import SOAS.Syntax.Shorthands ${sig}ᵃ
 
 private
   variable

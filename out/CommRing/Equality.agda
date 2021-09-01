@@ -7,9 +7,9 @@ type
   * : 0-ary
 
 term
-  zero : * | 𝟘 
+  zero : * | 𝟘
   add  : *  *  ->  * | _⊕_ l20
-  one  : * | 𝟙 
+  one  : * | 𝟙
   mult : *  *  ->  * | _⊗_ l30
   neg  : *  ->  * | ⊖_ r50
 
@@ -44,10 +44,6 @@ open import CommRing.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution CR:Syn
 open import SOAS.Metatheory.SecondOrder.Equality CR:Syn
-open import SOAS.Metatheory
-
-open CR:Syntax
-open import SOAS.Syntax.Shorthands CRᵃ
 
 private
   variable

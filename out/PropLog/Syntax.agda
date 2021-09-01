@@ -62,7 +62,7 @@ private
     𝔛 : Familyₛ
 
 -- Inductive term declaration
-module PR:Syntax (𝔛 : Familyₛ) where
+module PR:Terms (𝔛 : Familyₛ) where
 
   data PR : Familyₛ where
     var  : ℐ ⇾̣ PR
@@ -151,18 +151,19 @@ PR:Syn : Syntax
 PR:Syn = record
   { ⅀F = ⅀F
   ; ⅀:CS = ⅀:CompatStr
-  ; mvarᵢ = PR:Syntax.mvar
-  ; 𝕋:Init = λ 𝔛 → let open PR:Syntax 𝔛 in record
+  ; mvarᵢ = PR:Terms.mvar
+  ; 𝕋:Init = λ 𝔛 → let open PR:Terms 𝔛 in record
     { ⊥ = PR ⋉ PRᵃ
     ; ⊥-is-initial = record { ! = λ{ {𝒜 ⋉ 𝒜ᵃ} → 𝕤𝕖𝕞 𝒜ᵃ ⋉ 𝕤𝕖𝕞ᵃ⇒ 𝒜ᵃ }
     ; !-unique = λ{ {𝒜 ⋉ 𝒜ᵃ} (f ⋉ fᵃ⇒) {x = t} → 𝕤𝕖𝕞! 𝒜ᵃ f fᵃ⇒ t } } } }
 
+-- Instantiation of the syntax and metatheory
 open Syntax PR:Syn public
+open PR:Terms public
+open import SOAS.Families.Build public
+open import SOAS.Syntax.Shorthands PRᵃ public
+open import SOAS.Metatheory PR:Syn public
 
--- Working area
-open PR:Syntax
-open import SOAS.Families.Build
-open import SOAS.Syntax.Shorthands PRᵃ
 
 -- Derived operations
 _⟹_ : PR 𝔛 * Γ → PR 𝔛 * Γ → PR 𝔛 * Γ

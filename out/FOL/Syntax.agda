@@ -84,7 +84,7 @@ private
     𝔛 : Familyₛ
 
 -- Inductive term declaration
-module FOL:Syntax (𝔛 : Familyₛ) where
+module FOL:Terms (𝔛 : Familyₛ) where
 
   data FOL : Familyₛ where
     var  : ℐ ⇾̣ FOL
@@ -189,18 +189,18 @@ FOL:Syn : Syntax
 FOL:Syn = record
   { ⅀F = ⅀F
   ; ⅀:CS = ⅀:CompatStr
-  ; mvarᵢ = FOL:Syntax.mvar
-  ; 𝕋:Init = λ 𝔛 → let open FOL:Syntax 𝔛 in record
+  ; mvarᵢ = FOL:Terms.mvar
+  ; 𝕋:Init = λ 𝔛 → let open FOL:Terms 𝔛 in record
     { ⊥ = FOL ⋉ FOLᵃ
     ; ⊥-is-initial = record { ! = λ{ {𝒜 ⋉ 𝒜ᵃ} → 𝕤𝕖𝕞 𝒜ᵃ ⋉ 𝕤𝕖𝕞ᵃ⇒ 𝒜ᵃ }
     ; !-unique = λ{ {𝒜 ⋉ 𝒜ᵃ} (f ⋉ fᵃ⇒) {x = t} → 𝕤𝕖𝕞! 𝒜ᵃ f fᵃ⇒ t } } } }
 
+-- Instantiation of the syntax and metatheory
 open Syntax FOL:Syn public
-
--- Working area
-open FOL:Syntax
-open import SOAS.Families.Build
-open import SOAS.Syntax.Shorthands FOLᵃ
+open FOL:Terms public
+open import SOAS.Families.Build public
+open import SOAS.Syntax.Shorthands FOLᵃ public
+open import SOAS.Metatheory FOL:Syn public
 
 -- Derived operations
 _⟹_ : FOL 𝔛 * Γ → FOL 𝔛 * Γ → FOL 𝔛 * Γ

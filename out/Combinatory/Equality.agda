@@ -32,10 +32,6 @@ open import Combinatory.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution CL:Syn
 open import SOAS.Metatheory.SecondOrder.Equality CL:Syn
-open import SOAS.Metatheory
-
-open CL:Syntax
-open import SOAS.Syntax.Shorthands CLᵃ
 
 private
   variable

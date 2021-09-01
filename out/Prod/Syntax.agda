@@ -7,7 +7,7 @@ type
   _⊗_ : 2-ary | l40
 
 term
-  pair : α  β  ->  α ⊗ β | ⟨_,_⟩ 
+  pair : α  β  ->  α ⊗ β | ⟨_,_⟩
   fst  : α ⊗ β  ->  α
   snd  : α ⊗ β  ->  β
 
@@ -38,7 +38,7 @@ private
     𝔛 : Familyₛ
 
 -- Inductive term declaration
-module P:Syntax (𝔛 : Familyₛ) where
+module P:Terms (𝔛 : Familyₛ) where
 
   data P : Familyₛ where
     var  : ℐ ⇾̣ P
@@ -48,7 +48,7 @@ module P:Syntax (𝔛 : Familyₛ) where
     fst   : P (α ⊗ β) Γ → P α Γ
     snd   : P (α ⊗ β) Γ → P β Γ
 
-  
+
 
   open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
 
@@ -115,16 +115,15 @@ P:Syn : Syntax
 P:Syn = record
   { ⅀F = ⅀F
   ; ⅀:CS = ⅀:CompatStr
-  ; mvarᵢ = P:Syntax.mvar
-  ; 𝕋:Init = λ 𝔛 → let open P:Syntax 𝔛 in record
+  ; mvarᵢ = P:Terms.mvar
+  ; 𝕋:Init = λ 𝔛 → let open P:Terms 𝔛 in record
     { ⊥ = P ⋉ Pᵃ
     ; ⊥-is-initial = record { ! = λ{ {𝒜 ⋉ 𝒜ᵃ} → 𝕤𝕖𝕞 𝒜ᵃ ⋉ 𝕤𝕖𝕞ᵃ⇒ 𝒜ᵃ }
     ; !-unique = λ{ {𝒜 ⋉ 𝒜ᵃ} (f ⋉ fᵃ⇒) {x = t} → 𝕤𝕖𝕞! 𝒜ᵃ f fᵃ⇒ t } } } }
 
+-- Instantiation of the syntax and metatheory
 open Syntax P:Syn public
-
--- Working area
-open P:Syntax
-open import SOAS.Families.Build
-open import SOAS.Syntax.Shorthands Pᵃ
-
+open P:Terms public
+open import SOAS.Families.Build public
+open import SOAS.Syntax.Shorthands Pᵃ public
+open import SOAS.Metatheory P:Syn public

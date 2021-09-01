@@ -43,10 +43,6 @@ open import Ring.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution R:Syn
 open import SOAS.Metatheory.SecondOrder.Equality R:Syn
-open import SOAS.Metatheory
-
-open R:Syntax
-open import SOAS.Syntax.Shorthands Rᵃ
 
 private
   variable

@@ -7,7 +7,7 @@ type
   * : 0-ary
 
 term
-  unit : * | ε 
+  unit : * | ε
   add  : *  *  ->  * | _⊕_ l20
 
 theory
@@ -38,7 +38,7 @@ private
     𝔛 : Familyₛ
 
 -- Inductive term declaration
-module CM:Syntax (𝔛 : Familyₛ) where
+module CM:Terms (𝔛 : Familyₛ) where
 
   data CM : Familyₛ where
     var  : ℐ ⇾̣ CM
@@ -110,16 +110,15 @@ CM:Syn : Syntax
 CM:Syn = record
   { ⅀F = ⅀F
   ; ⅀:CS = ⅀:CompatStr
-  ; mvarᵢ = CM:Syntax.mvar
-  ; 𝕋:Init = λ 𝔛 → let open CM:Syntax 𝔛 in record
+  ; mvarᵢ = CM:Terms.mvar
+  ; 𝕋:Init = λ 𝔛 → let open CM:Terms 𝔛 in record
     { ⊥ = CM ⋉ CMᵃ
     ; ⊥-is-initial = record { ! = λ{ {𝒜 ⋉ 𝒜ᵃ} → 𝕤𝕖𝕞 𝒜ᵃ ⋉ 𝕤𝕖𝕞ᵃ⇒ 𝒜ᵃ }
     ; !-unique = λ{ {𝒜 ⋉ 𝒜ᵃ} (f ⋉ fᵃ⇒) {x = t} → 𝕤𝕖𝕞! 𝒜ᵃ f fᵃ⇒ t } } } }
 
+-- Instantiation of the syntax and metatheory
 open Syntax CM:Syn public
-
--- Working area
-open CM:Syntax
-open import SOAS.Families.Build
-open import SOAS.Syntax.Shorthands CMᵃ
-
+open CM:Terms public
+open import SOAS.Families.Build public
+open import SOAS.Syntax.Shorthands CMᵃ public
+open import SOAS.Metatheory CM:Syn public

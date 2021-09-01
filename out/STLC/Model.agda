@@ -17,11 +17,7 @@ open import STLC.Syntax
 open import SOAS.Metatheory.SecondOrder.Metasubstitution Λ:Syn
 open import SOAS.Metatheory.SecondOrder.Equality Λ:Syn
 open import SOAS.Metatheory.FreeMonoid Λ:Syn
-open import SOAS.Metatheory Λ:Syn
 open import SOAS.Syntax.Arguments
-
-open Λ:Syntax
-open import SOAS.Syntax.Shorthands Λᵃ
 
 open import Data.Nat
 

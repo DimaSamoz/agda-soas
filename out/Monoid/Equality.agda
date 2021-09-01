@@ -7,7 +7,7 @@ type
   * : 0-ary
 
 term
-  unit : * | ε 
+  unit : * | ε
   add  : *  *  ->  * | _⊕_ l20
 
 theory
@@ -30,10 +30,6 @@ open import Monoid.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution M:Syn
 open import SOAS.Metatheory.SecondOrder.Equality M:Syn
-open import SOAS.Metatheory
-
-open M:Syntax
-open import SOAS.Syntax.Shorthands Mᵃ
 
 private
   variable
@@ -50,4 +46,3 @@ data _▹_⊢_≋ₐ_ : ∀ 𝔐 Γ {α} → (𝔐 ▷ M) α Γ → (𝔐 ▷ M)
 
 open EqLogic _▹_⊢_≋ₐ_
 open ≋-Reasoning
-

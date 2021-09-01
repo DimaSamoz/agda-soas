@@ -7,9 +7,9 @@ type
   * : 0-ary
 
 term
-  zero : * | 𝟘 
+  zero : * | 𝟘
   add  : *  *  ->  * | _⊕_ l20
-  one  : * | 𝟙 
+  one  : * | 𝟙
   mult : *  *  ->  * | _⊗_ l30
 
 theory
@@ -47,7 +47,7 @@ private
     𝔛 : Familyₛ
 
 -- Inductive term declaration
-module SR:Syntax (𝔛 : Familyₛ) where
+module SR:Terms (𝔛 : Familyₛ) where
 
   data SR : Familyₛ where
     var  : ℐ ⇾̣ SR
@@ -130,16 +130,15 @@ SR:Syn : Syntax
 SR:Syn = record
   { ⅀F = ⅀F
   ; ⅀:CS = ⅀:CompatStr
-  ; mvarᵢ = SR:Syntax.mvar
-  ; 𝕋:Init = λ 𝔛 → let open SR:Syntax 𝔛 in record
+  ; mvarᵢ = SR:Terms.mvar
+  ; 𝕋:Init = λ 𝔛 → let open SR:Terms 𝔛 in record
     { ⊥ = SR ⋉ SRᵃ
     ; ⊥-is-initial = record { ! = λ{ {𝒜 ⋉ 𝒜ᵃ} → 𝕤𝕖𝕞 𝒜ᵃ ⋉ 𝕤𝕖𝕞ᵃ⇒ 𝒜ᵃ }
     ; !-unique = λ{ {𝒜 ⋉ 𝒜ᵃ} (f ⋉ fᵃ⇒) {x = t} → 𝕤𝕖𝕞! 𝒜ᵃ f fᵃ⇒ t } } } }
 
+-- Instantiation of the syntax and metatheory
 open Syntax SR:Syn public
-
--- Working area
-open SR:Syntax
-open import SOAS.Families.Build
-open import SOAS.Syntax.Shorthands SRᵃ
-
+open SR:Terms public
+open import SOAS.Families.Build public
+open import SOAS.Syntax.Shorthands SRᵃ public
+open import SOAS.Metatheory SR:Syn public

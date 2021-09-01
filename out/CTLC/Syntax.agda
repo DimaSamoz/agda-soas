@@ -40,7 +40,7 @@ private
     𝔛 : Familyₛ
 
 -- Inductive term declaration
-module ΛC:Syntax (𝔛 : Familyₛ) where
+module ΛC:Terms (𝔛 : Familyₛ) where
 
   data ΛC : Familyₛ where
     var  : ℐ ⇾̣ ΛC
@@ -123,16 +123,15 @@ module ΛC:Syntax (𝔛 : Familyₛ) where
 ΛC:Syn = record
   { ⅀F = ⅀F
   ; ⅀:CS = ⅀:CompatStr
-  ; mvarᵢ = ΛC:Syntax.mvar
-  ; 𝕋:Init = λ 𝔛 → let open ΛC:Syntax 𝔛 in record
+  ; mvarᵢ = ΛC:Terms.mvar
+  ; 𝕋:Init = λ 𝔛 → let open ΛC:Terms 𝔛 in record
     { ⊥ = ΛC ⋉ ΛCᵃ
     ; ⊥-is-initial = record { ! = λ{ {𝒜 ⋉ 𝒜ᵃ} → 𝕤𝕖𝕞 𝒜ᵃ ⋉ 𝕤𝕖𝕞ᵃ⇒ 𝒜ᵃ }
     ; !-unique = λ{ {𝒜 ⋉ 𝒜ᵃ} (f ⋉ fᵃ⇒) {x = t} → 𝕤𝕖𝕞! 𝒜ᵃ f fᵃ⇒ t } } } }
 
+-- Instantiation of the syntax and metatheory
 open Syntax ΛC:Syn public
-
--- Working area
-open ΛC:Syntax
-open import SOAS.Families.Build
-open import SOAS.Syntax.Shorthands ΛCᵃ
-
+open ΛC:Terms public
+open import SOAS.Families.Build public
+open import SOAS.Syntax.Shorthands ΛCᵃ public
+open import SOAS.Metatheory ΛC:Syn public

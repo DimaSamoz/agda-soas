@@ -27,10 +27,6 @@ open import Empty.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution E:Syn
 open import SOAS.Metatheory.SecondOrder.Equality E:Syn
-open import SOAS.Metatheory
-
-open E:Syntax
-open import SOAS.Syntax.Shorthands Eᵃ
 
 private
   variable
@@ -45,4 +41,3 @@ data _▹_⊢_≋ₐ_ : ∀ 𝔐 Γ {α} → (𝔐 ▷ E) α Γ → (𝔐 ▷ E)
 
 open EqLogic _▹_⊢_≋ₐ_
 open ≋-Reasoning
-

@@ -27,10 +27,6 @@ open import Unit.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution U:Syn
 open import SOAS.Metatheory.SecondOrder.Equality U:Syn
-open import SOAS.Metatheory
-
-open U:Syntax
-open import SOAS.Syntax.Shorthands Uᵃ
 
 private
   variable

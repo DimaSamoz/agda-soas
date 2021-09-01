@@ -30,10 +30,6 @@ open import Naturals.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution Nat:Syn
 open import SOAS.Metatheory.SecondOrder.Equality Nat:Syn
-open import SOAS.Metatheory
-
-open Nat:Syntax
-open import SOAS.Syntax.Shorthands Natᵃ
 
 private
   variable
@@ -49,4 +45,3 @@ data _▹_⊢_≋ₐ_ : ∀ 𝔐 Γ {α} → (𝔐 ▷ Nat) α Γ → (𝔐 ▷ 
 
 open EqLogic _▹_⊢_≋ₐ_
 open ≋-Reasoning
-

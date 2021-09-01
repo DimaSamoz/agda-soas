@@ -50,10 +50,6 @@ open import PDiff.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution PD:Syn
 open import SOAS.Metatheory.SecondOrder.Equality PD:Syn
-open import SOAS.Metatheory
-
-open PD:Syntax
-open import SOAS.Syntax.Shorthands PDᵃ
 
 private
   variable

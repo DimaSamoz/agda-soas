@@ -16,7 +16,7 @@ term
   ze  : N
   su  : N  ->  N
   pr  : N  ->  N
-  iz  : N  ->  B | 0? 
+  iz  : N  ->  B | 0?
   if  : B  α  α  ->  α
   fix : α.α  ->  α
 
@@ -52,7 +52,7 @@ private
     𝔛 : Familyₛ
 
 -- Inductive term declaration
-module PCF:Syntax (𝔛 : Familyₛ) where
+module PCF:Terms (𝔛 : Familyₛ) where
 
   data PCF : Familyₛ where
     var  : ℐ ⇾̣ PCF
@@ -165,16 +165,15 @@ PCF:Syn : Syntax
 PCF:Syn = record
   { ⅀F = ⅀F
   ; ⅀:CS = ⅀:CompatStr
-  ; mvarᵢ = PCF:Syntax.mvar
-  ; 𝕋:Init = λ 𝔛 → let open PCF:Syntax 𝔛 in record
+  ; mvarᵢ = PCF:Terms.mvar
+  ; 𝕋:Init = λ 𝔛 → let open PCF:Terms 𝔛 in record
     { ⊥ = PCF ⋉ PCFᵃ
     ; ⊥-is-initial = record { ! = λ{ {𝒜 ⋉ 𝒜ᵃ} → 𝕤𝕖𝕞 𝒜ᵃ ⋉ 𝕤𝕖𝕞ᵃ⇒ 𝒜ᵃ }
     ; !-unique = λ{ {𝒜 ⋉ 𝒜ᵃ} (f ⋉ fᵃ⇒) {x = t} → 𝕤𝕖𝕞! 𝒜ᵃ f fᵃ⇒ t } } } }
 
+-- Instantiation of the syntax and metatheory
 open Syntax PCF:Syn public
-
--- Working area
-open PCF:Syntax
-open import SOAS.Families.Build
-open import SOAS.Syntax.Shorthands PCFᵃ
-
+open PCF:Terms public
+open import SOAS.Families.Build public
+open import SOAS.Syntax.Shorthands PCFᵃ public
+open import SOAS.Metatheory PCF:Syn public

@@ -38,7 +38,7 @@ private
     𝔛 : Familyₛ
 
 -- Inductive term declaration
-module L:Syntax (𝔛 : Familyₛ) where
+module L:Terms (𝔛 : Familyₛ) where
 
   data L : Familyₛ where
     var  : ℐ ⇾̣ L
@@ -47,7 +47,7 @@ module L:Syntax (𝔛 : Familyₛ) where
     get : L S Γ → L A Γ
     put : L S Γ → L A Γ → L S Γ
 
-  
+
 
   open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
 
@@ -110,16 +110,15 @@ L:Syn : Syntax
 L:Syn = record
   { ⅀F = ⅀F
   ; ⅀:CS = ⅀:CompatStr
-  ; mvarᵢ = L:Syntax.mvar
-  ; 𝕋:Init = λ 𝔛 → let open L:Syntax 𝔛 in record
+  ; mvarᵢ = L:Terms.mvar
+  ; 𝕋:Init = λ 𝔛 → let open L:Terms 𝔛 in record
     { ⊥ = L ⋉ Lᵃ
     ; ⊥-is-initial = record { ! = λ{ {𝒜 ⋉ 𝒜ᵃ} → 𝕤𝕖𝕞 𝒜ᵃ ⋉ 𝕤𝕖𝕞ᵃ⇒ 𝒜ᵃ }
     ; !-unique = λ{ {𝒜 ⋉ 𝒜ᵃ} (f ⋉ fᵃ⇒) {x = t} → 𝕤𝕖𝕞! 𝒜ᵃ f fᵃ⇒ t } } } }
 
+-- Instantiation of the syntax and metatheory
 open Syntax L:Syn public
-
--- Working area
-open L:Syntax
-open import SOAS.Families.Build
-open import SOAS.Syntax.Shorthands Lᵃ
-
+open L:Terms public
+open import SOAS.Families.Build public
+open import SOAS.Syntax.Shorthands Lᵃ public
+open import SOAS.Metatheory L:Syn public

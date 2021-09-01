@@ -7,7 +7,7 @@ type
   * : 0-ary
 
 term
-  unit : * | ε 
+  unit : * | ε
   add  : *  *  ->  * | _⊕_ l20
 
 theory
@@ -31,10 +31,6 @@ open import CommMonoid.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution CM:Syn
 open import SOAS.Metatheory.SecondOrder.Equality CM:Syn
-open import SOAS.Metatheory
-
-open CM:Syntax
-open import SOAS.Syntax.Shorthands CMᵃ
 
 private
   variable

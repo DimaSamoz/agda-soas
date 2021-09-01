@@ -31,10 +31,6 @@ open import Lens.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution L:Syn
 open import SOAS.Metatheory.SecondOrder.Equality L:Syn
-open import SOAS.Metatheory
-
-open L:Syntax
-open import SOAS.Syntax.Shorthands Lᵃ
 
 private
   variable

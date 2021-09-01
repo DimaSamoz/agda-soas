@@ -39,7 +39,7 @@ private
     𝔛 : Familyₛ
 
 -- Inductive term declaration
-module CL:Syntax (𝔛 : Familyₛ) where
+module CL:Terms (𝔛 : Familyₛ) where
 
   data CL : Familyₛ where
     var  : ℐ ⇾̣ CL
@@ -121,16 +121,15 @@ CL:Syn : Syntax
 CL:Syn = record
   { ⅀F = ⅀F
   ; ⅀:CS = ⅀:CompatStr
-  ; mvarᵢ = CL:Syntax.mvar
-  ; 𝕋:Init = λ 𝔛 → let open CL:Syntax 𝔛 in record
+  ; mvarᵢ = CL:Terms.mvar
+  ; 𝕋:Init = λ 𝔛 → let open CL:Terms 𝔛 in record
     { ⊥ = CL ⋉ CLᵃ
     ; ⊥-is-initial = record { ! = λ{ {𝒜 ⋉ 𝒜ᵃ} → 𝕤𝕖𝕞 𝒜ᵃ ⋉ 𝕤𝕖𝕞ᵃ⇒ 𝒜ᵃ }
     ; !-unique = λ{ {𝒜 ⋉ 𝒜ᵃ} (f ⋉ fᵃ⇒) {x = t} → 𝕤𝕖𝕞! 𝒜ᵃ f fᵃ⇒ t } } } }
 
+-- Instantiation of the syntax and metatheory
 open Syntax CL:Syn public
-
--- Working area
-open CL:Syntax
-open import SOAS.Families.Build
-open import SOAS.Syntax.Shorthands CLᵃ
-
+open CL:Terms public
+open import SOAS.Families.Build public
+open import SOAS.Syntax.Shorthands CLᵃ public
+open import SOAS.Metatheory CL:Syn public

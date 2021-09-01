@@ -45,10 +45,6 @@ open import PCF.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution PCF:Syn
 open import SOAS.Metatheory.SecondOrder.Equality PCF:Syn
-open import SOAS.Metatheory
-
-open PCF:Syntax
-open import SOAS.Syntax.Shorthands PCFᵃ
 
 private
   variable

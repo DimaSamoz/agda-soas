@@ -25,7 +25,7 @@ private
     𝔛 : Familyₛ
 
 -- Inductive term declaration
-module ${sig}:Syntax (𝔛 : Familyₛ) where
+module ${sig}:Terms (𝔛 : Familyₛ) where
 
   data ${sig} : Familyₛ where
     var  : ℐ ⇾̣ ${sig}
@@ -92,17 +92,17 @@ ${sig}:Syn : Syntax
 ${sig}:Syn = record
   { ⅀F = ⅀F
   ; ⅀:CS = ⅀:CompatStr
-  ; mvarᵢ = ${sig}:Syntax.mvar
-  ; 𝕋:Init = λ 𝔛 → let open ${sig}:Syntax 𝔛 in record
+  ; mvarᵢ = ${sig}:Terms.mvar
+  ; 𝕋:Init = λ 𝔛 → let open ${sig}:Terms 𝔛 in record
     { ⊥ = ${sig} ⋉ ${sig}ᵃ
     ; ⊥-is-initial = record { ! = λ{ {𝒜 ⋉ 𝒜ᵃ} → 𝕤𝕖𝕞 𝒜ᵃ ⋉ 𝕤𝕖𝕞ᵃ⇒ 𝒜ᵃ }
     ; !-unique = λ{ {𝒜 ⋉ 𝒜ᵃ} (f ⋉ fᵃ⇒) {x = t} → 𝕤𝕖𝕞! 𝒜ᵃ f fᵃ⇒ t } } } }
 
-open Syntax $sig:Syn public
-
--- Working area
-open ${sig}:Syntax
-open import SOAS.Families.Build
-open import SOAS.Syntax.Shorthands ${sig}ᵃ
+-- Instantiation of the syntax and metatheory
+open Syntax ${sig}:Syn public
+open ${sig}:Terms public
+open import SOAS.Families.Build public
+open import SOAS.Syntax.Shorthands ${sig}ᵃ public
+open import SOAS.Metatheory ${sig}:Syn public
 
 $derived_tm_ops

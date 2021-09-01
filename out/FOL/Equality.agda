@@ -77,10 +77,6 @@ open import FOL.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution FOL:Syn
 open import SOAS.Metatheory.SecondOrder.Equality FOL:Syn
-open import SOAS.Metatheory
-
-open FOL:Syntax
-open import SOAS.Syntax.Shorthands FOLᵃ
 
 private
   variable

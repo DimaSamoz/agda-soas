@@ -31,10 +31,6 @@ open import Sum.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution S:Syn
 open import SOAS.Metatheory.SecondOrder.Equality S:Syn
-open import SOAS.Metatheory
-
-open S:Syntax
-open import SOAS.Syntax.Shorthands Sᵃ
 
 private
   variable
@@ -51,4 +47,3 @@ data _▹_⊢_≋ₐ_ : ∀ 𝔐 Γ {α} → (𝔐 ▷ S) α Γ → (𝔐 ▷ S)
 
 open EqLogic _▹_⊢_≋ₐ_
 open ≋-Reasoning
-

@@ -31,10 +31,6 @@ open import Prod.Syntax
 
 open import SOAS.Metatheory.SecondOrder.Metasubstitution P:Syn
 open import SOAS.Metatheory.SecondOrder.Equality P:Syn
-open import SOAS.Metatheory
-
-open P:Syntax
-open import SOAS.Syntax.Shorthands Pᵃ
 
 private
   variable
