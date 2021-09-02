@@ -9,5 +9,5 @@ term
   nrec : N  α  (α,N).α  ->  α
 
 theory
-  (zeβ) z : α   s : (α,N).α        |> nrec (ze,       z, r m. s[r,m]) = z
+  (zeβ) z : α   s : (α,N).α        |> nrec (ze,     z, r m. s[r,m]) = z
   (suβ) z : α   s : (α,N).α  n : N |> nrec (su (n), z, r m. s[r,m]) = s[nrec (n, z, r m. s[r,m]), n]

@@ -39,8 +39,8 @@ theory
   (cη) s : α ⊕ β  c : (α ⊕ β).γ |> case (s, x.c[inl(x)], y.c[inr(y)]) = c[s]
   (zeβ) z : α   s : (α,N).α        |> nrec (ze,       z, r m. s[r,m]) = z
   (suβ) z : α   s : (α,N).α  n : N |> nrec (su (n), z, r m. s[r,m]) = s[nrec (n, z, r m. s[r,m]), n]
-  (ift) t f : α |> if (tt, t, f) = t
-  (iff) t f : α |> if (ff, t, f) = f
+  (ift) t f : α |> if (true,  t, f) = t
+  (iff) t f : α |> if (false, t, f) = f
 -}
 
 module TLC.Equality where
@@ -88,3 +88,30 @@ ift : ⁅ α ⁆ ⁅ α ⁆̣ ▹ ∅ ⊢ if true 𝔞 𝔟 ≋ 𝔞
 ift = ax lβ with《 unit ◃ 𝔞 ◃ 𝔟 》
 iff : ⁅ α ⁆ ⁅ α ⁆̣ ▹ ∅ ⊢ if false 𝔞 𝔟 ≋ 𝔟
 iff = ax rβ with《 unit ◃ 𝔞 ◃ 𝔟 》
+
+-- Double beta reduction
+ƛβ² : ⁅ β · α ⊩ γ ⁆ ⁅ α ⁆ ⁅ β ⁆̣ ▹ ∅ ⊢ (ƛ (ƛ 𝔞⟨ x₀ ◂ x₁ ⟩)) $ 𝔟 $ 𝔠 ≋ 𝔞⟨ 𝔠 ◂ 𝔟 ⟩
+ƛβ² = begin
+      (ƛ (ƛ 𝔞⟨ x₀ ◂ x₁ ⟩)) $ 𝔟 $ 𝔠
+  ≋⟨ cong[ ax ƛβ with《 (ƛ 𝔞⟨ x₀ ◂ x₁ ⟩) ◃ 𝔟 》 ]inside ◌ᵈ $ 𝔠 ⟩
+      (ƛ 𝔞⟨ x₀ ◂ 𝔟 ⟩) $ 𝔠
+  ≋⟨ ax ƛβ with《 (𝔞⟨ x₀ ◂ 𝔟 ⟩) ◃ 𝔠 》 ⟩
+      𝔞⟨ 𝔠 ◂ 𝔟 ⟩
+  ∎
+
+-- Uncurrying and arithmetic
+1+2 : ⁅⁆ ▹ ∅ ⊢ uncurry $ plus $ ⟨ su ze , su (su ze) ⟩ ≋ su (su (su ze))
+1+2 = begin
+      uncurry $ plus $ ⟨ su ze , su (su ze) ⟩
+  ≋⟨ thm ƛβ² with《 x₁ $ fst x₀ $ snd x₀ ◃ plus ◃ ⟨ su ze , su (su ze) ⟩ 》 ⟩
+      plus $ fst ⟨ su ze , su (su ze) ⟩ $ snd ⟨ su ze , su (su ze) ⟩
+  ≋⟨ cong₂[ ax fβ with《 su ze ◃ su (su ze) 》 ][
+            ax sβ with《 su ze ◃ su (su ze) 》 ]inside plus $ ◌ᵃ $ ◌ᵇ ⟩
+      plus $ su ze $  su (su ze)
+  ≋⟨ thm ƛβ² with《 nrec x₁ x₀ (su x₀) ◃ su ze ◃ su (su ze) 》 ⟩
+      nrec (su ze) (su (su ze)) (su x₀)
+  ≋⟨ ax suβ with《 su (su ze) ◃ su x₀ ◃ ze 》 ⟩
+      su (nrec ze (su (su ze)) (su x₀))
+  ≋⟨ cong[ ax zeβ with《 su (su ze) ◃ su x₀ 》 ]inside su ◌ᵃ ⟩
+      su (su (su ze))
+  ∎

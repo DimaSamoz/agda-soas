@@ -212,3 +212,9 @@ false : Λ 𝔛 B Γ
 false = inr unit
 if : Λ 𝔛 B Γ → Λ 𝔛 α Γ → Λ 𝔛 α Γ → Λ 𝔛 α Γ
 if b t e = case b (Theory.𝕨𝕜 _ t) (Theory.𝕨𝕜 _ e)
+
+plus : Λ 𝔛 (N ↣ N ↣ N) Γ
+plus = ƛ (ƛ (nrec x₁ x₀ (su x₀)))
+
+uncurry : Λ 𝔛 ((α ↣ β ↣ γ) ↣ (α ⊗ β) ↣ γ) Γ
+uncurry = ƛ ƛ x₁ $ fst x₀ $ snd x₀
