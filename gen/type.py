@@ -66,7 +66,7 @@ class TypeSignature:
     symbols = set()  
     max_op_len = max([len(tc.name) for tc in self.all_ops])
 
-    for op in self.ops:
+    for op in self.all_ops:
         symbols = symbols.union(set(op.name.split('_')))
         op.padding = max_op_len - len(op.name)
     symbols.discard("")

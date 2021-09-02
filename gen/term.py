@@ -23,11 +23,6 @@ class Op:
     self.arity_diff = 0 # Used to figure out the operator with the most number of arguments
     self.sort = sort
     self.args = [Op.parse_so_type(t) for t in args]
-    # Op.parse_args(args)
-    # Tokens that make up the sort and arguments, from which the type variables will be extracted
-    # sort_tokens = strip_parens(sort).split(" ")
-    # arg_tokens = [flatten([strip_parens(bty).split(" ") for bty in bound]) + strip_parens(ty).split(" ") for (bound, ty) in self.args]
-    # self.all_tokens = set(flatten(arg_tokens)).union(sort_tokens)
     self.ty_vars = []
     self.derived = derived
 
@@ -37,11 +32,6 @@ class Op:
     self.sym = sym or name
 
     self.infix_spec = infix
-    # self.infix = None
-    # if infix:
-    #     if infix[0] in ['l', 'r']:
-    #       self.infix = (infix[0], infix[1:])
-    #     else: self.infix = ('', infix)
 
   def __eq__(self, o: object) -> bool:
       return self.name == o.name
