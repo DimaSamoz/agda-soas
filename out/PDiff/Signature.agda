@@ -7,12 +7,12 @@ type
   * : 0-ary
 
 term
-  zero  : * | 𝟘 
+  zero  : * | 𝟘
   add   : *  *  ->  * | _⊕_ l20
-  one   : * | 𝟙 
+  one   : * | 𝟙
   mult  : *  *  ->  * | _⊗_ l20
   neg   : *  ->  * | ⊖_ r50
-  pdiff : *.*  *  ->  * | ∂_∣_ 
+  pd : *.*  *  ->  * | ∂_∣_ 
 
 theory
   (𝟘U⊕ᴸ) a |> add (zero, a) = a
@@ -32,8 +32,8 @@ theory
   (∂⊕) a : * |> x : * |- d0 (add (x, a)) = one
   (∂⊗) a : * |> x : * |- d0 (mult(a, x)) = a
   (∂C) f : (*,*).* |> x : *  y : * |- d1 (d0 (f[x,y])) = d0 (d1 (f[x,y]))
-  (∂Ch₂) f : (*,*).*  g h : *.* |> x : * |- d0 (f[g[x], h[x]]) = add (mult(pdiff(z. f[z, h[x]], g[x]), d0(g[x])), mult(pdiff(z. f[g[x], z], h[x]), d0(h[x])))
-  (∂Ch₁) f g : *.* |> x : * |- d0 (f[g[x]]) = mult (pdiff (z. f[z], g[x]), d0(g[x]))
+  (∂Ch₂) f : (*,*).*  g h : *.* |> x : * |- d0 (f[g[x], h[x]]) = add (mult(pd(z. f[z, h[x]], g[x]), d0(g[x])), mult(pd(z. f[g[x], z], h[x]), d0(h[x])))
+  (∂Ch₁) f g : *.* |> x : * |- d0 (f[g[x]]) = mult (pd (z. f[z], g[x]), d0(g[x]))
 -}
 
 module PDiff.Signature where
@@ -48,7 +48,7 @@ open import SOAS.Syntax.Build *T public
 
 -- Operator symbols
 data PDₒ : Set where
-  zeroₒ addₒ oneₒ multₒ negₒ pdiffₒ : PDₒ
+  zeroₒ addₒ oneₒ multₒ negₒ pdₒ : PDₒ
 
 -- Term signature
 PD:Sig : Signature PDₒ
@@ -58,7 +58,7 @@ PD:Sig = sig λ
   ;  oneₒ    → ⟼₀ *
   ;  multₒ   → (⊢₀ *) , (⊢₀ *) ⟼₂ *
   ;  negₒ    → (⊢₀ *) ⟼₁ *
-  ;  pdiffₒ  → (* ⊢₁ *) , (⊢₀ *) ⟼₂ *
+  ;  pdₒ  → (* ⊢₁ *) , (⊢₀ *) ⟼₂ *
   }
 
 open Signature PD:Sig public

@@ -12,7 +12,7 @@ term
   one   : * | 𝟙
   mult  : *  *  ->  * | _⊗_ l20
   neg   : *  ->  * | ⊖_ r50
-  pdiff : *.*  *  ->  * | ∂_∣_
+  pd : *.*  *  ->  * | ∂_∣_
 
 theory
   (𝟘U⊕ᴸ) a |> add (zero, a) = a
@@ -32,8 +32,8 @@ theory
   (∂⊕) a : * |> x : * |- d0 (add (x, a)) = one
   (∂⊗) a : * |> x : * |- d0 (mult(a, x)) = a
   (∂C) f : (*,*).* |> x : *  y : * |- d1 (d0 (f[x,y])) = d0 (d1 (f[x,y]))
-  (∂Ch₂) f : (*,*).*  g h : *.* |> x : * |- d0 (f[g[x], h[x]]) = add (mult(pdiff(z. f[z, h[x]], g[x]), d0(g[x])), mult(pdiff(z. f[g[x], z], h[x]), d0(h[x])))
-  (∂Ch₁) f g : *.* |> x : * |- d0 (f[g[x]]) = mult (pdiff (z. f[z], g[x]), d0(g[x]))
+  (∂Ch₂) f : (*,*).*  g h : *.* |> x : * |- d0 (f[g[x], h[x]]) = add (mult(pd(z. f[z, h[x]], g[x]), d0(g[x])), mult(pd(z. f[g[x], z], h[x]), d0(h[x])))
+  (∂Ch₁) f g : *.* |> x : * |- d0 (f[g[x]]) = mult (pd (z. f[z], g[x]), d0(g[x]))
 -}
 
 module PDiff.Equality where

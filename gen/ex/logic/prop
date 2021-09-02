@@ -10,6 +10,7 @@ theory
   'and'  idempotent
   'not'  involutive
   'or'   distributes over 'and'
+  'or' and 'and' absorptive
   'true' annihilates 'or'
   'not'  inverse of 'and' with 'false'
   'not'  inverse of 'or'  with 'true'

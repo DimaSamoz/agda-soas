@@ -27,6 +27,10 @@ theory
   (∧A) a b c |> and (and(a, b), c) = and (a, and(b, c))
   (∧D∨ᴸ) a b c |> and (a, or (b, c)) = or (and(a, b), and(a, c))
   (∧D∨ᴿ) a b c |> and (or (a, b), c) = or (and(a, c), and(b, c))
+  (∨B∧ᴸ) a b |> or (and (a, b), a) = a
+  (∨B∧ᴿ) a b |> or (a, and (a, b)) = a
+  (∧B∨ᴸ) a b |> and (or (a, b), a) = a
+  (∧B∨ᴿ) a b |> and (a, or (a, b)) = a
   (⊥X∧ᴸ) a |> and (false, a) = false
   (⊥X∧ᴿ) a |> and (a, false) = false
   (¬N∨ᴸ) a |> or (not (a), a) = false

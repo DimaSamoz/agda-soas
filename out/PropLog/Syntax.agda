@@ -33,12 +33,16 @@ theory
   (¬²) a |> not(not (a)) = a
   (∨D∧ᴸ) a b c |> or (a, and (b, c)) = and (or(a, b), or(a, c))
   (∨D∧ᴿ) a b c |> or (and (a, b), c) = and (or(a, c), or(b, c))
+  (∨B∧ᴸ) a b |> or (and (a, b), a) = a
+  (∨B∧ᴿ) a b |> or (a, and (a, b)) = a
+  (∧B∨ᴸ) a b |> and (or (a, b), a) = a
+  (∧B∨ᴿ) a b |> and (a, or (a, b)) = a
   (⊤X∨ᴸ) a |> or (true, a) = true
   (⊤X∨ᴿ) a |> or (a, true) = true
   (¬N∧ᴸ) a |> and (not (a), a) = false
   (¬N∧ᴿ) a |> and (a, not (a)) = false
-  (DM∧) a b |> not (and (a, b)) = or (not(a), not(b))
-  (DM∨) a b |> not (or (a, b)) = and (not(a), not(b))
+  (DM∧) a b |> not (and (a, b)) = or  (not(a), not(b))
+  (DM∨) a b |> not (or  (a, b)) = and (not(a), not(b))
 -}
 
 
@@ -163,7 +167,6 @@ open PR:Terms public
 open import SOAS.Families.Build public
 open import SOAS.Syntax.Shorthands PRᵃ public
 open import SOAS.Metatheory PR:Syn public
-
 
 -- Derived operations
 _⟹_ : PR 𝔛 * Γ → PR 𝔛 * Γ → PR 𝔛 * Γ
