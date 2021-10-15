@@ -1,6 +1,14 @@
 # SOAS: Second-Order Abstract Syntax
 An Agda formalisation framework for second-order languages.
 
+### Quick start
+
+Run
+```
+python soas.py <syntax> [-o <output>]
+```
+with `<syntax>` as a path to a syntax file (examples given in `gen/ex`, e.g. `python soas.py gen/ex/lambda/stlc`). By default the generated Agda modules will be saved in the `out` directory, but this can be customised with the `-o` argument.
+
 * [Introduction](#introduction)
 * [Usage](#usage)
   + [Syntax description language](#syntax-description-language)
@@ -44,6 +52,26 @@ the library generates Agda code for:
 * a record that, when instantiated with a mathematical model, induces a semantic interpretation of the syntax in the model that preserves substitution;
 * a term constructor for parametrised metavariables and the operation of metasubstitution;
 * and a library for second-order equational/rewriting reasoning based on the axioms.
+
+## Directory structure
+
+The high-level directory structure of the project is shown below:
+```
+.
+├── Everything.agda   | All the Agda modules that make up the library
+├── SOAS              | Main source directory
+├── gen               | Code generation script directory
+│   ├── ex            | Example syntax files
+│   ├── templates     | Template files used in generation
+│   ├── term.py       | Term parsing and output
+│   ├── type.py       | Type parsing and output
+│   ├── eq.py         | Equality parsing and output
+│   └── util.py       | Utilities
+├── out               | Agda modules generated from the examples
+└── soas.py           | Main entry script for the code generator
+```
+
+A browsable version of the library source code can be found [here](https://www.cl.cam.ac.uk/~ds709/agda-soas/code/Everything.html), and the example generated Agda modules [here](https://www.cl.cam.ac.uk/~ds709/agda-soas/ex/Examples.html).
 
 ## Usage
 
