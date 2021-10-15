@@ -1,4 +1,3 @@
--- {-# OPTIONS --rewriting #-}
 
 -- Concrete definition of contexts over a sort T
 module SOAS.Context {T : Set} where
@@ -6,7 +5,6 @@ module SOAS.Context {T : Set} where
 open import SOAS.Common
 
 open import Data.List using (List; []; _∷_; _++_)
--- open import Agda.Builtin.Equality.Rewrite
 
 
 -- Context: a list of types
@@ -38,8 +36,3 @@ infixl 20 _∔_
 ∔-unitʳ : (Γ : Ctx) → Γ ∔ ∅ ≡ Γ
 ∔-unitʳ ∅ = refl
 ∔-unitʳ (α ∙ Γ) = cong (α ∙_) (∔-unitʳ Γ)
-
--- Fairly innocuous extension of Agda's rewrite rules to equate Γ ∔ ∅ with Γ
--- and associativity -- avoids lots of awkward rewrites or transports
--- {-# REWRITE ∔-unitʳ #-}
--- {-# REWRITE ∔-assoc #-}
