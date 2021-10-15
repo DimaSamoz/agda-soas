@@ -1,5 +1,5 @@
+import argparse
 from string import Template
-import sys
 import os
 from os import path
 from pathlib import Path, PurePath
@@ -24,9 +24,11 @@ class Syntax:
     self.tm_sig.all_ty_vars()
     self.tm_sig.ty_name = ty_sig.name
 
-  def render_agda(self):
+  def render_agda(self, out):
     """Render the Agda files for the signature.
     """
+    if not out:
+      out = Path("out")
     temp_strings = {
       'syn_name': self.syn_name,
       'type': self.ty_sig.name,
@@ -51,15 +53,15 @@ class Syntax:
     }
     result = ""
 
-    if not path.exists(path.join('out', self.syn_name)):
-      os.makedirs(path.join('out', self.syn_name))
+    if not path.exists(path.join(out, self.syn_name)):
+      os.makedirs(path.join(out, self.syn_name))
     for tf in os.listdir(path.join('gen','templates')):
       if not self.theory and tf == "Equality.agda":
         continue
       with open(path.join('gen','templates',tf), 'r') as f:
         src = Template(f.read())
         result = src.substitute(temp_strings)
-      with open(path.join('out', self.syn_name, tf), "w") as output:
+      with open(path.join(out, self.syn_name, tf), "w") as output:
         output.write(result)
 
   def derive_tokens(self, tokens):
@@ -381,7 +383,7 @@ def read_syn(file):
 
     ext_syn = Syntax(syn_name, 
       TypeSignature(ty_name, *ty_ops) if has_ty else Unsorted(),
-      TermSignature(tm_name, *tm_ops), # if has_tm else EmptySig(),
+      TermSignature(tm_name, *tm_ops),
       Theory.mk(prop_lines, eq_lines, ops))
     return combine_syntaxes(base_syn, ext_syn, syn_name, tm_name)
 
@@ -389,13 +391,15 @@ def read_syn(file):
     ops = {op.name : op.sym for op in tm_ops}
     return Syntax(syn_name, 
       TypeSignature(ty_name, *ty_ops) if has_ty else Unsorted(),
-      TermSignature(tm_name, *tm_ops), # if has_tm else EmptySig(),
+      TermSignature(tm_name, *tm_ops),
       Theory.mk(prop_lines, eq_lines, ops))
     
-
 if __name__ == "__main__":
-  if len(sys.argv) == 2:
-    syntax = read_syn(sys.argv[1])
-  syntax.render_agda()
-  print(syntax.syn_name + " syntax generated successfully.")
+  arg_parser = argparse.ArgumentParser(prog="soas", description='Produce an Agda formalisation from a syntax description file')
+  arg_parser.add_argument("Syntax", metavar="path",type=Path, help="path to syntax file")
+  arg_parser.add_argument("-o", "--out", type=Path, action="store", help="output folder for generated Agda modules")
 
+  args = arg_parser.parse_args()
+  syntax = read_syn(args.Syntax)
+  syntax.render_agda(args.out)
+  print(syntax.syn_name + " syntax generated successfully.")
