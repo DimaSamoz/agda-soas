@@ -54,8 +54,8 @@ module L:Terms (𝔛 : Familyₛ) where
   Lᵃ : MetaAlg L
   Lᵃ = record
     { 𝑎𝑙𝑔 = λ where
-      (getₒ ⅋ a)     → get a
-      (putₒ ⅋ a , b) → put a b
+      (getₒ ⋮ a)     → get a
+      (putₒ ⋮ a , b) → put a b
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
   module Lᵃ = MetaAlg Lᵃ
@@ -71,8 +71,8 @@ module L:Terms (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (mvar 𝔪 mε) = 𝑚𝑣𝑎𝑟 𝔪 (𝕊 mε)
     𝕤𝕖𝕞 (var v) = 𝑣𝑎𝑟 v
 
-    𝕤𝕖𝕞 (get a)   = 𝑎𝑙𝑔 (getₒ ⅋ 𝕤𝕖𝕞 a)
-    𝕤𝕖𝕞 (put a b) = 𝑎𝑙𝑔 (putₒ ⅋ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b)
+    𝕤𝕖𝕞 (get a)   = 𝑎𝑙𝑔 (getₒ ⋮ 𝕤𝕖𝕞 a)
+    𝕤𝕖𝕞 (put a b) = 𝑎𝑙𝑔 (putₒ ⋮ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b)
 
     𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ Lᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
@@ -82,8 +82,8 @@ module L:Terms (𝔛 : Familyₛ) where
       where
       open ≡-Reasoning
       ⟨𝑎𝑙𝑔⟩ : (t : ⅀ L α Γ) → 𝕤𝕖𝕞 (Lᵃ.𝑎𝑙𝑔 t) ≡ 𝑎𝑙𝑔 (⅀₁ 𝕤𝕖𝕞 t)
-      ⟨𝑎𝑙𝑔⟩ (getₒ ⅋ _) = refl
-      ⟨𝑎𝑙𝑔⟩ (putₒ ⅋ _) = refl
+      ⟨𝑎𝑙𝑔⟩ (getₒ ⋮ _) = refl
+      ⟨𝑎𝑙𝑔⟩ (putₒ ⋮ _) = refl
 
       𝕊-tab : (mε : Π ~[ L ]↝ Γ)(v : ℐ α Π) → 𝕊 (tabulate mε) v ≡ 𝕤𝕖𝕞 (mε v)
       𝕊-tab mε new = refl

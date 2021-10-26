@@ -3,7 +3,7 @@ syntax PDiff | PD extends ../alg/cring
 term
   pd : *.*  *  ->       * | ∂_∣_
  {d0 :     *.* ->     *.* | ∂₀_}
- {d1  : (*,*).* -> (*,*).* | ∂₁_}
+ {d1 : (*,*).* -> (*,*).* | ∂₁_}
 
 theory
   (∂⊕)   a : * |> x : * |- d0 (add (x, a)) = one

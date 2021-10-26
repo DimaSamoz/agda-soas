@@ -49,7 +49,7 @@ module E:Terms (𝔛 : Familyₛ) where
   Eᵃ : MetaAlg E
   Eᵃ = record
     { 𝑎𝑙𝑔 = λ where
-      (abortₒ ⅋ a) → abort a
+      (abortₒ ⋮ a) → abort a
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
   module Eᵃ = MetaAlg Eᵃ
@@ -65,7 +65,7 @@ module E:Terms (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (mvar 𝔪 mε) = 𝑚𝑣𝑎𝑟 𝔪 (𝕊 mε)
     𝕤𝕖𝕞 (var v) = 𝑣𝑎𝑟 v
 
-    𝕤𝕖𝕞 (abort a) = 𝑎𝑙𝑔 (abortₒ ⅋ 𝕤𝕖𝕞 a)
+    𝕤𝕖𝕞 (abort a) = 𝑎𝑙𝑔 (abortₒ ⋮ 𝕤𝕖𝕞 a)
 
     𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ Eᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
@@ -75,7 +75,7 @@ module E:Terms (𝔛 : Familyₛ) where
       where
       open ≡-Reasoning
       ⟨𝑎𝑙𝑔⟩ : (t : ⅀ E α Γ) → 𝕤𝕖𝕞 (Eᵃ.𝑎𝑙𝑔 t) ≡ 𝑎𝑙𝑔 (⅀₁ 𝕤𝕖𝕞 t)
-      ⟨𝑎𝑙𝑔⟩ (abortₒ ⅋ _) = refl
+      ⟨𝑎𝑙𝑔⟩ (abortₒ ⋮ _) = refl
 
       𝕊-tab : (mε : Π ~[ E ]↝ Γ)(v : ℐ α Π) → 𝕊 (tabulate mε) v ≡ 𝕤𝕖𝕞 (mε v)
       𝕊-tab mε new = refl

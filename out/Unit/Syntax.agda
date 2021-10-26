@@ -49,7 +49,7 @@ module U:Terms (𝔛 : Familyₛ) where
   Uᵃ : MetaAlg U
   Uᵃ = record
     { 𝑎𝑙𝑔 = λ where
-      (unitₒ ⅋ _) → unit
+      (unitₒ ⋮ _) → unit
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
   module Uᵃ = MetaAlg Uᵃ
@@ -65,7 +65,7 @@ module U:Terms (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (mvar 𝔪 mε) = 𝑚𝑣𝑎𝑟 𝔪 (𝕊 mε)
     𝕤𝕖𝕞 (var v) = 𝑣𝑎𝑟 v
 
-    𝕤𝕖𝕞  unit  = 𝑎𝑙𝑔 (unitₒ ⅋ tt)
+    𝕤𝕖𝕞  unit  = 𝑎𝑙𝑔 (unitₒ ⋮ tt)
 
     𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ Uᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
@@ -75,7 +75,7 @@ module U:Terms (𝔛 : Familyₛ) where
       where
       open ≡-Reasoning
       ⟨𝑎𝑙𝑔⟩ : (t : ⅀ U α Γ) → 𝕤𝕖𝕞 (Uᵃ.𝑎𝑙𝑔 t) ≡ 𝑎𝑙𝑔 (⅀₁ 𝕤𝕖𝕞 t)
-      ⟨𝑎𝑙𝑔⟩ (unitₒ ⅋ _) = refl
+      ⟨𝑎𝑙𝑔⟩ (unitₒ ⋮ _) = refl
 
       𝕊-tab : (mε : Π ~[ U ]↝ Γ)(v : ℐ α Π) → 𝕊 (tabulate mε) v ≡ 𝕤𝕖𝕞 (mε v)
       𝕊-tab mε new = refl

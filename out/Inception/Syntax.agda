@@ -56,8 +56,8 @@ module IA:Terms (𝔛 : Familyₛ) where
   IAᵃ : MetaAlg IA
   IAᵃ = record
     { 𝑎𝑙𝑔 = λ where
-      (recₒ ⅋ a , b) → rec a b
-      (incₒ ⅋ a , b) → inc a b
+      (recₒ ⋮ a , b) → rec a b
+      (incₒ ⋮ a , b) → inc a b
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
   module IAᵃ = MetaAlg IAᵃ
@@ -73,8 +73,8 @@ module IA:Terms (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (mvar 𝔪 mε) = 𝑚𝑣𝑎𝑟 𝔪 (𝕊 mε)
     𝕤𝕖𝕞 (var v) = 𝑣𝑎𝑟 v
 
-    𝕤𝕖𝕞 (rec a b) = 𝑎𝑙𝑔 (recₒ ⅋ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b)
-    𝕤𝕖𝕞 (inc a b) = 𝑎𝑙𝑔 (incₒ ⅋ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b)
+    𝕤𝕖𝕞 (rec a b) = 𝑎𝑙𝑔 (recₒ ⋮ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b)
+    𝕤𝕖𝕞 (inc a b) = 𝑎𝑙𝑔 (incₒ ⋮ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b)
 
     𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ IAᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
@@ -84,8 +84,8 @@ module IA:Terms (𝔛 : Familyₛ) where
       where
       open ≡-Reasoning
       ⟨𝑎𝑙𝑔⟩ : (t : ⅀ IA α Γ) → 𝕤𝕖𝕞 (IAᵃ.𝑎𝑙𝑔 t) ≡ 𝑎𝑙𝑔 (⅀₁ 𝕤𝕖𝕞 t)
-      ⟨𝑎𝑙𝑔⟩ (recₒ ⅋ _) = refl
-      ⟨𝑎𝑙𝑔⟩ (incₒ ⅋ _) = refl
+      ⟨𝑎𝑙𝑔⟩ (recₒ ⋮ _) = refl
+      ⟨𝑎𝑙𝑔⟩ (incₒ ⋮ _) = refl
 
       𝕊-tab : (mε : Π ~[ IA ]↝ Γ)(v : ℐ α Π) → 𝕊 (tabulate mε) v ≡ 𝕤𝕖𝕞 (mε v)
       𝕊-tab mε new = refl

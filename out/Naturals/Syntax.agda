@@ -54,9 +54,9 @@ module Nat:Terms (𝔛 : Familyₛ) where
   Natᵃ : MetaAlg Nat
   Natᵃ = record
     { 𝑎𝑙𝑔 = λ where
-      (zeₒ   ⅋ _)         → ze
-      (suₒ   ⅋ a)         → su   a
-      (nrecₒ ⅋ a , b , c) → nrec a b c
+      (zeₒ   ⋮ _)         → ze
+      (suₒ   ⋮ a)         → su   a
+      (nrecₒ ⋮ a , b , c) → nrec a b c
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
   module Natᵃ = MetaAlg Natᵃ
@@ -72,9 +72,9 @@ module Nat:Terms (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (mvar 𝔪 mε) = 𝑚𝑣𝑎𝑟 𝔪 (𝕊 mε)
     𝕤𝕖𝕞 (var v) = 𝑣𝑎𝑟 v
 
-    𝕤𝕖𝕞  ze          = 𝑎𝑙𝑔 (zeₒ   ⅋ tt)
-    𝕤𝕖𝕞 (su   a)     = 𝑎𝑙𝑔 (suₒ   ⅋ 𝕤𝕖𝕞 a)
-    𝕤𝕖𝕞 (nrec a b c) = 𝑎𝑙𝑔 (nrecₒ ⅋ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b , 𝕤𝕖𝕞 c)
+    𝕤𝕖𝕞  ze          = 𝑎𝑙𝑔 (zeₒ   ⋮ tt)
+    𝕤𝕖𝕞 (su   a)     = 𝑎𝑙𝑔 (suₒ   ⋮ 𝕤𝕖𝕞 a)
+    𝕤𝕖𝕞 (nrec a b c) = 𝑎𝑙𝑔 (nrecₒ ⋮ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b , 𝕤𝕖𝕞 c)
 
     𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ Natᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
@@ -84,9 +84,9 @@ module Nat:Terms (𝔛 : Familyₛ) where
       where
       open ≡-Reasoning
       ⟨𝑎𝑙𝑔⟩ : (t : ⅀ Nat α Γ) → 𝕤𝕖𝕞 (Natᵃ.𝑎𝑙𝑔 t) ≡ 𝑎𝑙𝑔 (⅀₁ 𝕤𝕖𝕞 t)
-      ⟨𝑎𝑙𝑔⟩ (zeₒ   ⅋ _) = refl
-      ⟨𝑎𝑙𝑔⟩ (suₒ   ⅋ _) = refl
-      ⟨𝑎𝑙𝑔⟩ (nrecₒ ⅋ _) = refl
+      ⟨𝑎𝑙𝑔⟩ (zeₒ   ⋮ _) = refl
+      ⟨𝑎𝑙𝑔⟩ (suₒ   ⋮ _) = refl
+      ⟨𝑎𝑙𝑔⟩ (nrecₒ ⋮ _) = refl
 
       𝕊-tab : (mε : Π ~[ Nat ]↝ Γ)(v : ℐ α Π) → 𝕊 (tabulate mε) v ≡ 𝕤𝕖𝕞 (mε v)
       𝕊-tab mε new = refl

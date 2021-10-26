@@ -52,8 +52,8 @@ record Signature (O : Set) : Set₁ where
     ; F-resp-≈ = λ{ p {x = o , e , ar} → cong (λ - → o , e , -) (F-resp-≈ o p) }
     } where open module AF o =  Functor (ArgF (Arity o))
 
-  pattern _⅋_ o ar = (o , refl , ar)
-  infix 1 _⅋_
+  pattern _⋮_ o ar = (o , refl , ar)
+  infix 1 _⋮_
 
   open import SOAS.Metatheory.Algebra {T} ⅀F public
 

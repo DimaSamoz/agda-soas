@@ -172,10 +172,10 @@ class Op:
     """
     var_names = new_vars(self.arity)
     if self.arity:
-      return f"({self.name}ₒ {' ' * self.padding}⅋ {' , '.join(var_names)}) {' ' * (4 * self.arity_diff)}→ {self.sym} " + (' ' * self.sym_padding) + ' '.join(var_names)
+      return f"({self.name}ₒ {' ' * self.padding}⋮ {' , '.join(var_names)}) {' ' * (4 * self.arity_diff)}→ {self.sym} " + (' ' * self.sym_padding) + ' '.join(var_names)
     else:
 
-      return f"({self.name}ₒ {' ' * self.padding}⅋ _) {' ' * (4 * (self.arity_diff - 1))}→ {self.sym}"
+      return f"({self.name}ₒ {' ' * self.padding}⋮ _) {' ' * (4 * (self.arity_diff - 1))}→ {self.sym}"
 
   def render_sem_pat(self):
     """Render pattern for the semantic interpretation.
@@ -190,12 +190,12 @@ class Op:
       pattern = appn(" " + self.sym + " " * self.sym_padding + " ", " ".join(new_vars(self.arity)))
       args = 'tt'
 
-    return f"𝕤𝕖𝕞 {pattern + ' ' * (self.arity_diff * 2)} = 𝑎𝑙𝑔 ({self.name}ₒ {' ' * self.padding}⅋ {args})"
+    return f"𝕤𝕖𝕞 {pattern + ' ' * (self.arity_diff * 2)} = 𝑎𝑙𝑔 ({self.name}ₒ {' ' * self.padding}⋮ {args})"
 
   def render_alg_hom_pat(self):
     """Render pattern for algebra homomorphism instance.
     """
-    return f"⟨𝑎𝑙𝑔⟩ ({self.name}ₒ {' ' * self.padding}⅋ _) = refl"
+    return f"⟨𝑎𝑙𝑔⟩ ({self.name}ₒ {' ' * self.padding}⋮ _) = refl"
 
   def render_alg_unique_pat(self):
     """Render pattern for unique homomorphism proof.
