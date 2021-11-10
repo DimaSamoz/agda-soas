@@ -9,24 +9,6 @@ open import Data.List.Base
 
 open import SOAS.Syntax.Signature T
 
--- Sum of two signatures
-_+ˢ_ : {O₁ O₂ : Set} → Signature O₁ → Signature O₂ → Signature (+₂ O₁ O₂)
-S1 +ˢ S2 = sig (₂| ∣ S1 ∣ ∣ S2 ∣)
-  where open Signature
-
--- Sums of signatures
-Σ₂ : {O₁ O₂ : Set} → Signature O₁ → Signature O₂ → Signature (+₂ O₁ O₂)
-Σ₂ S₁ S₂ = sig (₂| (∣ S₁ ∣) (∣ S₂ ∣))
-  where open Signature
-
-Σ₃ : {O₁ O₂ O₃ : Set} → Signature O₁ → Signature O₂ → Signature O₃ → Signature (+₃ O₁ O₂ O₃)
-Σ₃ S₁ S₂ S₃ = sig (₃| (∣ S₁ ∣) (∣ S₂ ∣) (∣ S₃ ∣))
-  where open Signature
-
-Σ₄ : {O₁ O₂ O₃ O₄ : Set} → Signature O₁ → Signature O₂ → Signature O₃ → Signature O₄ → Signature (+₄ O₁ O₂ O₃ O₄)
-Σ₄ S₁ S₂ S₃ S₄ = sig (₄| (∣ S₁ ∣) (∣ S₂ ∣) (∣ S₃ ∣) (∣ S₄ ∣))
-  where open Signature
-
 -- Syntactic sugar to construct arity - sort mappings
 ⟼₀_ : T → List (Ctx × T) × T
 ⟼₀_ τ = [] , τ
@@ -69,3 +51,22 @@ infix 10 ⊢₀_
 infix 10 _⊢₁_
 infix 10 _,_⊢₂_
 infix 10 _⊢ₙ_
+
+
+-- Sum of two signatures
+_+ˢ_ : {O₁ O₂ : Set} → Signature O₁ → Signature O₂ → Signature (+₂ O₁ O₂)
+S1 +ˢ S2 = sig (₂| ∣ S1 ∣ ∣ S2 ∣)
+  where open Signature
+
+-- Sums of signatures
+Σ₂ : {O₁ O₂ : Set} → Signature O₁ → Signature O₂ → Signature (+₂ O₁ O₂)
+Σ₂ S₁ S₂ = sig (₂| (∣ S₁ ∣) (∣ S₂ ∣))
+  where open Signature
+
+Σ₃ : {O₁ O₂ O₃ : Set} → Signature O₁ → Signature O₂ → Signature O₃ → Signature (+₃ O₁ O₂ O₃)
+Σ₃ S₁ S₂ S₃ = sig (₃| (∣ S₁ ∣) (∣ S₂ ∣) (∣ S₃ ∣))
+  where open Signature
+
+Σ₄ : {O₁ O₂ O₃ O₄ : Set} → Signature O₁ → Signature O₂ → Signature O₃ → Signature O₄ → Signature (+₄ O₁ O₂ O₃ O₄)
+Σ₄ S₁ S₂ S₃ S₄ = sig (₄| (∣ S₁ ∣) (∣ S₂ ∣) (∣ S₃ ∣) (∣ S₄ ∣))
+  where open Signature

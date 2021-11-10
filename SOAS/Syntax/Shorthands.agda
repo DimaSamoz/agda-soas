@@ -16,7 +16,8 @@ open import SOAS.Families.Build
 open import SOAS.ContextMaps.Inductive
 open import SOAS.Variable
 open import Data.Nat
-open import Data.Empty
+
+open import Relation.Nullary.Decidable using (True; toWitness)
 
 private
   variable
@@ -26,19 +27,23 @@ private
 module _ {𝔛 : Familyₛ} where
   open MetaAlg 𝔛 (𝒜ᵃ 𝔛)
 
-  ix : Ctx → ℕ → T
-  ix ∅ n = ⊥-elim impossible where postulate impossible : ⊥
-  ix (α ∙ Γ) 0 = α
-  ix (α ∙ Γ) (suc n) = ix Γ n
+  -- Refer to variables via de Bruijn numerals: e.g. ` 2 = 𝑣𝑎𝑟 (old (old new))
+  len : Ctx {T} → ℕ
+  len ∅        =  ℕ.zero
+  len (α ∙ Γ)  =  suc (len Γ)
 
-  deBruijn : (n : ℕ) → ℐ (ix Γ n) Γ
-  deBruijn {α ∙ Γ} 0 = new
-  deBruijn {α ∙ Γ} (suc n) = old (deBruijn n)
-  deBruijn {∅}     _       = ⊥-elim impossible where postulate impossible : ⊥
+  ix : {Γ : Ctx} → {n : ℕ} → (p : n < len Γ) → T
+  ix {(α ∙ _)} {zero}    (s≤s z≤n)  =  α
+  ix {(_ ∙ Γ)} {(suc n)} (s≤s p)    =  ix p
 
-  ′ : {Γ : Ctx}(n : ℕ) → 𝒜 𝔛 (ix Γ n) Γ
-  ′ n = 𝑣𝑎𝑟 (deBruijn n)
+  deBruijn : ∀ {Γ} → {n : ℕ} → (p : n < len Γ) → ℐ (ix p) Γ
+  deBruijn {_ ∙ _} {zero}    (s≤s z≤n)  =  new
+  deBruijn {_ ∙ Γ} {(suc n)} (s≤s p)    =  old (deBruijn p)
 
+  ′ : {Γ : Ctx}(n : ℕ){n∈Γ : True (suc n ≤? len Γ)} → 𝒜 𝔛 (ix (toWitness n∈Γ)) Γ
+  ′ n {n∈Γ} = 𝑣𝑎𝑟 (deBruijn (toWitness n∈Γ))
+
+  -- Explicit abbreviations for de Bruijn indices 0-4
   x₀ : 𝒜 𝔛 α (α ∙ Γ)
   x₀ = 𝑣𝑎𝑟 new
   x₁ : 𝒜 𝔛 β (α ∙ β ∙ Γ)

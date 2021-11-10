@@ -1,4 +1,3 @@
--- {-# OPTIONS --rewriting #-}
 
 -- The category of contexts and renamings
 module SOAS.ContextMaps.CategoryOfRenamings {T : Set} where

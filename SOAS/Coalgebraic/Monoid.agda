@@ -34,9 +34,6 @@ record CoalgMon (𝒳 : Familyₛ) : Set where
     η-compat : {v : ℐ α Γ} → ηᴮ v ≡ ηᵐ v
     μ-compat : {ρ : Γ ↝ Δ}{t : 𝒳 α Γ} → r t ρ ≡ μ t (ηᵐ ∘ ρ)
 
-  -- ᴮ : Coalgₚ 𝒳
-  -- ᴮ = record { ᴮ = ᴮ ; η = η ; r∘η = trans compat lunit }
-
   open Coalgₚ ᴮ using (r∘η) public
 
   -- Multiplication of coalgebraic monoids is a pointed coalgebraic map

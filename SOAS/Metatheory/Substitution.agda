@@ -22,6 +22,7 @@ open import SOAS.Abstract.Monoid
 
 open import SOAS.Coalgebraic.Map
 open import SOAS.Coalgebraic.Monoid
+open import SOAS.Coalgebraic.Lift
 
 open import SOAS.Metatheory.Algebra ⅀F
 open import SOAS.Metatheory.Semantics ⅀F ⅀:Str 𝔛 𝕋:Init
@@ -34,7 +35,7 @@ open Strength ⅀:Str
 private
   variable
     Γ Δ : Ctx
-    α : T
+    α β : T
 
 -- Substitution is a 𝕋-parametrised traversal into 𝕋
 module Substitution = Traversal 𝕋ᴮ 𝕒𝕝𝕘 id 𝕞𝕧𝕒𝕣
@@ -101,3 +102,41 @@ open Mon 𝕋ᵐ using ([_/] ; [_,_/]₂ ; lunit ; runit ; assoc) public
 
 𝕋ᴹ : CoalgMon 𝕋
 𝕋ᴹ = record { ᴮ = 𝕋ᴮ ; ᵐ = 𝕋ᵐ ; η-compat = refl ; μ-compat = λ{ {t = t} → compat t } }
+
+
+-- Corollaries: renaming and simultaneous substitution commutes with
+-- single-variable substitution
+open import SOAS.ContextMaps.Combinators
+𝕣𝕖𝕟[/] : (ρ : Γ ↝ Δ)(b : 𝕋 α (β ∙ Γ))(a : 𝕋 β Γ)
+      → 𝕣𝕖𝕟 ([ a /] b) ρ ≡ [ (𝕣𝕖𝕟 a ρ) /] (𝕣𝕖𝕟 b (rlift _ ρ))
+𝕣𝕖𝕟[/] ρ b a = begin
+      𝕣𝕖𝕟 ([ a /] b) ρ
+  ≡⟨ 𝕤𝕦𝕓ᶜ.r∘f ⟩
+      𝕤𝕦𝕓 b (λ v → 𝕣𝕖𝕟 (add 𝕋 a 𝕧𝕒𝕣 v) ρ)
+  ≡⟨ cong (𝕤𝕦𝕓 b) (dext (λ{ new → refl ; (old y) → Renaming.𝕥⟨𝕧⟩})) ⟩
+      𝕤𝕦𝕓 b (λ v → add 𝕋 (𝕣𝕖𝕟  a ρ) 𝕧𝕒𝕣 (rlift _ ρ v))
+  ≡˘⟨ 𝕤𝕦𝕓ᶜ.f∘r ⟩
+      [ 𝕣𝕖𝕟 a ρ /] (𝕣𝕖𝕟 b (rlift _ ρ))
+  ∎ where open ≡-Reasoning
+
+𝕤𝕦𝕓[/] : (σ : Γ ~[ 𝕋 ]↝ Δ)(b : 𝕋 α (β ∙ Γ))(a : 𝕋 β Γ)
+      → 𝕤𝕦𝕓 ([ a /] b) σ ≡ [ 𝕤𝕦𝕓 a σ /] (𝕤𝕦𝕓 b (lift 𝕋ᴮ ⌈ β ⌋ σ))
+𝕤𝕦𝕓[/] {β = β} σ b a = begin
+      𝕤𝕦𝕓 ([ a /] b) σ
+  ≡⟨ assoc ⟩
+      𝕤𝕦𝕓 b (λ v → 𝕤𝕦𝕓 (add 𝕋 a 𝕧𝕒𝕣 v) σ)
+  ≡⟨ cong (𝕤𝕦𝕓 b) (dext (λ{ new → sym lunit ; (old v) → sym (begin
+        𝕤𝕦𝕓 (𝕣𝕖𝕟 (σ v) old) (add 𝕋 (𝕤𝕦𝕓 a σ) 𝕧𝕒𝕣)
+    ≡⟨ 𝕤𝕦𝕓ᶜ.f∘r ⟩
+        𝕤𝕦𝕓 (σ v) (λ v → add 𝕋 (𝕤𝕦𝕓 a σ) 𝕧𝕒𝕣 (old v))
+    ≡⟨ cong (𝕤𝕦𝕓 (σ v)) (dext (λ{ new → refl ; (old v) → refl})) ⟩
+        𝕤𝕦𝕓 (σ v) 𝕧𝕒𝕣
+    ≡⟨ runit ⟩
+        σ v
+    ≡˘⟨ lunit ⟩
+        𝕤𝕦𝕓 (𝕧𝕒𝕣 v) σ
+    ∎)})) ⟩
+      𝕤𝕦𝕓 b (λ v → 𝕤𝕦𝕓 (lift 𝕋ᴮ ⌈ β ⌋ σ v) (add 𝕋 (𝕤𝕦𝕓 a σ) 𝕧𝕒𝕣))
+  ≡˘⟨ assoc ⟩
+      [ 𝕤𝕦𝕓 a σ /] (𝕤𝕦𝕓 b (lift 𝕋ᴮ ⌈ β ⌋ σ))
+  ∎ where open ≡-Reasoning

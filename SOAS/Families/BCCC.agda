@@ -1,5 +1,4 @@
 
-
 -- Bi-Cartesian closed structure of families
 module SOAS.Families.BCCC {T : Set} where
 

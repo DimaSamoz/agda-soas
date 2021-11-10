@@ -80,11 +80,3 @@ module Σ𝕄on = Category Σ𝕄onoids
 ΣMonoid⇒ = Σ𝕄on._⇒_
 
 module FreeΣMonoid = ΣMonoidStructure.Free ΣMonoidCatProps
-
--- module AsΣMonoid (ℳᴹ : ΣMonoid) where
---   open Object ℳᴹ renaming (𝐶 to ℳ; ˢ to ᴹ) public
---   open ΣMon ᴹ public
---
--- module AsΣMonoid⇒ {ℳᴹ 𝒩ᴹ : ΣMonoid} (fᴹ⇒ : ΣMonoid⇒ ℳᴹ 𝒩ᴹ) where
---   open Morphism fᴹ⇒ renaming (𝑓 to f ; ˢ⇒ to ᴹ⇒) public
---   open ΣMon⇒ ᴹ⇒ public
