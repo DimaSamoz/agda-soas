@@ -1,6 +1,8 @@
 # SOAS: Second-Order Abstract Syntax
 An Agda formalisation framework for second-order languages.
 
+Accompanies the POPL 2022 paper [Formal Metatheory of Second-Order Abstract Syntax](https://www.cl.cam.ac.uk/~ds709/agda-soas/).
+
 ### Quick start
 
 Run
