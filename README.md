@@ -9,7 +9,7 @@ Run
 ```
 python soas.py <syntax> [-o <output>]
 ```
-with `<syntax>` as a path to a syntax file (examples given in `gen/ex`, e.g. `python soas.py gen/ex/lambda/stlc`). By default the generated Agda modules will be saved in the `out` directory, but this can be customised with the `-o` argument.
+with `<syntax>` as a path to a syntax file (examples given in `gen/ex`, e.g. `python soas.py gen/ex/lambda/stlc`). This assumes `python` is Python 3. By default the generated Agda modules will be saved in the `out` directory, but this can be customised with the `-o` argument.
 
 * [Introduction](#introduction)
 * [Usage](#usage)
