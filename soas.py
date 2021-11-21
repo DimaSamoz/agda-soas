@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import argparse
 from string import Template
 import os
