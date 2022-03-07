@@ -7,6 +7,7 @@ open import SOAS.Context
 open import SOAS.Variable
 open import SOAS.Families.Core {T}
 open import SOAS.Abstract.Hom {T}
+import SOAS.Abstract.Box {T} as □ ; open □.Sorted
 import SOAS.Abstract.Coalgebra {T} as →□ ; open →□.Sorted
 
 open import SOAS.Coalgebraic.Map
@@ -20,7 +21,7 @@ private
 -- Pointed coalgebraic strength for a family endofunctor
 record Strength (Fᶠ : Functor 𝔽amiliesₛ 𝔽amiliesₛ) : Set₁ where
   open Functor Fᶠ
-  open Coalgₚ
+  open Coalg
 
   field
     -- Strength transformation that lifts a 𝒫-substitution over an endofunctor F₀
@@ -53,6 +54,11 @@ record Strength (Fᶠ : Functor 𝔽amiliesₛ 𝔽amiliesₛ) : Set₁ where
       → str ℛᴮ 𝒳 h (λ v → f (σ v) ς)
       ≡ str 𝒬ᴮ 𝒳 (str 〖𝒫,𝒴〗ᴮ 〖 𝒬 , 𝒳 〗 (F₁ (L 𝒬 ℛ 𝒳) h) (f ∘ σ)) ς
 
+  str≈₁ : {𝒫 : Familyₛ}{𝒫ᴮ : Coalgₚ 𝒫}{𝒳 : Familyₛ}
+        → {t₁ t₂ : F₀ 〖 𝒫 , 𝒳 〗 α Γ}{σ : Γ ~[ 𝒫 ]↝ Δ}
+        → t₁ ≡ t₂
+        → str 𝒫ᴮ 𝒳 t₁ σ ≡ str 𝒫ᴮ 𝒳 t₂ σ
+  str≈₁ refl = refl
 
   module _ (𝒳 {𝒫 𝒬 ℛ} : Familyₛ) where
 
@@ -81,3 +87,33 @@ record Strength (Fᶠ : Functor 𝔽amiliesₛ 𝔽amiliesₛ) : Set₁ where
       where
       open ≡-Reasoning
       open Coalgebraic fᶜ renaming (ᴮ⇒ to fᴮ⇒)
+
+  -- Target of a strong functor is a coalgebra
+  Fᵇ : {𝒫 : Familyₛ}(𝒫ᵇ : Coalg 𝒫) → Coalg (F₀ 𝒫)
+  Fᵇ {𝒫} 𝒫ᵇ = record
+    { r = str ℐᴮ 𝒫 ∘ F₁ (r 𝒫ᵇ)
+    ; counit = λ{ {t = t} → begin
+          str ℐᴮ 𝒫 (F₁ (r 𝒫ᵇ) t) id
+      ≡⟨ str-unit 𝒫 (F₁ (r 𝒫ᵇ) t) ⟩
+          F₁ (i 𝒫) (F₁ (r 𝒫ᵇ) t)
+      ≡˘⟨ homomorphism ⟩
+          F₁ (λ t → r 𝒫ᵇ t id) t
+      ≡⟨ F-resp-≈ (counit 𝒫ᵇ) ⟩
+          F₁ id t
+      ≡⟨ identity ⟩
+          t
+      ∎ }
+    ; comult = λ{ {ρ = ρ}{ϱ}{t} → begin
+          str ℐᴮ 𝒫 (F₁ (r 𝒫ᵇ) t) (ϱ ∘ ρ)
+      ≡⟨ str-dist 𝒫 (jᶜ ℐᴮ) (F₁ (r 𝒫ᵇ) t) ρ ϱ ⟩
+          str ℐᴮ 𝒫 (str ℐᴮ (□ 𝒫) (F₁ (λ{ b ρ ϱ → b (ϱ ∘ ρ)}) (F₁ (r 𝒫ᵇ) t)) ρ) ϱ
+      ≡˘⟨ str≈₁ (str≈₁ homomorphism) ⟩
+          str ℐᴮ 𝒫 (str ℐᴮ (□ 𝒫) (F₁ (λ{ t ρ ϱ → r 𝒫ᵇ t (ϱ ∘ ρ) }) t) ρ) ϱ
+      ≡⟨ str≈₁ (str≈₁ (F-resp-≈ (dext² (λ ρ ϱ → comult 𝒫ᵇ)))) ⟩
+          str ℐᴮ 𝒫 (str ℐᴮ (□ 𝒫) (F₁ (λ{ t ρ ϱ → r 𝒫ᵇ (r 𝒫ᵇ t ρ) ϱ }) t) ρ) ϱ
+      ≡⟨ str≈₁ (str≈₁ homomorphism) ⟩
+          str ℐᴮ 𝒫 (str ℐᴮ (□ 𝒫) (F₁ {□ 𝒫}{□ (□ 𝒫)}(r 𝒫ᵇ ∘_) (F₁ (r 𝒫ᵇ) t)) ρ) ϱ
+      ≡⟨ str≈₁ (str-nat₂ (r 𝒫ᵇ) (F₁ (r 𝒫ᵇ) t) ρ) ⟩
+          str ℐᴮ 𝒫 (F₁ (r 𝒫ᵇ) (str ℐᴮ 𝒫 (F₁ (r 𝒫ᵇ) t) ρ)) ϱ
+      ∎ }
+    } where open ≡-Reasoning
