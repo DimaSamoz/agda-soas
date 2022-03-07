@@ -6,6 +6,7 @@ open import SOAS.Common
 open import SOAS.Context {T}
 open import SOAS.Variable
 open import SOAS.ContextMaps.Combinators (ℐ {T})
+open import SOAS.Families.Core
 
 open import Categories.Functor.Bifunctor
 open import Categories.Object.Initial
@@ -115,11 +116,26 @@ _∣∔_ : {Γ₁ Γ₂ : Ctx}(ρ : Γ₁ ↝ Γ₂)(Δ : Ctx) → (Γ₁ ∔ Δ
 _∔∣_ : {Δ₁ Δ₂ : Ctx}(Γ : Ctx)(ϱ : Δ₁ ↝ Δ₂) → (Γ ∔ Δ₁) ↝ (Γ ∔ Δ₂)
 Γ ∔∣ ϱ =  id′ᵣ Γ ∣∔∣ ϱ
 
+-- Injections
 inl  : (Γ {Δ} : Ctx) → Γ ↝ Γ ∔ Δ
 inl Γ {Δ} v = ∔.i₁ {Γ}{Δ} v
 
 inr  : (Γ {Δ} : Ctx) → Δ ↝ Γ ∔ Δ
 inr Γ {Δ} v = ∔.i₂ {Γ}{Δ} v
+
+-- Associator morphisms
+↝assocʳ : (Γ Δ Θ : Ctx) → (Γ ∔ Δ) ∔ Θ ↝ Γ ∔ (Δ ∔ Θ)
+↝assocʳ Γ Δ Θ = ∔.+-assocˡ {Γ}{Δ}{Θ}
+  -- copair (copair (inl Γ) (inr Γ ∘ inl Δ))
+  --        (inr Γ ∘ inr Δ)
+
+↝assocˡ : (Γ Δ Θ : Ctx) → Γ ∔ (Δ ∔ Θ) ↝ (Γ ∔ Δ) ∔ Θ
+↝assocˡ Γ Δ Θ = ∔.+-assocʳ {Γ}{Δ}{Θ}
+  -- copair (inl (Γ ∔ Δ) ∘ inl Γ)
+  --        (copair (inl (Γ ∔ Δ) ∘ inr Γ) (inr (Γ ∔ Δ)))
+
+assoc-isoʳˡ : (Γ Δ Θ : Ctx){α : T}{v : ℐ α ((Γ ∔ Δ) ∔ Θ)} → ↝assocˡ Γ Δ Θ (↝assocʳ Γ Δ Θ v) ≡ v
+assoc-isoʳˡ Γ Δ Θ = Categories.Morphism._≅_.isoʳ (∔.+-assoc {Γ}{Δ}{Θ})
 
 
 -- Left context concatenation represents weakening a variable in Γ by an

@@ -102,6 +102,7 @@ module Sorted where
         → r t ρ₁ ≡ r t ρ₂
     r≈₂ {t = t} p = cong (r t) (dext′ p)
 
+    -- Weakening and associativity
     wkr : (Θ : Ctx) → 𝒳 α Γ → 𝒳 α (Θ ∔ Γ)
     wkr Θ t = r t (inr Θ)
 
@@ -111,6 +112,12 @@ module Sorted where
     wk : {τ : T} → 𝒳 α Γ → 𝒳 α (τ ∙ Γ)
     wk t = r t old
 
+    reassocʳ : (Γ Δ Θ : Ctx) → 𝒳 α ((Γ ∔ Δ) ∔ Θ) → 𝒳 α (Γ ∔ (Δ ∔ Θ))
+    reassocʳ Γ Δ Θ t = r t (↝assocʳ Γ Δ Θ)
+
+    reassocˡ : (Γ Δ Θ : Ctx) → 𝒳 α (Γ ∔ (Δ ∔ Θ)) → 𝒳 α ((Γ ∔ Δ) ∔ Θ)
+    reassocˡ Γ Δ Θ t = r t (↝assocˡ Γ Δ Θ)
+
   -- Coalgebra homomorphism
   record Coalg⇒ {𝒳 𝒴}(Xᵇ : Coalg 𝒳)(𝒴ᵇ : Coalg 𝒴) (f : 𝒳 ⇾̣ 𝒴) : Set where
     private module 𝒳 = Coalg Xᵇ
@@ -118,7 +125,7 @@ module Sorted where
     field
       ⟨r⟩ : {ρ : Γ ↝ Δ}{t : 𝒳 α Γ} → f (𝒳.r t ρ) ≡ 𝒴.r (f t) (ρ)
 
-  private module CoalgebraStructure = Structure 𝔽amiliesₛ Coalg
+  module CoalgebraStructure = Structure 𝔽amiliesₛ Coalg
 
   -- Eilenberg–Moore category of a comonad
   ℂoalgebras : Category 1ℓ 0ℓ 0ℓ
@@ -184,6 +191,10 @@ module Sorted where
   -- □ 𝒳 is free pointed coalgebra on pointed families
   □ᴮ : (𝒳 : Familyₛ) → ℐ ⇾̣ 𝒳 → Coalgₚ (□ 𝒳)
   □ᴮ 𝒳 η = record { ᵇ = □ᵇ 𝒳 ; η = λ v ρ → η (ρ v) ; r∘η = refl }
+
+  -- Renaming map is a homomorphism
+  rᵇ⇒ : {𝒳 : Familyₛ}{𝒳ᵇ : Coalg 𝒳} → Coalg⇒ 𝒳ᵇ (□ᵇ 𝒳) (Coalg.r 𝒳ᵇ)
+  rᵇ⇒ {𝒳}{𝒳ᵇ} = record { ⟨r⟩ = λ{ {ρ = ρ}{t} → dext λ ϱ → sym (Coalg.comult 𝒳ᵇ) } }
 
   -- Identity and point are homomorphisms
   idᴮ⇒ : {𝒳 : Familyₛ}{𝒳ᴮ : Coalgₚ 𝒳} → Coalgₚ⇒ 𝒳ᴮ 𝒳ᴮ id
