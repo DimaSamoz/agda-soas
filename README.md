@@ -170,7 +170,7 @@ The syntax file contains:
   ```
 * an instance of the algebra of the signature endofunctor, mapping operator symbols to terms of the syntax:
   ```agda
-  Λᵃ : MetaAlg Λ
+  Λᵃ : SynAlg Λ
   Λᵃ = record
     { 𝑎𝑙𝑔 = λ where
       (appₒ ⅋ a , b) → _$_ a b
@@ -193,7 +193,7 @@ The syntax file contains:
 
 * proof that the interpretation is a signature algebra homomorphism:
   ```agda
-  𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ Λᵃ 𝒜ᵃ 𝕤𝕖𝕞
+  𝕤𝕖𝕞ᵃ⇒ : SynAlg⇒ Λᵃ 𝒜ᵃ 𝕤𝕖𝕞
   𝕤𝕖𝕞ᵃ⇒ = record
     { ⟨𝑎𝑙𝑔⟩ = λ{ {t = t} → ⟨𝑎𝑙𝑔⟩ t }
     ; ⟨𝑣𝑎𝑟⟩ = refl

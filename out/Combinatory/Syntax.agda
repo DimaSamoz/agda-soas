@@ -52,9 +52,9 @@ module CL:Terms (𝔛 : Familyₛ) where
 
   infixl 20 _$_
 
-  open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
+  open import SOAS.Metatheory.SynAlgebra ⅀F 𝔛
 
-  CLᵃ : MetaAlg CL
+  CLᵃ : SynAlg CL
   CLᵃ = record
     { 𝑎𝑙𝑔 = λ where
       (appₒ ⋮ a , b) → _$_ a b
@@ -63,11 +63,11 @@ module CL:Terms (𝔛 : Familyₛ) where
       (sₒ   ⋮ _)     → S
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
-  module CLᵃ = MetaAlg CLᵃ
+  module CLᵃ = SynAlg CLᵃ
 
-  module _ {𝒜 : Familyₛ}(𝒜ᵃ : MetaAlg 𝒜) where
+  module _ {𝒜 : Familyₛ}(𝒜ᵃ : SynAlg 𝒜) where
 
-    open MetaAlg 𝒜ᵃ
+    open SynAlg 𝒜ᵃ
 
     𝕤𝕖𝕞 : CL ⇾̣ 𝒜
     𝕊 : Sub CL Π Γ → Π ~[ 𝒜 ]↝ Γ
@@ -81,7 +81,7 @@ module CL:Terms (𝔛 : Familyₛ) where
     𝕤𝕖𝕞  K        = 𝑎𝑙𝑔 (kₒ   ⋮ tt)
     𝕤𝕖𝕞  S        = 𝑎𝑙𝑔 (sₒ   ⋮ tt)
 
-    𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ CLᵃ 𝒜ᵃ 𝕤𝕖𝕞
+    𝕤𝕖𝕞ᵃ⇒ : SynAlg⇒ CLᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
       { ⟨𝑎𝑙𝑔⟩ = λ{ {t = t} → ⟨𝑎𝑙𝑔⟩ t }
       ; ⟨𝑣𝑎𝑟⟩ = refl
@@ -98,9 +98,9 @@ module CL:Terms (𝔛 : Familyₛ) where
       𝕊-tab mε new = refl
       𝕊-tab mε (old v) = 𝕊-tab (mε ∘ old) v
 
-    module _ (g : CL ⇾̣ 𝒜)(gᵃ⇒ : MetaAlg⇒ CLᵃ 𝒜ᵃ g) where
+    module _ (g : CL ⇾̣ 𝒜)(gᵃ⇒ : SynAlg⇒ CLᵃ 𝒜ᵃ g) where
 
-      open MetaAlg⇒ gᵃ⇒
+      open SynAlg⇒ gᵃ⇒
 
       𝕤𝕖𝕞! : (t : CL α Γ) → 𝕤𝕖𝕞 t ≡ g t
       𝕊-ix : (mε : Sub CL Π Γ)(v : ℐ α Π) → 𝕊 mε v ≡ g (index mε v)

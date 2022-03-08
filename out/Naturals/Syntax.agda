@@ -49,9 +49,9 @@ module Nat:Terms (𝔛 : Familyₛ) where
 
 
 
-  open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
+  open import SOAS.Metatheory.SynAlgebra ⅀F 𝔛
 
-  Natᵃ : MetaAlg Nat
+  Natᵃ : SynAlg Nat
   Natᵃ = record
     { 𝑎𝑙𝑔 = λ where
       (zeₒ   ⋮ _)         → ze
@@ -59,11 +59,11 @@ module Nat:Terms (𝔛 : Familyₛ) where
       (nrecₒ ⋮ a , b , c) → nrec a b c
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
-  module Natᵃ = MetaAlg Natᵃ
+  module Natᵃ = SynAlg Natᵃ
 
-  module _ {𝒜 : Familyₛ}(𝒜ᵃ : MetaAlg 𝒜) where
+  module _ {𝒜 : Familyₛ}(𝒜ᵃ : SynAlg 𝒜) where
 
-    open MetaAlg 𝒜ᵃ
+    open SynAlg 𝒜ᵃ
 
     𝕤𝕖𝕞 : Nat ⇾̣ 𝒜
     𝕊 : Sub Nat Π Γ → Π ~[ 𝒜 ]↝ Γ
@@ -76,7 +76,7 @@ module Nat:Terms (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (su   a)     = 𝑎𝑙𝑔 (suₒ   ⋮ 𝕤𝕖𝕞 a)
     𝕤𝕖𝕞 (nrec a b c) = 𝑎𝑙𝑔 (nrecₒ ⋮ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b , 𝕤𝕖𝕞 c)
 
-    𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ Natᵃ 𝒜ᵃ 𝕤𝕖𝕞
+    𝕤𝕖𝕞ᵃ⇒ : SynAlg⇒ Natᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
       { ⟨𝑎𝑙𝑔⟩ = λ{ {t = t} → ⟨𝑎𝑙𝑔⟩ t }
       ; ⟨𝑣𝑎𝑟⟩ = refl
@@ -92,9 +92,9 @@ module Nat:Terms (𝔛 : Familyₛ) where
       𝕊-tab mε new = refl
       𝕊-tab mε (old v) = 𝕊-tab (mε ∘ old) v
 
-    module _ (g : Nat ⇾̣ 𝒜)(gᵃ⇒ : MetaAlg⇒ Natᵃ 𝒜ᵃ g) where
+    module _ (g : Nat ⇾̣ 𝒜)(gᵃ⇒ : SynAlg⇒ Natᵃ 𝒜ᵃ g) where
 
-      open MetaAlg⇒ gᵃ⇒
+      open SynAlg⇒ gᵃ⇒
 
       𝕤𝕖𝕞! : (t : Nat α Γ) → 𝕤𝕖𝕞 t ≡ g t
       𝕊-ix : (mε : Sub Nat Π Γ)(v : ℐ α Π) → 𝕊 mε v ≡ g (index mε v)

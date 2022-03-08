@@ -3,13 +3,13 @@ open import SOAS.Common
 open import SOAS.Families.Core
 open import Categories.Object.Initial
 open import SOAS.Coalgebraic.Strength
-import SOAS.Metatheory.MetaAlgebra
+import SOAS.Metatheory.SynAlgebra
 
 -- Coalgebraic traversal maps
 module SOAS.Metatheory.Coalgebraic {T : Set}
   (⅀F : Functor 𝔽amiliesₛ 𝔽amiliesₛ) (⅀:Str : Strength ⅀F)
-  (𝔛 : Familyₛ) (open SOAS.Metatheory.MetaAlgebra ⅀F 𝔛)
-  (𝕋:Init : Initial 𝕄etaAlgebras)
+  (𝔛 : Familyₛ) (open SOAS.Metatheory.SynAlgebra ⅀F 𝔛)
+  (𝕋:Init : Initial 𝕊ynAlgebras)
   where
 
 open import SOAS.Context
@@ -28,12 +28,12 @@ open import SOAS.Metatheory.Renaming ⅀F ⅀:Str 𝔛 𝕋:Init
 open Strength ⅀:Str
 
 -- Relationship of traversal and interpretation, assuming 𝒜 has compatible renaming structure
-module _ {𝒜 : Familyₛ}(𝒜ᵇ : Coalg 𝒜)(𝒜ᵃ : MetaAlg 𝒜)
+module _ {𝒜 : Familyₛ}(𝒜ᵇ : Coalg 𝒜)(𝒜ᵃ : SynAlg 𝒜)
          (open Semantics 𝒜ᵃ)(open Coalg 𝒜ᵇ)
-         (rᵃ⇒ : MetaAlg⇒ 𝒜ᵃ (□ᵃ 𝒜ᵃ) r) where
+         (rᵃ⇒ : SynAlg⇒ 𝒜ᵃ (□ᵃ 𝒜ᵃ) r) where
 
-  open MetaAlg 𝒜ᵃ
-  open MetaAlg⇒ rᵃ⇒
+  open SynAlg 𝒜ᵃ
+  open SynAlg⇒ rᵃ⇒
 
   𝒜ᴮ : Coalgₚ 𝒜
   𝒜ᴮ = record { ᵇ = 𝒜ᵇ ; η = 𝑣𝑎𝑟 ; r∘η = cong (λ - → - _) ⟨𝑣𝑎𝑟⟩ }
@@ -95,11 +95,11 @@ module Travᶜ {𝒫 𝒜 : Familyₛ}(𝒫ᴮ : Coalgₚ 𝒫)(𝑎𝑙𝑔 : �
 
   -- Assuming 𝒜 is also a pointed □-coalgebra, traversal also commutes with renaming
   module _ (𝒜ᴮ : Coalgₚ 𝒜)(φᴮ : Coalgₚ⇒ 𝒫ᴮ 𝒜ᴮ φ)
-           (𝒜rᵃ : MetaAlg⇒ 𝒜ᵃ (□ᵃ 𝒜ᵃ) (Coalgₚ.r 𝒜ᴮ)) where
+           (𝒜rᵃ : SynAlg⇒ 𝒜ᵃ (□ᵃ 𝒜ᵃ) (Coalgₚ.r 𝒜ᴮ)) where
 
     private module 𝒜ᴮ = Coalgₚ 𝒜ᴮ
     private module φᴮ = Coalgₚ⇒ φᴮ
-    private module 𝒜rᵃ = MetaAlg⇒ 𝒜rᵃ
+    private module 𝒜rᵃ = SynAlg⇒ 𝒜rᵃ
 
     -- Renaming and interpretation can commute
     r∘𝕥𝕣𝕒𝕧 : MapEq₂ 𝒫ᴮ ℐᴮ 𝑎𝑙𝑔 (λ t σ ϱ → 𝒜ᴮ.r (𝕥𝕣𝕒𝕧 t σ) ϱ)

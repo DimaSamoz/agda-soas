@@ -11,19 +11,19 @@ open import Categories.Object.Initial
 open import SOAS.Construction.Structure
 open import SOAS.ContextMaps.Inductive
 open import SOAS.Coalgebraic.Strength
-open import SOAS.Abstract.ExpStrength
-open import SOAS.Metatheory.MetaAlgebra
+open import SOAS.Linear.Strength
+open import SOAS.Metatheory.SynAlgebra
 
 -- Data characterising a second-order syntax:
 -- * a signature endofunctor ⅀
 -- * coalgebraic and exponential strength
--- * initial (⅀,𝔛)-meta-algebra for each 𝔛
--- + an inductive metavariable constructor for convenience
+-- * initial (⅀,𝔛)-syntactic algebra for each 𝔛
+-- * an inductive metavariable constructor for convenience
 record Syntax : Set₁ where
   field
     ⅀F    : Functor 𝔽amiliesₛ 𝔽amiliesₛ
     ⅀:CS  : CompatStrengths ⅀F
-    𝕋:Init : (𝔛 : Familyₛ) → Initial (𝕄etaAlgebras ⅀F 𝔛)
+    𝕋:Init : (𝔛 : Familyₛ) → Initial (𝕊ynAlgebras ⅀F 𝔛)
     mvarᵢ  : {𝔛 : Familyₛ}{τ : T}{Π Γ : Ctx} (open Initial (𝕋:Init 𝔛))
           → 𝔛 τ Π → Sub (𝐶 ⊥) Π Γ → 𝐶 ⊥ τ Γ
 
@@ -71,7 +71,7 @@ record Syntax : Set₁ where
   𝔡 = 𝔡⟨ •
   𝔢 : Tm (⁅ Π₄ ⊩ₙ α₄ ⁆ ⁅ Π₃ ⊩ₙ α₃ ⁆ ⁅ Π₂ ⊩ₙ α₂ ⁆ ⁅ Π₁ ⊩ₙ α₁ ⁆ ⁅ α ⁆ 𝔐) α Γ
   𝔢 = 𝔢⟨ •
-  
+
   -- Synonyms for holes
   ◌ᵃ = 𝔞 ; ◌ᵇ = 𝔟 ; ◌ᶜ = 𝔠 ; ◌ᵈ = 𝔡 ; ◌ᵉ = 𝔢
   ◌ᵃ⟨_ = 𝔞⟨_ ; ◌ᵇ⟨_ = 𝔟⟨_ ; ◌ᶜ⟨_ = 𝔠⟨_ ; ◌ᵈ⟨_ = 𝔡⟨_ ; ◌ᵉ⟨_ = 𝔢⟨_

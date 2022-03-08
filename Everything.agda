@@ -100,7 +100,7 @@ import SOAS.Coalgebraic.Monoid
 import SOAS.Metatheory.Algebra
 
 -- Algebras with variables and metavariables
-import SOAS.Metatheory.MetaAlgebra
+import SOAS.Metatheory.SynAlgebra
 
 -- Signature monoids
 import SOAS.Metatheory.Monoid

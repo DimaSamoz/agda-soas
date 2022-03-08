@@ -50,9 +50,9 @@ module P:Terms (𝔛 : Familyₛ) where
 
 
 
-  open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
+  open import SOAS.Metatheory.SynAlgebra ⅀F 𝔛
 
-  Pᵃ : MetaAlg P
+  Pᵃ : SynAlg P
   Pᵃ = record
     { 𝑎𝑙𝑔 = λ where
       (pairₒ ⋮ a , b) → ⟨_,_⟩ a b
@@ -60,11 +60,11 @@ module P:Terms (𝔛 : Familyₛ) where
       (sndₒ  ⋮ a)     → snd   a
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
-  module Pᵃ = MetaAlg Pᵃ
+  module Pᵃ = SynAlg Pᵃ
 
-  module _ {𝒜 : Familyₛ}(𝒜ᵃ : MetaAlg 𝒜) where
+  module _ {𝒜 : Familyₛ}(𝒜ᵃ : SynAlg 𝒜) where
 
-    open MetaAlg 𝒜ᵃ
+    open SynAlg 𝒜ᵃ
 
     𝕤𝕖𝕞 : P ⇾̣ 𝒜
     𝕊 : Sub P Π Γ → Π ~[ 𝒜 ]↝ Γ
@@ -77,7 +77,7 @@ module P:Terms (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (fst   a)   = 𝑎𝑙𝑔 (fstₒ  ⋮ 𝕤𝕖𝕞 a)
     𝕤𝕖𝕞 (snd   a)   = 𝑎𝑙𝑔 (sndₒ  ⋮ 𝕤𝕖𝕞 a)
 
-    𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ Pᵃ 𝒜ᵃ 𝕤𝕖𝕞
+    𝕤𝕖𝕞ᵃ⇒ : SynAlg⇒ Pᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
       { ⟨𝑎𝑙𝑔⟩ = λ{ {t = t} → ⟨𝑎𝑙𝑔⟩ t }
       ; ⟨𝑣𝑎𝑟⟩ = refl
@@ -93,9 +93,9 @@ module P:Terms (𝔛 : Familyₛ) where
       𝕊-tab mε new = refl
       𝕊-tab mε (old v) = 𝕊-tab (mε ∘ old) v
 
-    module _ (g : P ⇾̣ 𝒜)(gᵃ⇒ : MetaAlg⇒ Pᵃ 𝒜ᵃ g) where
+    module _ (g : P ⇾̣ 𝒜)(gᵃ⇒ : SynAlg⇒ Pᵃ 𝒜ᵃ g) where
 
-      open MetaAlg⇒ gᵃ⇒
+      open SynAlg⇒ gᵃ⇒
 
       𝕤𝕖𝕞! : (t : P α Γ) → 𝕤𝕖𝕞 t ≡ g t
       𝕊-ix : (mε : Sub P Π Γ)(v : ℐ α Π) → 𝕊 mε v ≡ g (index mε v)

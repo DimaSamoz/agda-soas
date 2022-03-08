@@ -72,9 +72,9 @@ module PCF:Terms (𝔛 : Familyₛ) where
   infixl 20 _$_
   infixr 10 ƛ_
 
-  open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
+  open import SOAS.Metatheory.SynAlgebra ⅀F 𝔛
 
-  PCFᵃ : MetaAlg PCF
+  PCFᵃ : SynAlg PCF
   PCFᵃ = record
     { 𝑎𝑙𝑔 = λ where
       (appₒ ⋮ a , b)     → _$_ a b
@@ -89,11 +89,11 @@ module PCF:Terms (𝔛 : Familyₛ) where
       (fixₒ ⋮ a)         → fix a
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
-  module PCFᵃ = MetaAlg PCFᵃ
+  module PCFᵃ = SynAlg PCFᵃ
 
-  module _ {𝒜 : Familyₛ}(𝒜ᵃ : MetaAlg 𝒜) where
+  module _ {𝒜 : Familyₛ}(𝒜ᵃ : SynAlg 𝒜) where
 
-    open MetaAlg 𝒜ᵃ
+    open SynAlg 𝒜ᵃ
 
     𝕤𝕖𝕞 : PCF ⇾̣ 𝒜
     𝕊 : Sub PCF Π Γ → Π ~[ 𝒜 ]↝ Γ
@@ -113,7 +113,7 @@ module PCF:Terms (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (if  a b c) = 𝑎𝑙𝑔 (ifₒ  ⋮ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b , 𝕤𝕖𝕞 c)
     𝕤𝕖𝕞 (fix a)     = 𝑎𝑙𝑔 (fixₒ ⋮ 𝕤𝕖𝕞 a)
 
-    𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ PCFᵃ 𝒜ᵃ 𝕤𝕖𝕞
+    𝕤𝕖𝕞ᵃ⇒ : SynAlg⇒ PCFᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
       { ⟨𝑎𝑙𝑔⟩ = λ{ {t = t} → ⟨𝑎𝑙𝑔⟩ t }
       ; ⟨𝑣𝑎𝑟⟩ = refl
@@ -136,9 +136,9 @@ module PCF:Terms (𝔛 : Familyₛ) where
       𝕊-tab mε new = refl
       𝕊-tab mε (old v) = 𝕊-tab (mε ∘ old) v
 
-    module _ (g : PCF ⇾̣ 𝒜)(gᵃ⇒ : MetaAlg⇒ PCFᵃ 𝒜ᵃ g) where
+    module _ (g : PCF ⇾̣ 𝒜)(gᵃ⇒ : SynAlg⇒ PCFᵃ 𝒜ᵃ g) where
 
-      open MetaAlg⇒ gᵃ⇒
+      open SynAlg⇒ gᵃ⇒
 
       𝕤𝕖𝕞! : (t : PCF α Γ) → 𝕤𝕖𝕞 t ≡ g t
       𝕊-ix : (mε : Sub PCF Π Γ)(v : ℐ α Π) → 𝕊 mε v ≡ g (index mε v)

@@ -3,13 +3,13 @@ open import SOAS.Common
 open import SOAS.Families.Core
 open import Categories.Object.Initial
 open import SOAS.Coalgebraic.Strength
-import SOAS.Metatheory.MetaAlgebra
+import SOAS.Metatheory.SynAlgebra
 
 -- Traversals parametrised by a pointed coalgebra
 module SOAS.Metatheory.Traversal {T : Set}
   (⅀F : Functor 𝔽amiliesₛ 𝔽amiliesₛ) (⅀:Str : Strength ⅀F)
-  (𝔛 : Familyₛ) (open SOAS.Metatheory.MetaAlgebra ⅀F 𝔛)
-  (𝕋:Init : Initial 𝕄etaAlgebras)
+  (𝔛 : Familyₛ) (open SOAS.Metatheory.SynAlgebra ⅀F 𝔛)
+  (𝕋:Init : Initial 𝕊ynAlgebras)
   where
 
 open import SOAS.Context
@@ -36,11 +36,11 @@ module Traversal (𝒫ᴮ : Coalgₚ 𝒫)(𝑎𝑙𝑔 : ⅀ 𝒜 ⇾̣ 𝒜)
 
   open Coalgₚ 𝒫ᴮ
 
-  -- Under the assumptions 𝒜 and 〖 𝒫 , 𝒜 〗 are both meta-algebras
-  𝒜ᵃ : MetaAlg 𝒜
+  -- Under the assumptions 𝒜 and 〖 𝒫 , 𝒜 〗 are both syntactic algebras
+  𝒜ᵃ : SynAlg 𝒜
   𝒜ᵃ = record { 𝑎𝑙𝑔 = 𝑎𝑙𝑔 ; 𝑣𝑎𝑟 = λ x → φ (η x) ; 𝑚𝑣𝑎𝑟 = χ }
 
-  Travᵃ : MetaAlg 〖 𝒫 , 𝒜 〗
+  Travᵃ : SynAlg 〖 𝒫 , 𝒜 〗
   Travᵃ = record
     { 𝑎𝑙𝑔  = λ t σ → 𝑎𝑙𝑔 (str 𝒫ᴮ 𝒜 t σ)
     ; 𝑣𝑎𝑟  = λ x σ → φ (σ x)
@@ -79,18 +79,18 @@ module Traversal (𝒫ᴮ : Coalgₚ 𝒫)(𝑎𝑙𝑔 : ⅀ 𝒜 ⇾̣ 𝒜)
 
 
 -- A pointed meta-Λ-algebra induces 𝕒𝕝𝕘 traversal into □ 𝒜
-module □Traversal {𝒜} (𝒜ᵃ : MetaAlg 𝒜) =
-  Traversal ℐᴮ (MetaAlg.𝑎𝑙𝑔 𝒜ᵃ) (MetaAlg.𝑣𝑎𝑟 𝒜ᵃ) (MetaAlg.𝑚𝑣𝑎𝑟 𝒜ᵃ)
+module □Traversal {𝒜} (𝒜ᵃ : SynAlg 𝒜) =
+  Traversal ℐᴮ (SynAlg.𝑎𝑙𝑔 𝒜ᵃ) (SynAlg.𝑣𝑎𝑟 𝒜ᵃ) (SynAlg.𝑚𝑣𝑎𝑟 𝒜ᵃ)
 
 -- Corollary: □ lifts to an endofunctor on pointed meta-Λ-algebras
-□ᵃ : (𝒜ᵃ : MetaAlg 𝒜) → MetaAlg (□ 𝒜)
+□ᵃ : (𝒜ᵃ : SynAlg 𝒜) → SynAlg (□ 𝒜)
 □ᵃ = □Traversal.Travᵃ
 
 -- Helper records for proving equality of maps f, g out of 𝕋,
 -- with 0, 1 or 2 parameters
 record MapEq₀ (𝒜 : Familyₛ)(f g : 𝕋 ⇾̣ 𝒜) : Set where
   field
-    ᵃ : MetaAlg 𝒜
+    ᵃ : SynAlg 𝒜
   open Semantics ᵃ
   open 𝒜
 
@@ -108,9 +108,9 @@ record MapEq₀ (𝒜 : Familyₛ)(f g : 𝕋 ⇾̣ 𝒜) : Set where
     g⟨𝑎⟩ : {t : ⅀ 𝕋 α Γ}
          → g (𝕒𝕝𝕘 t) ≡ 𝑎𝑙𝑔 (⅀₁ g t)
 
-  fᵃ : MetaAlg⇒ 𝕋ᵃ ᵃ f
+  fᵃ : SynAlg⇒ 𝕋ᵃ ᵃ f
   fᵃ = record { ⟨𝑎𝑙𝑔⟩ =  f⟨𝑎⟩ ; ⟨𝑣𝑎𝑟⟩ =  f⟨𝑣⟩ ; ⟨𝑚𝑣𝑎𝑟⟩ =  f⟨𝑚⟩ }
-  gᵃ : MetaAlg⇒ 𝕋ᵃ ᵃ g
+  gᵃ : SynAlg⇒ 𝕋ᵃ ᵃ g
   gᵃ = record { ⟨𝑎𝑙𝑔⟩ =  g⟨𝑎⟩ ; ⟨𝑣𝑎𝑟⟩ =  g⟨𝑣⟩ ; ⟨𝑚𝑣𝑎𝑟⟩ =  g⟨𝑚⟩ }
 
   ≈ : (t : 𝕋 α Γ) → f t ≡ g t
@@ -138,9 +138,9 @@ record MapEq₁ (𝒫ᴮ : Coalgₚ 𝒫)(𝑎𝑙𝑔 : ⅀ 𝒜 ⇾̣ 𝒜)
     g⟨𝑎⟩ : {σ : Γ ~[ 𝒫 ]↝ Δ}{t : ⅀ 𝕋 α Γ}
          → g (𝕒𝕝𝕘 t) σ ≡ 𝑎𝑙𝑔 (str 𝒫ᴮ 𝒜 (⅀₁ g t) σ)
 
-  fᵃ : MetaAlg⇒ 𝕋ᵃ Travᵃ f
+  fᵃ : SynAlg⇒ 𝕋ᵃ Travᵃ f
   fᵃ = record { ⟨𝑎𝑙𝑔⟩ = dext′ f⟨𝑎⟩ ; ⟨𝑣𝑎𝑟⟩ = dext′ f⟨𝑣⟩ ; ⟨𝑚𝑣𝑎𝑟⟩ = dext′ f⟨𝑚⟩ }
-  gᵃ : MetaAlg⇒ 𝕋ᵃ Travᵃ g
+  gᵃ : SynAlg⇒ 𝕋ᵃ Travᵃ g
   gᵃ = record { ⟨𝑎𝑙𝑔⟩ = dext′ g⟨𝑎⟩ ; ⟨𝑣𝑎𝑟⟩ = dext′ g⟨𝑣⟩ ; ⟨𝑚𝑣𝑎𝑟⟩ = dext′ g⟨𝑚⟩ }
 
   ≈ : {σ : Γ ~[ 𝒫 ]↝ Δ}(t : 𝕋 α Γ) → f t σ ≡ g t σ
@@ -169,10 +169,10 @@ record MapEq₂ (𝒫ᴮ : Coalgₚ 𝒫)(𝒬ᴮ : Coalgₚ 𝒬)(𝑎𝑙𝑔 
     g⟨𝑎⟩ : {σ : Γ ~[ 𝒫 ]↝ Δ}{ς : Δ ~[ 𝒬 ]↝ Θ}{t : ⅀ 𝕋 α Γ}
          → g (𝕒𝕝𝕘 t) σ ς ≡ 𝑎𝑙𝑔 (str 𝒬ᴮ 𝒜 (str 𝒫ᴮ 〖 𝒬 , 𝒜 〗 (⅀₁ g t) σ) ς)
 
-  fᵃ : MetaAlg⇒ 𝕋ᵃ Travᵃ f
+  fᵃ : SynAlg⇒ 𝕋ᵃ Travᵃ f
   fᵃ = record { ⟨𝑎𝑙𝑔⟩ = dext′ (dext′ f⟨𝑎⟩) ; ⟨𝑣𝑎𝑟⟩ = dext′ (dext′ f⟨𝑣⟩)
               ; ⟨𝑚𝑣𝑎𝑟⟩ = dext′ (dext′ f⟨𝑚⟩) }
-  gᵃ : MetaAlg⇒ 𝕋ᵃ Travᵃ g
+  gᵃ : SynAlg⇒ 𝕋ᵃ Travᵃ g
   gᵃ = record { ⟨𝑎𝑙𝑔⟩ = dext′ (dext′ g⟨𝑎⟩) ; ⟨𝑣𝑎𝑟⟩ = dext′ (dext′ g⟨𝑣⟩)
               ; ⟨𝑚𝑣𝑎𝑟⟩ = dext′ (dext′ g⟨𝑚⟩) }
 
@@ -180,8 +180,8 @@ record MapEq₂ (𝒫ᴮ : Coalgₚ 𝒫)(𝒬ᴮ : Coalgₚ 𝒬)(𝑎𝑙𝑔 
   ≈ {σ = σ}{ς} t = cong (λ - → - σ ς) (eq fᵃ gᵃ t)
 
 -- Interaction of traversal and interpretation
-module _ (𝒫ᴮ : Coalgₚ 𝒫)(𝒜ᵃ : MetaAlg 𝒜)(φ : 𝒫 ⇾̣ 𝒜) where
-  open MetaAlg 𝒜ᵃ
+module _ (𝒫ᴮ : Coalgₚ 𝒫)(𝒜ᵃ : SynAlg 𝒜)(φ : 𝒫 ⇾̣ 𝒜) where
+  open SynAlg 𝒜ᵃ
   open Coalgₚ 𝒫ᴮ
   open Semantics 𝒜ᵃ
   open Traversal 𝒫ᴮ 𝑎𝑙𝑔 φ 𝑚𝑣𝑎𝑟 using (𝕥𝕣𝕒𝕧 ; 𝕥⟨𝕒⟩ ; 𝕥⟨𝕧⟩ ; 𝕥⟨𝕞⟩)
@@ -210,9 +210,9 @@ module _ (𝒫ᴮ : Coalgₚ 𝒫)(𝒜ᵃ : MetaAlg 𝒜)(φ : 𝒫 ⇾̣ 𝒜)
 𝕥𝕣𝕒𝕧-η≈id 𝒫ᴮ φ φ∘η≈𝑣𝑎𝑟 = trans (𝕥𝕣𝕒𝕧-η≈𝕤𝕖𝕞 𝒫ᴮ 𝕋ᵃ φ φ∘η≈𝑣𝑎𝑟) 𝕤𝕖𝕞-id
 
 -- Corollaries for ℐ-parametrised traversals
-□𝕥𝕣𝕒𝕧-id≈𝕤𝕖𝕞 : (𝒜ᵃ : MetaAlg 𝒜){t : 𝕋 α Γ}
+□𝕥𝕣𝕒𝕧-id≈𝕤𝕖𝕞 : (𝒜ᵃ : SynAlg 𝒜){t : 𝕋 α Γ}
             → □Traversal.𝕥𝕣𝕒𝕧 𝒜ᵃ t id ≡ Semantics.𝕤𝕖𝕞 𝒜ᵃ t
-□𝕥𝕣𝕒𝕧-id≈𝕤𝕖𝕞 𝒜ᵃ {t} = 𝕥𝕣𝕒𝕧-η≈𝕤𝕖𝕞 ℐᴮ 𝒜ᵃ (MetaAlg.𝑣𝑎𝑟 𝒜ᵃ) refl
+□𝕥𝕣𝕒𝕧-id≈𝕤𝕖𝕞 𝒜ᵃ {t} = 𝕥𝕣𝕒𝕧-η≈𝕤𝕖𝕞 ℐᴮ 𝒜ᵃ (SynAlg.𝑣𝑎𝑟 𝒜ᵃ) refl
 
 □𝕥𝕣𝕒𝕧-id≈id : {t : 𝕋 α Γ} → □Traversal.𝕥𝕣𝕒𝕧 𝕋ᵃ t id ≡ t
 □𝕥𝕣𝕒𝕧-id≈id = 𝕥𝕣𝕒𝕧-η≈id ℐᴮ 𝕧𝕒𝕣 refl

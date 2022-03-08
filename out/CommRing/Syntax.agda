@@ -67,9 +67,9 @@ module CR:Terms (𝔛 : Familyₛ) where
   infixl 30 _⊗_
   infixr 50 ⊖_
 
-  open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
+  open import SOAS.Metatheory.SynAlgebra ⅀F 𝔛
 
-  CRᵃ : MetaAlg CR
+  CRᵃ : SynAlg CR
   CRᵃ = record
     { 𝑎𝑙𝑔 = λ where
       (zeroₒ ⋮ _)     → 𝟘
@@ -79,11 +79,11 @@ module CR:Terms (𝔛 : Familyₛ) where
       (negₒ  ⋮ a)     → ⊖_  a
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
-  module CRᵃ = MetaAlg CRᵃ
+  module CRᵃ = SynAlg CRᵃ
 
-  module _ {𝒜 : Familyₛ}(𝒜ᵃ : MetaAlg 𝒜) where
+  module _ {𝒜 : Familyₛ}(𝒜ᵃ : SynAlg 𝒜) where
 
-    open MetaAlg 𝒜ᵃ
+    open SynAlg 𝒜ᵃ
 
     𝕤𝕖𝕞 : CR ⇾̣ 𝒜
     𝕊 : Sub CR Π Γ → Π ~[ 𝒜 ]↝ Γ
@@ -98,7 +98,7 @@ module CR:Terms (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (_⊗_ a b) = 𝑎𝑙𝑔 (multₒ ⋮ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b)
     𝕤𝕖𝕞 (⊖_  a)   = 𝑎𝑙𝑔 (negₒ  ⋮ 𝕤𝕖𝕞 a)
 
-    𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ CRᵃ 𝒜ᵃ 𝕤𝕖𝕞
+    𝕤𝕖𝕞ᵃ⇒ : SynAlg⇒ CRᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
       { ⟨𝑎𝑙𝑔⟩ = λ{ {t = t} → ⟨𝑎𝑙𝑔⟩ t }
       ; ⟨𝑣𝑎𝑟⟩ = refl
@@ -116,9 +116,9 @@ module CR:Terms (𝔛 : Familyₛ) where
       𝕊-tab mε new = refl
       𝕊-tab mε (old v) = 𝕊-tab (mε ∘ old) v
 
-    module _ (g : CR ⇾̣ 𝒜)(gᵃ⇒ : MetaAlg⇒ CRᵃ 𝒜ᵃ g) where
+    module _ (g : CR ⇾̣ 𝒜)(gᵃ⇒ : SynAlg⇒ CRᵃ 𝒜ᵃ g) where
 
-      open MetaAlg⇒ gᵃ⇒
+      open SynAlg⇒ gᵃ⇒
 
       𝕤𝕖𝕞! : (t : CR α Γ) → 𝕤𝕖𝕞 t ≡ g t
       𝕊-ix : (mε : Sub CR Π Γ)(v : ℐ α Π) → 𝕊 mε v ≡ g (index mε v)

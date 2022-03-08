@@ -32,27 +32,27 @@ private
     Γ Δ Π : Ctx
 
 module _ (𝔛 : Familyₛ) where
-  open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
+  open import SOAS.Metatheory.SynAlgebra ⅀F 𝔛
 
-  -- Grammar of terms for a (⅀,𝔛)-meta-algebra
+  -- Grammar of terms for a (⅀,𝔛)-syntactic algebra
   data 𝕋 : Familyₛ where
     con  : ⅀ 𝕋 τ Γ → 𝕋 τ Γ
     var  : ℐ τ Γ → 𝕋 τ Γ
     mvar : 𝔛 τ Π → Sub 𝕋 Π Γ → 𝕋 τ Γ
 
-  Tmᵃ : MetaAlg 𝕋
+  Tmᵃ : SynAlg 𝕋
   Tmᵃ = record { 𝑎𝑙𝑔 = con ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 ε → mvar 𝔪 (tabulate ε) }
 
-  -- 𝕋 is the initial meta-algebra
-  𝕋:Init : Initial 𝕄etaAlgebras
+  -- 𝕋 is the initial syntactic algebra
+  𝕋:Init : Initial 𝕊ynAlgebras
   𝕋:Init = record
     { ⊥ = 𝕋 ⋉ Tmᵃ
     ; ⊥-is-initial = record
       { ! = λ{ {𝒜 ⋉ 𝒜ᵃ} → (𝕤𝕖𝕞 𝒜ᵃ) ⋉ 𝕤𝕖𝕞ᵃ⇒ 𝒜ᵃ }
       ; !-unique = λ { {𝒜 ⋉ 𝒜ᵃ}(g ⋉ gᵃ⇒) {x = t} →  𝕤𝕖𝕞! 𝒜ᵃ gᵃ⇒ t } } }
     where
-    module _ {𝒜 : Familyₛ}(𝒜ᵃ : MetaAlg 𝒜) where
-      open MetaAlg 𝒜ᵃ
+    module _ {𝒜 : Familyₛ}(𝒜ᵃ : SynAlg 𝒜) where
+      open SynAlg 𝒜ᵃ
       𝕤𝕖𝕞 : 𝕋 ⇾̣ 𝒜
       𝔸 : (as : List (Ctx × T)) → Arg as 𝕋 Γ → Arg as 𝒜 Γ
       𝔸 [] tt = tt
@@ -65,7 +65,7 @@ module _ (𝔛 : Familyₛ) where
       𝕤𝕖𝕞 (var v) = 𝑣𝑎𝑟 v
       𝕤𝕖𝕞 (mvar 𝔪 ε) = 𝑚𝑣𝑎𝑟 𝔪 (𝕊 ε)
 
-      𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ Tmᵃ 𝒜ᵃ 𝕤𝕖𝕞
+      𝕤𝕖𝕞ᵃ⇒ : SynAlg⇒ Tmᵃ 𝒜ᵃ 𝕤𝕖𝕞
       𝕤𝕖𝕞ᵃ⇒ = record
         { ⟨𝑎𝑙𝑔⟩ = λ{ {t = (o ⋮ a)} → cong (λ - → 𝑎𝑙𝑔 (o ⋮ -)) (𝔸-Arg₁ (Arity o) a) }
         ; ⟨𝑣𝑎𝑟⟩ = refl
@@ -83,8 +83,8 @@ module _ (𝔛 : Familyₛ) where
         𝕊-tab ε new = refl
         𝕊-tab ε (old v) = 𝕊-tab (ε ∘ old) v
 
-      module _ {g : 𝕋 ⇾̣ 𝒜}(gᵃ⇒ : MetaAlg⇒ Tmᵃ 𝒜ᵃ g) where
-        open MetaAlg⇒ gᵃ⇒
+      module _ {g : 𝕋 ⇾̣ 𝒜}(gᵃ⇒ : SynAlg⇒ Tmᵃ 𝒜ᵃ g) where
+        open SynAlg⇒ gᵃ⇒
 
         𝕤𝕖𝕞! : (t : 𝕋 α Γ) → 𝕤𝕖𝕞 t ≡ g t
         𝕊-ix : (ε : Sub 𝕋 Π Γ)(v : ℐ α Π) → 𝕊 ε v ≡ g (index ε v)

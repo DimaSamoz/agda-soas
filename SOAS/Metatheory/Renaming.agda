@@ -3,13 +3,13 @@ open import SOAS.Common
 open import SOAS.Families.Core
 open import Categories.Object.Initial
 open import SOAS.Coalgebraic.Strength
-import SOAS.Metatheory.MetaAlgebra
+import SOAS.Metatheory.SynAlgebra
 
 -- Renaming structure by initiality
 module SOAS.Metatheory.Renaming {T : Set}
   (⅀F : Functor 𝔽amiliesₛ 𝔽amiliesₛ) (⅀:Str : Strength ⅀F)
-  (𝔛 : Familyₛ) (open SOAS.Metatheory.MetaAlgebra ⅀F 𝔛)
-  (𝕋:Init : Initial 𝕄etaAlgebras)
+  (𝔛 : Familyₛ) (open SOAS.Metatheory.SynAlgebra ⅀F 𝔛)
+  (𝕋:Init : Initial 𝕊ynAlgebras)
   where
 
 open import SOAS.Context
@@ -17,6 +17,7 @@ open import SOAS.Variable
 open import SOAS.Abstract.Hom
 import SOAS.Abstract.Coalgebra as →□ ; open →□.Sorted
 import SOAS.Abstract.Box as □ ; open □.Sorted
+open import SOAS.Abstract.Monoid
 
 open import SOAS.Coalgebraic.Map
 
@@ -79,3 +80,10 @@ module Renaming = □Traversal 𝕋ᵃ
 
 𝕋ᴮ : Coalgₚ 𝕋
 𝕋ᴮ = record { ᵇ = 𝕋ᵇ ; η = 𝕧𝕒𝕣 ; r∘η = Renaming.𝕥⟨𝕧⟩ }
+
+-- Algebra and variable maps are coalgebra homomorphisms
+𝕒𝕝𝕘ᵇ : Coalg⇒ (Fᵇ 𝕋ᵇ) 𝕋ᵇ 𝕒𝕝𝕘
+𝕒𝕝𝕘ᵇ = record { ⟨r⟩ = λ{ {ρ = ρ}{t} → sym Renaming.𝕥⟨𝕒⟩ }}
+
+𝕧𝕒𝕣ᵇ : Coalg⇒ ℐᵇ 𝕋ᵇ 𝕧𝕒𝕣
+𝕧𝕒𝕣ᵇ = record { ⟨r⟩ = λ{ {ρ = ρ}{t} → sym Renaming.𝕥⟨𝕧⟩ } }

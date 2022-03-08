@@ -108,9 +108,9 @@ module FOL:Terms (𝔛 : Familyₛ) where
   infixr 50 ¬_
   infixl 20 _≟_
 
-  open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
+  open import SOAS.Metatheory.SynAlgebra ⅀F 𝔛
 
-  FOLᵃ : MetaAlg FOL
+  FOLᵃ : SynAlg FOL
   FOLᵃ = record
     { 𝑎𝑙𝑔 = λ where
       (falseₒ ⋮ _)     → ⊥
@@ -123,11 +123,11 @@ module FOL:Terms (𝔛 : Familyₛ) where
       (exₒ    ⋮ a)     → ∃′  a
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
-  module FOLᵃ = MetaAlg FOLᵃ
+  module FOLᵃ = SynAlg FOLᵃ
 
-  module _ {𝒜 : Familyₛ}(𝒜ᵃ : MetaAlg 𝒜) where
+  module _ {𝒜 : Familyₛ}(𝒜ᵃ : SynAlg 𝒜) where
 
-    open MetaAlg 𝒜ᵃ
+    open SynAlg 𝒜ᵃ
 
     𝕤𝕖𝕞 : FOL ⇾̣ 𝒜
     𝕊 : Sub FOL Π Γ → Π ~[ 𝒜 ]↝ Γ
@@ -145,7 +145,7 @@ module FOL:Terms (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (∀′  a)   = 𝑎𝑙𝑔 (allₒ   ⋮ 𝕤𝕖𝕞 a)
     𝕤𝕖𝕞 (∃′  a)   = 𝑎𝑙𝑔 (exₒ    ⋮ 𝕤𝕖𝕞 a)
 
-    𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ FOLᵃ 𝒜ᵃ 𝕤𝕖𝕞
+    𝕤𝕖𝕞ᵃ⇒ : SynAlg⇒ FOLᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
       { ⟨𝑎𝑙𝑔⟩ = λ{ {t = t} → ⟨𝑎𝑙𝑔⟩ t }
       ; ⟨𝑣𝑎𝑟⟩ = refl
@@ -166,9 +166,9 @@ module FOL:Terms (𝔛 : Familyₛ) where
       𝕊-tab mε new = refl
       𝕊-tab mε (old v) = 𝕊-tab (mε ∘ old) v
 
-    module _ (g : FOL ⇾̣ 𝒜)(gᵃ⇒ : MetaAlg⇒ FOLᵃ 𝒜ᵃ g) where
+    module _ (g : FOL ⇾̣ 𝒜)(gᵃ⇒ : SynAlg⇒ FOLᵃ 𝒜ᵃ g) where
 
-      open MetaAlg⇒ gᵃ⇒
+      open SynAlg⇒ gᵃ⇒
 
       𝕤𝕖𝕞! : (t : FOL α Γ) → 𝕤𝕖𝕞 t ≡ g t
       𝕊-ix : (mε : Sub FOL Π Γ)(v : ℐ α Π) → 𝕊 mε v ≡ g (index mε v)

@@ -3,7 +3,6 @@ open import SOAS.Common
 open import SOAS.Families.Core
 open import Categories.Object.Initial
 open import SOAS.Coalgebraic.Strength
-import SOAS.Metatheory.MetaAlgebra
 
 -- Monoids with ⅀-algebra structure
 module SOAS.Metatheory.Monoid {T : Set}
@@ -21,6 +20,7 @@ open import SOAS.Coalgebraic.Map
 open import SOAS.Coalgebraic.Monoid
 
 open import SOAS.Metatheory.Algebra {T} ⅀F
+open import SOAS.Metatheory.SynAlgebra {T} ⅀F
 
 open Strength ⅀:Str
 
@@ -40,6 +40,11 @@ record ΣMon (ℳ : Familyₛ) : Set where
   field
     μ⟨𝑎𝑙𝑔⟩ : {σ : Γ ~[ ℳ ]↝ Δ}(t : ⅀ ℳ α Γ)
           → μ (𝑎𝑙𝑔 t) σ ≡ 𝑎𝑙𝑔 (str ᴮ ℳ (⅀₁ μ t) σ)
+
+  module Model {𝔛 : Familyₛ}(ω : 𝔛 ⇾̣ ℳ) where
+
+    ᵃ : SynAlg 𝔛 ℳ
+    ᵃ = record { 𝑎𝑙𝑔 = 𝑎𝑙𝑔 ; 𝑣𝑎𝑟 = η ; 𝑚𝑣𝑎𝑟 = μ ∘ ω }
 
 record ΣMon⇒ {ℳ 𝒩 : Familyₛ}(ℳᴹ : ΣMon ℳ)(𝒩ᴹ : ΣMon 𝒩)
              (f : ℳ ⇾̣ 𝒩) : Set where

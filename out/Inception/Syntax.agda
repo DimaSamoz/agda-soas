@@ -51,20 +51,20 @@ module IA:Terms (𝔛 : Familyₛ) where
 
 
 
-  open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
+  open import SOAS.Metatheory.SynAlgebra ⅀F 𝔛
 
-  IAᵃ : MetaAlg IA
+  IAᵃ : SynAlg IA
   IAᵃ = record
     { 𝑎𝑙𝑔 = λ where
       (recₒ ⋮ a , b) → rec a b
       (incₒ ⋮ a , b) → inc a b
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
-  module IAᵃ = MetaAlg IAᵃ
+  module IAᵃ = SynAlg IAᵃ
 
-  module _ {𝒜 : Familyₛ}(𝒜ᵃ : MetaAlg 𝒜) where
+  module _ {𝒜 : Familyₛ}(𝒜ᵃ : SynAlg 𝒜) where
 
-    open MetaAlg 𝒜ᵃ
+    open SynAlg 𝒜ᵃ
 
     𝕤𝕖𝕞 : IA ⇾̣ 𝒜
     𝕊 : Sub IA Π Γ → Π ~[ 𝒜 ]↝ Γ
@@ -76,7 +76,7 @@ module IA:Terms (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (rec a b) = 𝑎𝑙𝑔 (recₒ ⋮ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b)
     𝕤𝕖𝕞 (inc a b) = 𝑎𝑙𝑔 (incₒ ⋮ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b)
 
-    𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ IAᵃ 𝒜ᵃ 𝕤𝕖𝕞
+    𝕤𝕖𝕞ᵃ⇒ : SynAlg⇒ IAᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
       { ⟨𝑎𝑙𝑔⟩ = λ{ {t = t} → ⟨𝑎𝑙𝑔⟩ t }
       ; ⟨𝑣𝑎𝑟⟩ = refl
@@ -91,9 +91,9 @@ module IA:Terms (𝔛 : Familyₛ) where
       𝕊-tab mε new = refl
       𝕊-tab mε (old v) = 𝕊-tab (mε ∘ old) v
 
-    module _ (g : IA ⇾̣ 𝒜)(gᵃ⇒ : MetaAlg⇒ IAᵃ 𝒜ᵃ g) where
+    module _ (g : IA ⇾̣ 𝒜)(gᵃ⇒ : SynAlg⇒ IAᵃ 𝒜ᵃ g) where
 
-      open MetaAlg⇒ gᵃ⇒
+      open SynAlg⇒ gᵃ⇒
 
       𝕤𝕖𝕞! : (t : IA α Γ) → 𝕤𝕖𝕞 t ≡ g t
       𝕊-ix : (mε : Sub IA Π Γ)(v : ℐ α Π) → 𝕊 mε v ≡ g (index mε v)

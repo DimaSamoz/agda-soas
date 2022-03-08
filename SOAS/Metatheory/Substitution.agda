@@ -3,13 +3,13 @@ open import SOAS.Common
 open import SOAS.Families.Core
 open import Categories.Object.Initial
 open import SOAS.Coalgebraic.Strength
-import SOAS.Metatheory.MetaAlgebra
+import SOAS.Metatheory.SynAlgebra
 
 -- Substitution structure by initiality
 module SOAS.Metatheory.Substitution {T : Set}
   (⅀F : Functor 𝔽amiliesₛ 𝔽amiliesₛ) (⅀:Str : Strength ⅀F)
-  (𝔛 : Familyₛ) (open SOAS.Metatheory.MetaAlgebra ⅀F 𝔛)
-  (𝕋:Init : Initial 𝕄etaAlgebras)
+  (𝔛 : Familyₛ) (open SOAS.Metatheory.SynAlgebra ⅀F 𝔛)
+  (𝕋:Init : Initial 𝕊ynAlgebras)
   where
 
 open import SOAS.Context

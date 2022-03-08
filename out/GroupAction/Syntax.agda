@@ -59,9 +59,9 @@ module GA:Terms (𝔛 : Familyₛ) where
   infixr 40 ⊖_
   infixr 30 _⊙_
 
-  open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
+  open import SOAS.Metatheory.SynAlgebra ⅀F 𝔛
 
-  GAᵃ : MetaAlg GA
+  GAᵃ : SynAlg GA
   GAᵃ = record
     { 𝑎𝑙𝑔 = λ where
       (unitₒ ⋮ _)     → ε
@@ -70,11 +70,11 @@ module GA:Terms (𝔛 : Familyₛ) where
       (actₒ  ⋮ a , b) → _⊙_ a b
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
-  module GAᵃ = MetaAlg GAᵃ
+  module GAᵃ = SynAlg GAᵃ
 
-  module _ {𝒜 : Familyₛ}(𝒜ᵃ : MetaAlg 𝒜) where
+  module _ {𝒜 : Familyₛ}(𝒜ᵃ : SynAlg 𝒜) where
 
-    open MetaAlg 𝒜ᵃ
+    open SynAlg 𝒜ᵃ
 
     𝕤𝕖𝕞 : GA ⇾̣ 𝒜
     𝕊 : Sub GA Π Γ → Π ~[ 𝒜 ]↝ Γ
@@ -88,7 +88,7 @@ module GA:Terms (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (⊖_  a)   = 𝑎𝑙𝑔 (negₒ  ⋮ 𝕤𝕖𝕞 a)
     𝕤𝕖𝕞 (_⊙_ a b) = 𝑎𝑙𝑔 (actₒ  ⋮ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b)
 
-    𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ GAᵃ 𝒜ᵃ 𝕤𝕖𝕞
+    𝕤𝕖𝕞ᵃ⇒ : SynAlg⇒ GAᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
       { ⟨𝑎𝑙𝑔⟩ = λ{ {t = t} → ⟨𝑎𝑙𝑔⟩ t }
       ; ⟨𝑣𝑎𝑟⟩ = refl
@@ -105,9 +105,9 @@ module GA:Terms (𝔛 : Familyₛ) where
       𝕊-tab mε new = refl
       𝕊-tab mε (old v) = 𝕊-tab (mε ∘ old) v
 
-    module _ (g : GA ⇾̣ 𝒜)(gᵃ⇒ : MetaAlg⇒ GAᵃ 𝒜ᵃ g) where
+    module _ (g : GA ⇾̣ 𝒜)(gᵃ⇒ : SynAlg⇒ GAᵃ 𝒜ᵃ g) where
 
-      open MetaAlg⇒ gᵃ⇒
+      open SynAlg⇒ gᵃ⇒
 
       𝕤𝕖𝕞! : (t : GA α Γ) → 𝕤𝕖𝕞 t ≡ g t
       𝕊-ix : (mε : Sub GA Π Γ)(v : ℐ α Π) → 𝕊 mε v ≡ g (index mε v)

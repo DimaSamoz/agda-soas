@@ -44,19 +44,19 @@ module U:Terms (𝔛 : Familyₛ) where
 
 
 
-  open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
+  open import SOAS.Metatheory.SynAlgebra ⅀F 𝔛
 
-  Uᵃ : MetaAlg U
+  Uᵃ : SynAlg U
   Uᵃ = record
     { 𝑎𝑙𝑔 = λ where
       (unitₒ ⋮ _) → unit
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
-  module Uᵃ = MetaAlg Uᵃ
+  module Uᵃ = SynAlg Uᵃ
 
-  module _ {𝒜 : Familyₛ}(𝒜ᵃ : MetaAlg 𝒜) where
+  module _ {𝒜 : Familyₛ}(𝒜ᵃ : SynAlg 𝒜) where
 
-    open MetaAlg 𝒜ᵃ
+    open SynAlg 𝒜ᵃ
 
     𝕤𝕖𝕞 : U ⇾̣ 𝒜
     𝕊 : Sub U Π Γ → Π ~[ 𝒜 ]↝ Γ
@@ -67,7 +67,7 @@ module U:Terms (𝔛 : Familyₛ) where
 
     𝕤𝕖𝕞  unit  = 𝑎𝑙𝑔 (unitₒ ⋮ tt)
 
-    𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ Uᵃ 𝒜ᵃ 𝕤𝕖𝕞
+    𝕤𝕖𝕞ᵃ⇒ : SynAlg⇒ Uᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
       { ⟨𝑎𝑙𝑔⟩ = λ{ {t = t} → ⟨𝑎𝑙𝑔⟩ t }
       ; ⟨𝑣𝑎𝑟⟩ = refl
@@ -81,9 +81,9 @@ module U:Terms (𝔛 : Familyₛ) where
       𝕊-tab mε new = refl
       𝕊-tab mε (old v) = 𝕊-tab (mε ∘ old) v
 
-    module _ (g : U ⇾̣ 𝒜)(gᵃ⇒ : MetaAlg⇒ Uᵃ 𝒜ᵃ g) where
+    module _ (g : U ⇾̣ 𝒜)(gᵃ⇒ : SynAlg⇒ Uᵃ 𝒜ᵃ g) where
 
-      open MetaAlg⇒ gᵃ⇒
+      open SynAlg⇒ gᵃ⇒
 
       𝕤𝕖𝕞! : (t : U α Γ) → 𝕤𝕖𝕞 t ≡ g t
       𝕊-ix : (mε : Sub U Π Γ)(v : ℐ α Π) → 𝕊 mε v ≡ g (index mε v)

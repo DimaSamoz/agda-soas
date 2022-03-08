@@ -3,7 +3,7 @@ open import SOAS.Common
 import SOAS.Families.Core
 
 -- Families with syntactic structure
-module SOAS.Metatheory.MetaAlgebra {T : Set}
+module SOAS.Metatheory.SynAlgebra {T : Set}
   (open SOAS.Families.Core {T})
   (⅀F : Functor 𝔽amiliesₛ 𝔽amiliesₛ)
   (𝔛 : Familyₛ) where
@@ -22,7 +22,7 @@ private
     α : T
 
 -- A family with support for variables, metavariables, and ⅀-algebra structure
-record MetaAlg (𝒜 : Familyₛ) : Set where
+record SynAlg (𝒜 : Familyₛ) : Set where
 
   field
     𝑎𝑙𝑔  : ⅀ 𝒜 ⇾̣ 𝒜
@@ -40,23 +40,23 @@ record MetaAlg (𝒜 : Familyₛ) : Set where
       → 𝑚𝑣𝑎𝑟 𝔪 σ ≡ 𝑚𝑣𝑎𝑟 𝔪 ς
   𝑚≈₂ {𝔪 = 𝔪} p = cong (𝑚𝑣𝑎𝑟 𝔪) (dext p)
 
--- Meta-algebra homomorphism
-record MetaAlg⇒ {𝒜 ℬ : Familyₛ}(𝒜ᵃ : MetaAlg 𝒜)(ℬᵃ : MetaAlg ℬ)
+-- Syntactic algebra homomorphism
+record SynAlg⇒ {𝒜 ℬ : Familyₛ}(𝒜ᵃ : SynAlg 𝒜)(ℬᵃ : SynAlg ℬ)
                 (f : 𝒜 ⇾̣ ℬ) : Set where
-  private module 𝒜 = MetaAlg 𝒜ᵃ
-  private module ℬ = MetaAlg ℬᵃ
+  private module 𝒜 = SynAlg 𝒜ᵃ
+  private module ℬ = SynAlg ℬᵃ
 
   field
     ⟨𝑎𝑙𝑔⟩  : {t : ⅀ 𝒜 α Γ} → f (𝒜.𝑎𝑙𝑔 t) ≡ ℬ.𝑎𝑙𝑔 (⅀₁ f t)
     ⟨𝑣𝑎𝑟⟩  : {v : ℐ α Γ} → f (𝒜.𝑣𝑎𝑟 v) ≡ ℬ.𝑣𝑎𝑟 v
     ⟨𝑚𝑣𝑎𝑟⟩ : {𝔪 : 𝔛 α Π}{ε : Π ~[ 𝒜 ]↝ Γ} → f (𝒜.𝑚𝑣𝑎𝑟 𝔪 ε) ≡ ℬ.𝑚𝑣𝑎𝑟 𝔪 (f ∘ ε)
 
--- Category of meta-algebras
-module MetaAlgebraStructure = Structure 𝔽amiliesₛ MetaAlg
+-- Category of syntactic algebras
+module SynAlgebraStructure = Structure 𝔽amiliesₛ SynAlg
 
-MetaAlgebraCatProps : MetaAlgebraStructure.CategoryProps
-MetaAlgebraCatProps = record
-  { IsHomomorphism = MetaAlg⇒
+SynAlgebraCatProps : SynAlgebraStructure.CategoryProps
+SynAlgebraCatProps = record
+  { IsHomomorphism = SynAlg⇒
   ; id-hom = λ {𝒜}{𝒜ᵃ} → record
     { ⟨𝑎𝑙𝑔⟩ = cong (𝑎𝑙𝑔 𝒜ᵃ) (sym ⅀.identity)
     ; ⟨𝑣𝑎𝑟⟩ = refl
@@ -67,25 +67,24 @@ MetaAlgebraCatProps = record
                     (cong (𝑎𝑙𝑔 𝒞ᵃ) (sym ⅀.homomorphism)))
     ; ⟨𝑣𝑎𝑟⟩ = trans (cong g (⟨𝑣𝑎𝑟⟩ fᵃ⇒)) (⟨𝑣𝑎𝑟⟩ gᵃ⇒)
     ; ⟨𝑚𝑣𝑎𝑟⟩ = trans (cong g (⟨𝑚𝑣𝑎𝑟⟩ fᵃ⇒)) (⟨𝑚𝑣𝑎𝑟⟩ gᵃ⇒) }
-  }} where open MetaAlg ; open MetaAlg⇒
+  }} where open SynAlg ; open SynAlg⇒
 
-module MetaAlgProps = MetaAlgebraStructure.CategoryProps MetaAlgebraCatProps
+module SynAlgProps = SynAlgebraStructure.CategoryProps SynAlgebraCatProps
 
-𝕄etaAlgebras : Category 1ℓ 0ℓ 0ℓ
-𝕄etaAlgebras = MetaAlgebraStructure.StructCat MetaAlgebraCatProps
+𝕊ynAlgebras : Category 1ℓ 0ℓ 0ℓ
+𝕊ynAlgebras = SynAlgebraStructure.StructCat SynAlgebraCatProps
 
-module 𝕄etaAlg = Category 𝕄etaAlgebras
+module 𝕊ynAlg = Category 𝕊ynAlgebras
 
+SynAlgebra : Set₁
+SynAlgebra = 𝕊ynAlg.Obj
 
-MetaAlgebra : Set₁
-MetaAlgebra = 𝕄etaAlg.Obj
-
-MetaAlgebra⇒ : MetaAlgebra → MetaAlgebra → Set
-MetaAlgebra⇒ = 𝕄etaAlg._⇒_
-
+SynAlgebra⇒ : SynAlgebra → SynAlgebra → Set
+SynAlgebra⇒ = 𝕊ynAlg._⇒_
 
 
--- Identity is a meta-algebra homomorphism
-idᵃ : {𝒜 : Familyₛ} → (𝒜ᵃ : MetaAlg 𝒜) → MetaAlg⇒ 𝒜ᵃ 𝒜ᵃ id
-idᵃ 𝒜ᵃ = record { ⟨𝑎𝑙𝑔⟩ = cong (MetaAlg.𝑎𝑙𝑔 𝒜ᵃ) (sym ⅀.identity)
+
+-- Identity is a syntactic algebra homomorphism
+idᵃ : {𝒜 : Familyₛ} → (𝒜ᵃ : SynAlg 𝒜) → SynAlg⇒ 𝒜ᵃ 𝒜ᵃ id
+idᵃ 𝒜ᵃ = record { ⟨𝑎𝑙𝑔⟩ = cong (SynAlg.𝑎𝑙𝑔 𝒜ᵃ) (sym ⅀.identity)
                 ; ⟨𝑣𝑎𝑟⟩ = refl ; ⟨𝑚𝑣𝑎𝑟⟩ = refl }

@@ -82,9 +82,9 @@ module PR:Terms (𝔛 : Familyₛ) where
   infixl 30 _∧_
   infixr 50 ¬_
 
-  open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
+  open import SOAS.Metatheory.SynAlgebra ⅀F 𝔛
 
-  PRᵃ : MetaAlg PR
+  PRᵃ : SynAlg PR
   PRᵃ = record
     { 𝑎𝑙𝑔 = λ where
       (falseₒ ⋮ _)     → ⊥
@@ -94,11 +94,11 @@ module PR:Terms (𝔛 : Familyₛ) where
       (notₒ   ⋮ a)     → ¬_  a
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
-  module PRᵃ = MetaAlg PRᵃ
+  module PRᵃ = SynAlg PRᵃ
 
-  module _ {𝒜 : Familyₛ}(𝒜ᵃ : MetaAlg 𝒜) where
+  module _ {𝒜 : Familyₛ}(𝒜ᵃ : SynAlg 𝒜) where
 
-    open MetaAlg 𝒜ᵃ
+    open SynAlg 𝒜ᵃ
 
     𝕤𝕖𝕞 : PR ⇾̣ 𝒜
     𝕊 : Sub PR Π Γ → Π ~[ 𝒜 ]↝ Γ
@@ -113,7 +113,7 @@ module PR:Terms (𝔛 : Familyₛ) where
     𝕤𝕖𝕞 (_∧_ a b) = 𝑎𝑙𝑔 (andₒ   ⋮ 𝕤𝕖𝕞 a , 𝕤𝕖𝕞 b)
     𝕤𝕖𝕞 (¬_  a)   = 𝑎𝑙𝑔 (notₒ   ⋮ 𝕤𝕖𝕞 a)
 
-    𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ PRᵃ 𝒜ᵃ 𝕤𝕖𝕞
+    𝕤𝕖𝕞ᵃ⇒ : SynAlg⇒ PRᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
       { ⟨𝑎𝑙𝑔⟩ = λ{ {t = t} → ⟨𝑎𝑙𝑔⟩ t }
       ; ⟨𝑣𝑎𝑟⟩ = refl
@@ -131,9 +131,9 @@ module PR:Terms (𝔛 : Familyₛ) where
       𝕊-tab mε new = refl
       𝕊-tab mε (old v) = 𝕊-tab (mε ∘ old) v
 
-    module _ (g : PR ⇾̣ 𝒜)(gᵃ⇒ : MetaAlg⇒ PRᵃ 𝒜ᵃ g) where
+    module _ (g : PR ⇾̣ 𝒜)(gᵃ⇒ : SynAlg⇒ PRᵃ 𝒜ᵃ g) where
 
-      open MetaAlg⇒ gᵃ⇒
+      open SynAlg⇒ gᵃ⇒
 
       𝕤𝕖𝕞! : (t : PR α Γ) → 𝕤𝕖𝕞 t ≡ g t
       𝕊-ix : (mε : Sub PR Π Γ)(v : ℐ α Π) → 𝕊 mε v ≡ g (index mε v)

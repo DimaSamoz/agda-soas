@@ -35,19 +35,19 @@ module ${sig}:Terms (𝔛 : Familyₛ) where
 
   $op_fixity
 
-  open import SOAS.Metatheory.MetaAlgebra ⅀F 𝔛
+  open import SOAS.Metatheory.SynAlgebra ⅀F 𝔛
 
-  ${sig}ᵃ : MetaAlg ${sig}
+  ${sig}ᵃ : SynAlg ${sig}
   ${sig}ᵃ = record
     { 𝑎𝑙𝑔 = λ where
       $alg_patterns
     ; 𝑣𝑎𝑟 = var ; 𝑚𝑣𝑎𝑟 = λ 𝔪 mε → mvar 𝔪 (tabulate mε) }
 
-  module ${sig}ᵃ = MetaAlg ${sig}ᵃ
+  module ${sig}ᵃ = SynAlg ${sig}ᵃ
 
-  module _ {𝒜 : Familyₛ}(𝒜ᵃ : MetaAlg 𝒜) where
+  module _ {𝒜 : Familyₛ}(𝒜ᵃ : SynAlg 𝒜) where
 
-    open MetaAlg 𝒜ᵃ
+    open SynAlg 𝒜ᵃ
 
     𝕤𝕖𝕞 : ${sig} ⇾̣ 𝒜
     𝕊 : Sub ${sig} Π Γ → Π ~[ 𝒜 ]↝ Γ
@@ -58,7 +58,7 @@ module ${sig}:Terms (𝔛 : Familyₛ) where
 
     $sem_patterns
 
-    𝕤𝕖𝕞ᵃ⇒ : MetaAlg⇒ ${sig}ᵃ 𝒜ᵃ 𝕤𝕖𝕞
+    𝕤𝕖𝕞ᵃ⇒ : SynAlg⇒ ${sig}ᵃ 𝒜ᵃ 𝕤𝕖𝕞
     𝕤𝕖𝕞ᵃ⇒ = record
       { ⟨𝑎𝑙𝑔⟩ = λ{ {t = t} → ⟨𝑎𝑙𝑔⟩ t }
       ; ⟨𝑣𝑎𝑟⟩ = refl
@@ -72,9 +72,9 @@ module ${sig}:Terms (𝔛 : Familyₛ) where
       𝕊-tab mε new = refl
       𝕊-tab mε (old v) = 𝕊-tab (mε ∘ old) v
 
-    module _ (g : ${sig} ⇾̣ 𝒜)(gᵃ⇒ : MetaAlg⇒ ${sig}ᵃ 𝒜ᵃ g) where
+    module _ (g : ${sig} ⇾̣ 𝒜)(gᵃ⇒ : SynAlg⇒ ${sig}ᵃ 𝒜ᵃ g) where
 
-      open MetaAlg⇒ gᵃ⇒
+      open SynAlg⇒ gᵃ⇒
 
       𝕤𝕖𝕞! : (t : ${sig} $fst_ty_var Γ) → 𝕤𝕖𝕞 t ≡ g t
       𝕊-ix : (mε : Sub ${sig} Π Γ)(v : ℐ $fst_ty_var Π) → 𝕊 mε v ≡ g (index mε v)
