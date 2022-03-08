@@ -1,7 +1,7 @@
 
 open import SOAS.Metatheory.Syntax
 
--- Initial (⅀, 𝔛)-meta-algebra 𝕋 𝔛 is the free ⅀-monoid on 𝔛
+-- Initial (⅀, 𝔛)-syntactic algebra 𝕋 𝔛 is the free ⅀-monoid on 𝔛
 module SOAS.Metatheory.FreeMonoid {T : Set} (Syn : Syntax {T}) where
 
 open Syntax Syn
@@ -28,7 +28,7 @@ open import SOAS.Metatheory Syn
 private
   variable
     α β : T
-    Γ Δ : Ctx
+    Γ Δ Π : Ctx
 
 module _ (𝔛 : Familyₛ) where
   open Theory 𝔛
@@ -51,21 +51,20 @@ module _ (𝔛 : Familyₛ) where
   -- there is a unique homomorphic extension 𝕋 𝔛 ⇾̣ ℳ
   module FΣM {ℳ : Familyₛ}(Σℳᵐ : ΣMon ℳ) (ω : 𝔛 ⇾̣ ℳ) where
     open ΣMon Σℳᵐ renaming (𝑎𝑙𝑔 to ℳ𝑎𝑙𝑔 ; ᴮ to ℳᴮ ; ᵐ to ℳᵐ) public
+    open Model ω renaming (ᵃ to ℳᵃ) public
     private module ℳ = ΣMon Σℳᵐ
 
     -- Metavariable operator of ℳ using ω and monoid multiplication, making
-    -- ℳ into a meta-algebra
+    -- ℳ into a syntactic algebra
     χ : 𝔛 ⇾̣ 〖 ℳ , ℳ 〗
-    χ 𝔪 ε = μ (ω 𝔪) ε
+    χ = μ ∘ ω
 
-    ℳᵃ : MetaAlg ℳ
-    ℳᵃ = record { 𝑎𝑙𝑔 = ℳ.𝑎𝑙𝑔 ; 𝑣𝑎𝑟 = η ; 𝑚𝑣𝑎𝑟 = χ }
 
     open Semantics ℳᵃ public renaming (𝕤𝕖𝕞 to 𝕖𝕩𝕥)
-    open MetaAlg ℳᵃ
+    open SynAlg ℳᵃ
     open Coalgebraic μᶜ
 
-    -- Extension is pointed coalgebra hommorphism
+    -- Extension is pointed coalgebra homomorphism
     𝕖𝕩𝕥ᵇ⇒ : Coalg⇒ 𝕋ᵇ ℳ.ᵇ 𝕖𝕩𝕥
     𝕖𝕩𝕥ᵇ⇒ = 𝕤𝕖𝕞ᵇ⇒ ℳ.ᵇ ℳᵃ record
       { ⟨𝑎𝑙𝑔⟩ = λ{ {t = t} → dext (λ ρ → begin
@@ -84,7 +83,7 @@ module _ (𝔛 : Familyₛ) where
     𝕖𝕩𝕥ᴮ⇒ : Coalgₚ⇒ 𝕋ᴮ ℳ.ᴮ 𝕖𝕩𝕥
     𝕖𝕩𝕥ᴮ⇒ = record { ᵇ⇒ = 𝕖𝕩𝕥ᵇ⇒ ; ⟨η⟩ = ⟨𝕧⟩ }
 
-    -- Extension is monoid homomorphims
+    -- Extension is monoid homomorphism
     μ∘𝕖𝕩𝕥 : MapEq₁ 𝕋ᴮ ℳ.𝑎𝑙𝑔 (λ t σ → 𝕖𝕩𝕥 (𝕤𝕦𝕓 t σ))
                            (λ t σ → μ (𝕖𝕩𝕥 t) (𝕖𝕩𝕥 ∘ σ))
     μ∘𝕖𝕩𝕥 = record
@@ -120,7 +119,6 @@ module _ (𝔛 : Familyₛ) where
         ∎ }
       } where open ≡-Reasoning
 
-
     𝕖𝕩𝕥ᵐ⇒ : ΣMon⇒ Σ𝕋ᵐ Σℳᵐ 𝕖𝕩𝕥
     𝕖𝕩𝕥ᵐ⇒ = record { ᵐ⇒ = record
       { ⟨η⟩ = ⟨𝕧⟩
@@ -135,7 +133,7 @@ module _ (𝔛 : Familyₛ) where
              (p : ∀{α Π}{𝔪 : 𝔛 α Π} → g (𝕞𝕧𝕒𝕣 𝔪 𝕧𝕒𝕣) ≡ ω 𝔪) where
       open ΣMon⇒ gᵐ⇒ renaming (⟨𝑎𝑙𝑔⟩ to g⟨𝑎𝑙𝑔⟩)
 
-      gᵃ⇒ : MetaAlg⇒ 𝕋ᵃ ℳᵃ g
+      gᵃ⇒ : SynAlg⇒ 𝕋ᵃ ℳᵃ g
       gᵃ⇒ = record
         { ⟨𝑎𝑙𝑔⟩ = g⟨𝑎𝑙𝑔⟩
         ; ⟨𝑣𝑎𝑟⟩ = ⟨η⟩
@@ -149,6 +147,7 @@ module _ (𝔛 : Familyₛ) where
 
       𝕖𝕩𝕥ᵐ! : {α : T}{Γ : Ctx}(t : 𝕋 α Γ) → 𝕖𝕩𝕥 t ≡ g t
       𝕖𝕩𝕥ᵐ! = 𝕤𝕖𝕞! gᵃ⇒
+
 
 -- Free Σ-monoid functor
 Famₛ→ΣMon :  Familyₛ → ΣMonoid
@@ -171,44 +170,3 @@ Free:𝔽amₛ⟶Σ𝕄on = FreeΣMonoid.FreeMapping.Free Free-ΣMon-Mapping
 -- Σ-monoid monad on families
 ΣMon:Monad : Monad 𝔽amiliesₛ
 ΣMon:Monad = FreeΣMonoid.FreeMapping.FreeMonad Free-ΣMon-Mapping
-
-𝕋F : Functor 𝔽amiliesₛ 𝔽amiliesₛ
-𝕋F = Monad.F ΣMon:Monad
-
-open Theory
-open Monad ΣMon:Monad
-
--- Functorial action of 𝕋
-𝕋₁ : {𝔛 𝔜 : Familyₛ} → (𝔛 ⇾̣ 𝔜) → 𝕋 𝔛 ⇾̣ 𝕋 𝔜
-𝕋₁ f t = Functor.₁ 𝕋F f t
-
--- Functorial action preserves variables
-𝕋₁∘𝕧𝕒𝕣 : {𝔛 𝔜 : Familyₛ}(f : 𝔛 ⇾̣ 𝔜)(v : ℐ α Γ)
-       → 𝕋₁ f (𝕧𝕒𝕣 𝔛 v) ≡ 𝕧𝕒𝕣 𝔜 v
-𝕋₁∘𝕧𝕒𝕣 {𝔛 = 𝔛}{𝔜} f v = FΣM.⟨𝕧⟩ 𝔛 (Σ𝕋ᵐ 𝔜) (λ 𝔪 → 𝕞𝕧𝕒𝕣 𝔜 (f 𝔪) (𝕧𝕒𝕣 𝔜))
-
--- Functorial action preserves metavariables
-𝕋₁∘𝕞𝕧𝕒𝕣 : {𝔛 𝔜 : Familyₛ}(f : 𝔛 ⇾̣ 𝔜)(𝔪 : 𝔛 α Γ)(ε : Γ ~[ 𝕋 𝔛 ]↝ Δ)
-       → 𝕋₁ f (𝕞𝕧𝕒𝕣 𝔛 𝔪 ε) ≡ 𝕞𝕧𝕒𝕣 𝔜 (f 𝔪) (𝕋₁ f ∘ ε)
-𝕋₁∘𝕞𝕧𝕒𝕣 {𝔛 = 𝔛}{𝔜} f 𝔪 ε = begin
-      𝕋₁ f (𝕞𝕧𝕒𝕣 𝔛 𝔪 ε)
-  ≡⟨⟩
-      FΣM.𝕖𝕩𝕥 𝔛 (Σ𝕋ᵐ 𝔜) (λ 𝔪 → 𝕞𝕧𝕒𝕣 𝔜 (f 𝔪) (𝕧𝕒𝕣 𝔜)) (𝕞𝕧𝕒𝕣 𝔛 𝔪 ε)
-  ≡⟨ FΣM.⟨𝕞⟩ 𝔛 (Σ𝕋ᵐ 𝔜) (λ 𝔪 → 𝕞𝕧𝕒𝕣 𝔜 (f 𝔪) (𝕧𝕒𝕣 𝔜)) ⟩
-      𝕤𝕦𝕓 𝔜 (𝕞𝕧𝕒𝕣 𝔜 (f 𝔪) (𝕧𝕒𝕣 𝔜)) (𝕋₁ f ∘ ε)
-  ≡⟨ Substitution.𝕥⟨𝕞⟩ 𝔜 ⟩
-      𝕞𝕧𝕒𝕣 𝔜 (f 𝔪) (λ 𝔫 → 𝕤𝕦𝕓 𝔜 (𝕧𝕒𝕣 𝔜 𝔫) (𝕋₁ f ∘ ε))
-  ≡⟨ cong (𝕞𝕧𝕒𝕣 𝔜 (f 𝔪)) (dext (λ 𝔫 → lunit 𝔜)) ⟩
-      𝕞𝕧𝕒𝕣 𝔜 (f 𝔪) (𝕋₁ f ∘ ε)
-  ∎ where open ≡-Reasoning
-
--- Corollary fo the above two
-𝕋₁∘𝕞𝕧𝕒𝕣[𝕧𝕒𝕣] : {𝔛 𝔜 : Familyₛ}(f : 𝔛 ⇾̣ 𝔜)(𝔪 : 𝔛 α Γ)(ρ : Γ ↝ Δ)
-       → 𝕋₁ f (𝕞𝕧𝕒𝕣 𝔛 𝔪 (𝕧𝕒𝕣 𝔛 ∘ ρ)) ≡ 𝕞𝕧𝕒𝕣 𝔜 (f 𝔪) (𝕧𝕒𝕣 𝔜 ∘ ρ)
-𝕋₁∘𝕞𝕧𝕒𝕣[𝕧𝕒𝕣] {𝔛 = 𝔛}{𝔜} f 𝔪 ρ = begin
-      𝕋₁ f (𝕞𝕧𝕒𝕣 𝔛 𝔪 (𝕧𝕒𝕣 𝔛 ∘ ρ))
-  ≡⟨ 𝕋₁∘𝕞𝕧𝕒𝕣 f 𝔪 (𝕧𝕒𝕣 𝔛 ∘ ρ) ⟩
-      𝕞𝕧𝕒𝕣 𝔜 (f 𝔪) (𝕋₁ f ∘ 𝕧𝕒𝕣 𝔛 ∘ ρ)
-  ≡⟨ cong (𝕞𝕧𝕒𝕣 𝔜 (f 𝔪)) (dext λ v → 𝕋₁∘𝕧𝕒𝕣 f (ρ v)) ⟩
-      𝕞𝕧𝕒𝕣 𝔜 (f 𝔪) (𝕧𝕒𝕣 𝔜 ∘ ρ)
-  ∎ where open ≡-Reasoning
